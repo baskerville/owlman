@@ -79,7 +79,7 @@ case $action in
         pacman -Qo "$@"
         ;;
     d|download)
-        cd "$ARCH_AUR_HOME"
+        cd "$XDG_AUR_HOME"
         if [ "$action" = "download" ]; then
             cower -ddf "$@"
         else
@@ -99,12 +99,12 @@ case $action in
             if [ $? -eq 0 ]; then
                 sudo pacman -S "$1"
             else
-                cd "$ARCH_AUR_HOME"
+                cd "$XDG_AUR_HOME"
                 cower -ddf "$1" > "$tmp_out" 2> /dev/null
                 if [ -s "$tmp_out" ]; then
                     list_of_programs=$(cat "$tmp_out" | tac | sed 's/.* \([^ ]\+\) downloaded.*/\1/') 
                     for i in $list_of_programs; do
-                        cd "$ARCH_AUR_HOME/$i"
+                        cd "$XDG_AUR_HOME/$i"
                         makepkg -ifs
                     done
                     echo -n > "$tmp_out"
