@@ -17,7 +17,7 @@ where <action> is one of:
     owner file -- return the name of the package owning the given file
     download pkg1 [pkg2 ...] -- download the packages from the aur
     remove pkg1 [pkg2 ...] -- remove the packages
-    install pkg1 [pkg2 ...] -- install the packages
+    add pkg1 [pkg2 ...] -- install the packages
     home pkg1 [pkg2 ...] -- opens the packages home pages
     bin pkg1 [pkg2 ...] -- filter binaries form the 'list' action
     etc pkg1 [pkg2 ...] -- filter config files from the 'list' action 
@@ -93,7 +93,7 @@ case $action in
             sudo pacman -R "$@"
         fi
         ;;
-    y|install)
+    a|add)
         while [ $# -gt 0 ]; do
             pacman -Si "$1" > /dev/null 2>&1
             if [ $? -eq 0 ]; then

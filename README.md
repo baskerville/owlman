@@ -13,7 +13,7 @@
         owner file -- return the name of the package owning the given file
         download pkg1 [pkg2 ...] -- download the packages from the aur
         remove pkg1 [pkg2 ...] -- remove the packages
-        install pkg1 [pkg2 ...] -- install the packages
+        add pkg1 [pkg2 ...] -- install the packages
         home pkg1 [pkg2 ...] -- opens the packages home pages
         bin pkg1 [pkg2 ...] -- filter binaries form the 'list' action
         etc pkg1 [pkg2 ...] -- filter config files from the 'list' action 
@@ -31,10 +31,7 @@ counterparts by doing more of the same thing.
 
 Actions providing an uppercase one letter form: *remove* (also remove installed
 dependencies), *home* (opens every home pages from the results of a *search*
-action on the given string).
-
-Actions whose one letter form differ from its long counterpart: *install*, one
-letter form is *y*.
+action on the given string) and *update* (also checks for AUR updates).
 
 Actions without a one letter form: *leftovers*, *foreign* and *orphan*.
 
@@ -44,7 +41,7 @@ The following environment variables should be set by the user (preferably in .ba
 
 - XDG_AUR_HOME -- where should the downloaded AUR packages be stored?
 
-- BROWSER -- the browser used for opening the package's home pages
+- BROWSER -- the browser used for opening the package's home pages.
 
 - OWL_MAX_URL -- the maximum number of URL this program is allowed to send to
-  the BROWSER in one go
+  the BROWSER in one go.
