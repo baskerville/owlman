@@ -15,6 +15,7 @@ where <action> is one of:
     search string -- search for the given package in both the official repos and the aur
     list pkg1 [pkg2 ...] -- list the files belonging to the packages
     owner file -- return the name of the package owning the given file
+    grep pkg string -- search for 'string' in all the files belonging to 'pkg'
     download pkg1 [pkg2 ...] -- download the packages from the aur
     remove pkg1 [pkg2 ...] -- remove the packages
     add pkg1 [pkg2 ...] -- install the packages
@@ -77,6 +78,14 @@ case $action in
         ;;
     o|owner)
         pacman -Qo "$@"
+        ;;
+    g|grep)
+        pkg_name=$1
+        pkg_files=$(pacman -Qlq "$pkg_name")
+        if [ $? -eq 0 ]; then
+            shift
+            [ ! "$@" = "\n" ] && grep -i "$@" $pkg_files
+        fi
         ;;
     d|download)
         cd "$XDG_AUR_HOME"
