@@ -11,6 +11,7 @@
         search string -- search for the given package in both the official repos and the aur
         list pkg1 [pkg2 ...] -- list the files belonging to the packages
         owner file -- return the name of the package owning the given file
+        grep pkg string -- search for 'string' in all the files belonging to 'pkg'
         download pkg1 [pkg2 ...] -- download the packages from the aur
         remove pkg1 [pkg2 ...] -- remove the packages
         add pkg1 [pkg2 ...] -- install the packages
