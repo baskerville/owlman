@@ -5,23 +5,23 @@
     usage: owl <action> [arguments]
     where <action> is one of:
         update -- update the system
+        add pkg1 [pkg2 ...] -- install the packages
+        remove pkg1 [pkg2 ...] -- remove the packages
+        download pkg1 [pkg2 ...] -- download the packages from the aur
         info pkg1 [pkg2 ...] -- retreive informations on the packages
-        query string -- search locally for packages matching string
+        home pkg1 [pkg2 ...] -- opens the packages home pages
         find string -- search for the given package in the official repos and fallback to aur
         search string -- search for the given package in both the official repos and the aur
+        query string -- search locally for packages matching string
         list pkg1 [pkg2 ...] -- list the files belonging to the packages
-        owner file -- return the name of the package owning the given file
-        grep pkg string -- search for 'string' in all the files belonging to 'pkg'
-        download pkg1 [pkg2 ...] -- download the packages from the aur
-        remove pkg1 [pkg2 ...] -- remove the packages
-        add pkg1 [pkg2 ...] -- install the packages
-        home pkg1 [pkg2 ...] -- opens the packages home pages
         bin pkg1 [pkg2 ...] -- filter binaries form the 'list' action
         etc pkg1 [pkg2 ...] -- filter config files from the 'list' action 
         man pkg1 [pkg2 ...] -- filter manuals from the 'list' action
+        grep pkg string -- search for 'string' in all the files belonging to 'pkg'
+        owner file -- return the name of the package owning the given file
         leftovers -- search and propose merges for pac{new,orig,save} files
-        foreign -- show manually installed packages
-        orphan -- show packages not listed as a dependency by any package
+        foreigns -- show manually installed packages
+        orphans -- show packages not listed as a dependency by any package
 
 ## Abbreviations
 
