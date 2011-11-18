@@ -13,6 +13,7 @@ where <action> is one of:
     remove pkg1 [pkg2 ...] -- remove the packages
     download pkg1 [pkg2 ...] -- download the packages from the aur
     info pkg1 [pkg2 ...] -- retreive informations on the packages
+    page pkg -- opens the package's aur page
     home pkg1 [pkg2 ...] -- opens the packages home pages
     find string -- search for the given package in the official repos and fallback to aur
     search string -- search for the given package in both the official repos and the aur
@@ -56,12 +57,15 @@ case $action in
         ;;
     u|U|update)
         sudo pacman -Syu
-        if [ "$action" = "U" ]; then
-            cower -u
-        fi
+        [ "$action" = "U" ] && cower -u
         ;;
-    l|list)
-        pacman -Qlq "$@"
+    l|L|list)
+        pattern='.'
+        if [ "$action" = "L" ]; then
+            pattern=$1
+            shift
+        fi
+        pacman -Qlq "$@" | grep -i "$pattern"
         ;;
     q|query)
         pacman -Qsq "$@"
@@ -140,6 +144,12 @@ case $action in
                 esac
             fi
         done
+        ;;
+    p|page)
+            uri=$(getinfos "$1" | grep -m 1 -o 'https://aur.*')
+            if [ -n "$uri" ]; then
+                $BROWSER $uri
+            fi
         ;;
     h|H|home)
         if [ $action = "H" ]; then

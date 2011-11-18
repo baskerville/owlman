@@ -9,6 +9,7 @@
         remove pkg1 [pkg2 ...] -- remove the packages
         download pkg1 [pkg2 ...] -- download the packages from the aur
         info pkg1 [pkg2 ...] -- retreive informations on the packages
+        page pkg -- opens the package's aur page
         home pkg1 [pkg2 ...] -- opens the packages home pages
         find string -- search for the given package in the official repos and fallback to aur
         search string -- search for the given package in both the official repos and the aur
