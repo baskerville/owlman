@@ -1,6 +1,6 @@
 # owl -- a dash pacman / cower wrapper
 
-![owl](http://cl.ly/By2p/owl.jpg)
+![owl](http://f.cl.ly/items/0G0U0U3E0q1r2t140g0h/owl.jpg)
 
 ## Usage
 
