@@ -1,5 +1,7 @@
 # owl -- a dash pacman / cower wrapper
 
+![owl](http://cl.ly/By2p/owl.jpg)
+
 ## Usage
 
     usage: owl <action> [arguments]
