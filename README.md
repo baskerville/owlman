@@ -33,11 +33,12 @@ corresponds to the first letter of the long form. Some actions also feature an
 uppercase one letter form which meaning differs from its lowercase and long
 counterparts by doing more of the same thing.
 
-Actions providing an uppercase one letter form: *remove* (also remove installed
-dependencies), *home* (opens every home pages from the results of a *search*
-action on the given string) and *update* (also checks for AUR updates).
+Actions providing an uppercase one letter form: `remove` (also remove installed
+dependencies), `home` (opens every home pages from the results of a `search`
+action on the given string), `list` (filter files based on the first argument)
+and `update` (also checks for AUR updates).
 
-Actions without a one letter form: *leftovers*, *foreign* and *orphan*.
+Actions without a one letter form: `leftovers`, `foreigns` and `orphans`.
 
 ## Configuration
 
