@@ -111,6 +111,7 @@ case $action in
             pacman -Si "$1" > /dev/null 2>&1
             if [ $? -eq 0 ]; then
                 sudo pacman -S "$1"
+                [ $? -ne 0 ] && exit 1
             else
                 cd "$XDG_AUR_HOME"
                 cower -ddf "$1" > "$tmp_out" 2> /dev/null
@@ -119,10 +120,11 @@ case $action in
                     for i in $list_of_programs; do
                         cd "$XDG_AUR_HOME/$i"
                         makepkg -ifs
+                        [ $? -ne 0 ] && exit 1
                     done
                     echo -n > "$tmp_out"
                 else
-                    echo "package '$@' was not found" >&2
+                    echo "package '$1' was not found" >&2
                 fi
             fi
             shift
