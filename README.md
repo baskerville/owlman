@@ -20,7 +20,7 @@
         bin pkg1 [pkg2 ...] -- filter binaries form the 'list' action
         etc pkg1 [pkg2 ...] -- filter config files from the 'list' action 
         man pkg1 [pkg2 ...] -- filter manuals from the 'list' action
-        grep pkg string -- search for 'string' in all the files belonging to 'pkg'
+        grep string pkg1 [pkg2 ...] -- search for 'string' in all the files belonging to the packages
         owner file -- return the name of the package owning the given file
         leftovers -- search and propose merges for pac{new,orig,save} files
         foreigns -- show manually installed packages
