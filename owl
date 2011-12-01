@@ -78,8 +78,11 @@ getinfos() {
 
 case $action in
     u|U|update)
-        sudo pacman -Syu
-        [ "$action" = "U" ] && cower -u
+        if [ "$action" = "U" ]; then
+            cower -u
+        else
+            sudo pacman -Syu
+        fi
         ;;
     i|info)
         getinfos "$@"

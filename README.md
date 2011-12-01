@@ -70,7 +70,7 @@ Actions providing an uppercase one letter form:
 
 - `list`: filter files based on the first argument.
 
-- `update`: also checks for AUR updates.
+- `update`: looks for AUR updates.
 
 Actions without a one letter form: `leftovers`, `foreigns` and `orphans`.
 
