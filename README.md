@@ -1,5 +1,3 @@
-# owl -- a dash pacman / cower wrapper
-
 ![owl](http://f.cl.ly/items/0G0U0U3E0q1r2t140g0h/owl.jpg)
 
 ## Description
