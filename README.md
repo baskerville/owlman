@@ -2,6 +2,10 @@
 
 ![owl](http://f.cl.ly/items/0G0U0U3E0q1r2t140g0h/owl.jpg)
 
+## Description
+
+`owl` is a `pacman` and `cower` wrapper written in `dash` and focused on simplicity.
+
 ## Usage
 
     SYNOPSIS
