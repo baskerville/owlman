@@ -76,9 +76,9 @@ Actions without a one letter form: `leftovers`, `foreigns` and `orphans`.
 
 The following environment variables should be set by the user (preferably in .bash_profile or something similar):
 
-- XDG_AUR_HOME -- where should the downloaded AUR packages be stored?
+- **XDG_AUR_HOME** -- where should the downloaded AUR packages be stored?
 
-- BROWSER -- the browser used for opening the package's home pages.
+- **BROWSER** -- the browser used for opening the package's home pages.
 
-- OWL_MAX_URL -- the maximum number of URL this program is allowed to send to
+- **OWL_MAX_URL** -- the maximum number of URL this program is allowed to send to
   the BROWSER in one go.
