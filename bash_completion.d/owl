@@ -1,0 +1,38 @@
+# vim: set ft=sh:
+
+_owl()
+{
+    COMPREPLY=()
+
+    if [[ $COMP_CWORD -ge 1 ]] ; then
+        local current_word="${COMP_WORDS[COMP_CWORD]}"
+        if [[ $COMP_CWORD -eq 1 ]] ; then
+            local actions='update add remove download info page home find search query list bin etc man grep owner leftovers foreigns orphans'
+            COMPREPLY=( $(compgen -W "$actions" -- "$current_word") )
+            return 0
+        else
+            local second_word=${COMP_WORDS[1]}
+            case $second_word in
+                l | L | list | bin | etc | man | grep | r | R | remove)
+                    [[ $second_word == grep && $COMP_CWORD -eq 2 ]] && return 0
+                    [[ $second_word == L && $COMP_CWORD -eq 2 ]] && return 0
+                    local local_packages="$(pacman -Qq)"
+                    COMPREPLY=( $(compgen -W "$local_packages" -- "$current_word") )
+                    return 0
+                    ;;
+                a | add | i | info | p | page | h | home)
+                    local all_packages="$(pacman -Ssq; cower -sq "$current_word")"
+                    COMPREPLY=( $(compgen -W "$all_packages" -- "$current_word") )
+                    return 0
+                    ;; 
+                d | download)
+                    local aur_packages="$(cower -sq "$current_word")"
+                    COMPREPLY=( $(compgen -W "$aur_packages" -- "$current_word") )
+                    return 0
+                    ;; 
+            esac
+        fi
+    fi
+}
+
+complete -F _owl owl
