@@ -60,7 +60,7 @@ Actions providing an uppercase one letter form:
 
 - `search`: also searches among official repositories
 
-- `find`: fallback to aur if no packages match in the official repositories.
+- `find`: also searches among the AUR if no packages match in the official repositories.
 
 - `download`: downloads even if download directory already exists.
 
@@ -70,7 +70,13 @@ Actions providing an uppercase one letter form:
 
 - `update`: also checks for AUR updates.
 
-Actions without a one letter form: `leftovers`, `foreigns` and `orphans`.
+Actions without a one letter form: 
+
+- `leftovers`.
+
+- `foreigns`.
+
+- `orphans`.
 
 ## Configuration
 
