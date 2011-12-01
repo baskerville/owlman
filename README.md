@@ -55,12 +55,19 @@ uppercase one letter form which meaning differs from its lowercase and long
 counterparts by doing more of the same thing.
 
 Actions providing an uppercase one letter form:
+
 - `remove`: also remove installed dependencies.
+
 - `search`: also searches among official repositories
+
 - `find`: fallback to aur if no packages match in the official repositories.
+
 - `download`: downloads even if download directory already exists.
+
 - `home`: opens every home pages from the results of a `search` action on the given string.
+
 - `list`: filter files based on the first argument.
+
 - `update`: also checks for AUR updates.
 
 Actions without a one letter form: `leftovers`, `foreigns` and `orphans`.
