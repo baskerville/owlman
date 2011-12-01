@@ -70,13 +70,7 @@ Actions providing an uppercase one letter form:
 
 - `update`: also checks for AUR updates.
 
-Actions without a one letter form: 
-
-- `leftovers`.
-
-- `foreigns`.
-
-- `orphans`.
+Actions without a one letter form: `leftovers`, `foreigns` and `orphans`.
 
 ## Configuration
 
