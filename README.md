@@ -82,3 +82,7 @@ The following environment variables should be set by the user (preferably in .ba
 
 - **OWL_MAX_URL** -- the maximum number of URL this program is allowed to send to
   the BROWSER in one go.
+
+## Dependencies
+
+`dash`, `cower`, `pacman` and `bash` (for package name completion).
