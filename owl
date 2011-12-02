@@ -11,41 +11,41 @@ SYNOPSIS
 
 ACTIONS
     update
-        Update package list and upgrade all packages afterwards.
-    add PKG ...
-        Install the given packages.
-    remove PKG ...
-        Remove the given packages.
-    download PKG ...
-        Download the given packages from the AUR.
-    info PKG ...
-        Retreive informations on the given packages.
-    page PKG ...
-        Opens the given packages AUR pages.
-    home PKG ...
-        Opens the given packages home pages.
-    find STRING
-        Search for packages matching STRING in the sync databases.
-    search STRING
-        Search for packages matching STRING in the AUR.
-    query STRING
-        Search locally for packages matching STRING.
-    list PKG ...
-        List all the files owned by the given packages.
-    bin PKG ...
-        Restrict the output of 'list' to executable files.
-    etc PKG ...
-        Restrict the output of 'list' to configuration files
-    man PKG ...
-        Restrict the output of 'list' to manual files.
-    grep STRING PKG ...
-        Search for STRING in all the files belonging to the given packages.
-    owner FILE
+        Update the system.
+    add pkg...
+        Install the packages.
+    remove pkg...
+        Remove the packages.
+    download pkg...
+        Download the packages from the AUR.
+    info pkg...
+        Retreive informations on the packages.
+    page pkg...
+        Opens the packages AUR page.
+    home pkg...
+        Opens the packages home pages.
+    find string
+        Search for packages matching 'string' in the official repos.
+    search string
+        Search for packages matching 'string' in the AUR.
+    query string
+        Search locally for packages matching 'string'.
+    list pkg...
+        List the files owned by the given packages.
+    bin pkg...
+        Filter binaries form the 'list' action.
+    etc pkg...
+        Filter config files from the 'list' action.
+    man pkg...
+        Filter manuals from the 'list' action.
+    grep string pkg...
+        Search for 'string' in all the files belonging to the packages..
+    owner file
         Return the name of the package owning the given file.
     leftovers
-        Search and propose merges for 'pac{new,orig,save}' files.
+        Search and propose merges for pac{new,orig,save} files.
     foreigns
-        Show installed packages not found in the sync databases.
+        Show manually installed packages.
     orphans
         Show packages not listed as a dependency by any package.
 END
@@ -114,7 +114,7 @@ case $action in
         shift
         pkg_files=$(pacman -Qlq "$@")
         if [ $? -eq 0 ]; then
-            [ ! "$pattern" = "\n" ] && grep -i "$pattern" $pkg_files
+            [ ! "$pattern" = "\n" ] && grep -Ii "$pattern" $pkg_files
         fi
         ;;
     d|D|download)
@@ -162,12 +162,17 @@ case $action in
         do
             if [ -e "$i" ]; then
                 echo "merge '$i' [y/N]?"
-                read perform_merge
-                case "$perform_merge" in
+                read merge_leftover
+                case "$merge_leftover" in
                     y|yes|Y|Yes)
                         sudo vimdiff "${i%.*}" "$i"
                         ;;
-                    *)
+                esac
+                echo "remove '$i' [y/N]?"
+                read remove_leftover
+                case "$remove_leftover" in
+                    y|yes|Y|Yes)
+                        sudo rm "$i"
                         ;;
                 esac
             fi
