@@ -12,33 +12,33 @@ SYNOPSIS
 ACTIONS
     update
         Update the system.
-    add pkg1 [pkg2 ...]
+    add pkg...
         Install the packages.
-    remove pkg1 [pkg2 ...]
+    remove pkg...
         Remove the packages.
-    download pkg1 [pkg2 ...]
-        Download the packages from the aur.
-    info pkg1 [pkg2 ...]
+    download pkg...
+        Download the packages from the AUR.
+    info pkg...
         Retreive informations on the packages.
-    page pkg
-        Opens the package's aur page.
-    home pkg1 [pkg2 ...]
+    page pkg...
+        Opens the packages AUR page.
+    home pkg...
         Opens the packages home pages.
     find string
         Search for packages matching 'string' in the official repos.
     search string
-        Search for packages matching 'string' in the aur.
+        Search for packages matching 'string' in the AUR.
     query string
         Search locally for packages matching 'string'.
-    list pkg1 [pkg2 ...]
+    list pkg...
         List the files owned by the given packages.
-    bin pkg1 [pkg2 ...]
+    bin pkg...
         Filter binaries form the 'list' action.
-    etc pkg1 [pkg2 ...]
+    etc pkg...
         Filter config files from the 'list' action.
-    man pkg1 [pkg2 ...]
+    man pkg...
         Filter manuals from the 'list' action.
-    grep string pkg1 [pkg2 ...]
+    grep string pkg...
         Search for 'string' in all the files belonging to the packages..
     owner file
         Return the name of the package owning the given file.
@@ -174,10 +174,13 @@ case $action in
         done
         ;;
     p|page)
+        while [ $# -gt 0 ]; do
             uri=$(getinfos "$1" | grep -m 1 -o 'https://aur.*')
             if [ -n "$uri" ]; then
                 $BROWSER $uri
             fi
+            shift
+        done
         ;;
     h|H|home)
         if [ $action = "H" ]; then
