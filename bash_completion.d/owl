@@ -1,5 +1,20 @@
 # vim: set ft=sh:
 
+_local_packages()
+{
+    pacman -Qq
+}
+
+_sync_packages()
+{
+    pacman -Ssq "$@"
+}
+
+_aur_packages()
+{
+    cower -sq "$@" 2> /dev/null
+}
+
 _owl()
 {
     COMPREPLY=()
@@ -12,25 +27,24 @@ _owl()
             return 0
         else
             local second_word=${COMP_WORDS[1]}
+            local packages=""
             case $second_word in
                 l | L | list | bin | etc | man | grep | r | R | remove)
                     [[ $second_word == grep && $COMP_CWORD -eq 2 ]] && return 0
                     [[ $second_word == L && $COMP_CWORD -eq 2 ]] && return 0
-                    local local_packages="$(pacman -Qq)"
-                    COMPREPLY=( $(compgen -W "$local_packages" -- "$current_word") )
-                    return 0
+                    packages="$(_local_packages)"
                     ;;
                 a | add | i | info | p | page | h | home)
-                    local all_packages="$(pacman -Ssq; cower -sq "$current_word")"
-                    COMPREPLY=( $(compgen -W "$all_packages" -- "$current_word") )
-                    return 0
+                    packages="$(_sync_packages "$current_word"; _aur_packages "$current_word")"
                     ;; 
                 d | download)
-                    local aur_packages="$(cower -sq "$current_word")"
-                    COMPREPLY=( $(compgen -W "$aur_packages" -- "$current_word") )
-                    return 0
+                    packages="$(_aur_packages "$current_word")"
                     ;; 
             esac
+            if [[ -n "$packages" ]] ; then
+                COMPREPLY=( $(compgen -W "$packages" -- "$current_word") )
+                return 0
+            fi
         fi
     fi
 }
