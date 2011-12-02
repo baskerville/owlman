@@ -58,9 +58,9 @@ Some actions also feature an uppercase one letter form:
 
 - `R`: also remove installed dependencies.
 
-- `S`: also searches among official repositories.
+- `S`: also searches in the sync databases.
 
-- `F`: also searches among the AUR if no packages match in the official repositories.
+- `F`: also searches in the AUR if no packages match in the sync databases.
 
 - `D`: downloads even if the download directory already exists.
 

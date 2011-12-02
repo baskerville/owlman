@@ -103,7 +103,7 @@ case $action in
         [ $? -ne 0 -a "$action" = "F" ] && cower -sq "$@"
         ;;
     s|S|search)
-        [ ! "$action" = "S" ] && pacman -Ssq "$@"
+        [ "$action" = "S" ] && pacman -Ssq "$@"
         cower -sq "$@"
         ;;
     o|owner)
