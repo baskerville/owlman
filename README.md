@@ -25,7 +25,7 @@
         home pkg ...
             Opens the packages home pages.
         find string
-            Search for packages matching 'string' in the official repos.
+            Search for packages matching 'string' in the official repositories.
         search string
             Search for packages matching 'string' in the AUR.
         query string
@@ -35,7 +35,7 @@
         bin pkg ...
             Filter binaries form the 'list' action.
         etc pkg ...
-            Filter config files from the 'list' action.
+            Filter configuration files from the 'list' action.
         man pkg ...
             Filter manuals from the 'list' action.
         grep string pkg ...
@@ -51,26 +51,24 @@
 
 ## Abbreviations
 
-Most of the actions have an equivalent one letter long form which generally
-corresponds to the first letter of the long form. Some actions also feature an
-uppercase one letter form which meaning differs from its lowercase and long
-counterparts by doing more of the same thing.
+Most of the actions have an equivalent one letter form which always corresponds
+to the first letter of the full form.
 
-Actions providing an uppercase one letter form:
+Some actions also feature an uppercase one letter form:
 
-- `remove`: also remove installed dependencies.
+- `R`: also remove installed dependencies.
 
-- `search`: also searches among official repositories
+- `S`: also searches among official repositories.
 
-- `find`: also searches among the AUR if no packages match in the official repositories.
+- `F`: also searches among the AUR if no packages match in the official repositories.
 
-- `download`: downloads even if download directory already exists.
+- `D`: downloads even if the download directory already exists.
 
-- `home`: opens every home pages from the results of a `search` action on the given string.
+- `H string`: opens every home pages from the results of a `search` action on the given *string*.
 
-- `list`: filter files based on the first argument.
+- `L string pkg ...`: filter results of the `list` action with *string*.
 
-- `update`: looks for AUR updates.
+- `U`: looks for AUR updates.
 
 Actions without a one letter form: `leftovers`, `foreigns` and `orphans`.
 
