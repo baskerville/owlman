@@ -41,6 +41,11 @@ _owl()
                 d | download)
                     packages="$(_aur_packages "$current_word")"
                     ;; 
+                o | owner)
+                    COMPREPLY=( $(compgen -f "$current_word") )
+                    return 0
+                    ;;
+                    
             esac
             if [[ -n "$packages" ]] ; then
                 COMPREPLY=( $(compgen -W "$packages" -- "$current_word") )
