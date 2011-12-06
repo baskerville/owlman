@@ -35,10 +35,10 @@ _owl()
                     [[ $second_word == L && $COMP_CWORD -eq 2 ]] && return 0
                     packages="$(_local_packages)"
                     ;;
-                a | add | i | info | p | page | h | home)
+                a | add | i | info | h | home)
                     packages="$(_sync_packages "$current_word"; _aur_packages "$current_word")"
                     ;; 
-                d | download)
+                d | download | p | page)
                     packages="$(_aur_packages "$current_word")"
                     ;; 
                 o | owner)
