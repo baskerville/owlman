@@ -42,10 +42,11 @@ _owl()
                     packages="$(_aur_packages "$current_word")"
                     ;; 
                 o | owner)
+                    compopt -o filenames
                     COMPREPLY=( $(compgen -f "$current_word") )
                     return 0
                     ;;
-                    
+
             esac
             if [[ -n "$packages" ]] ; then
                 COMPREPLY=( $(compgen -W "$packages" -- "$current_word") )
