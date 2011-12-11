@@ -38,7 +38,7 @@ _owl()
                 a | add | i | info | h | home)
                     packages="$(_sync_packages "$current_word"; _aur_packages "$current_word")"
                     ;; 
-                d | download | p | page)
+                d | D | download | p | page)
                     packages="$(_aur_packages "$current_word")"
                     ;; 
                 o | owner)
