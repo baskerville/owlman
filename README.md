@@ -1,4 +1,4 @@
-![owl](http://f.cl.ly/items/0G0U0U3E0q1r2t140g0h/owl.jpg)
+![owl](http://blobs.ge.tt/4EcnB8B/owl_logo.jpg?sig=-TRg1e-8nsfz_mCZKp-P_1KR3rDH5KOV3s4)
 
 ## Description
 
