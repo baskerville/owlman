@@ -88,6 +88,8 @@ Some actions also feature an uppercase one letter form:
 
 - `U`: looks for AUR updates.
 
+- `Q`: be verbose.
+
 Actions without a one letter form: `leftovers`, `foreigns` and `orphans`.
 
 ## Configuration

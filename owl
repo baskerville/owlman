@@ -113,8 +113,12 @@ case $action in
         fi
         pacman -Qlq "$@" | grep -i "$pattern"
         ;;
-    q|query)
-        pacman -Qsq "$@"
+    q|Q|query)
+        if [ "$action" = "Q" ]; then
+            pacman -Qs "$@"
+        else
+            pacman -Qsq "$@"
+        fi
         ;;
     f|F|find)
         pacman -Ssq "$@"
