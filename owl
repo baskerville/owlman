@@ -183,14 +183,14 @@ case $action in
         for i in $log_lo
         do
             if [ -e "$i" ]; then
-                echo "merge '$i' [y/N]?"
+                echo -n "merge '$i' [y/N]? "
                 read merge_leftover
                 case "$merge_leftover" in
                     y|yes|Y|Yes)
                         vimdiff "${i%.*}" "$i"
                         ;;
                 esac
-                echo "remove '$i' [y/N]?"
+                echo -n "remove '$i' [y/N]? "
                 read remove_leftover
                 case "$remove_leftover" in
                     y|yes|Y|Yes)
