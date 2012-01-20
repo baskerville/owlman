@@ -89,7 +89,7 @@ getinfos() {
             fi
         fi
         cat "$tmp_out"
-        echo -n > "$tmp_out"
+        : > "$tmp_out"
         shift
     done
 }
@@ -170,7 +170,7 @@ case $action in
                         makepkg -ifs
                         [ $? -ne 0 ] && exit 1
                     done
-                    echo -n > "$tmp_out"
+                    : > "$tmp_out"
                 else
                     echo "package '$1' was not found" >&2
                 fi
