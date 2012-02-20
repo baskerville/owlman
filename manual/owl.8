@@ -1,0 +1,154 @@
+.TH owl 8 owl\-git
+.SH NAME
+owl \- Pacman and cower wrapper focused on simplicity
+.SH SYNOPSIS
+.B owl
+.IR ACTION
+.RI [ ARGUMENTS ]
+.SH DESCRIPTION
+owl is a simple wrapper for pacman and cower, providing seamless access to all the available Arch Linux packages.
+.P
+It is inspired by homebrew.
+.SH ACTIONS
+.TP
+.B update
+Update package list and upgrade all packages afterwards.
+.TP
+.BI "add " "PKG " ...
+Install the given packages.
+.TP
+.BI "remove " "PKG " ...
+Remove the given packages.
+.TP
+.BI "download " "PKG " ...
+Download the given packages from the AUR.
+.TP
+.BI "info " "PKG " ...
+Retreive informations on the given packages.
+.TP
+.BI "page " "PKG " ...
+Opens the given packages AUR pages.
+.TP
+.BI "home " "PKG " ...
+Opens the given packages home pages.
+.TP
+.BI "find " STRING
+Search for packages matching
+.I STRING
+in the sync databases.
+.TP
+.BI "search " STRING
+Search for packages matching
+.I STRING
+in the AUR.
+.TP
+.BI "query " STRING
+Search locally for packages matching
+.IR STRING .
+.TP
+.BI "list " "PKG " ...
+List all the files owned by the given packages.
+.TP
+.BI "bin " "PKG " ...
+Restrict the output of
+.B list
+to executable files.
+.TP
+.BI "etc " "PKG " ...
+Restrict the output of
+.B list
+to configuration files.
+.TP
+.BI "man " "PKG " ...
+Restrict the output of
+.B list
+to manual files.
+.TP
+.BI "grep " "STRING PKG " ...
+Search for
+.I STRING
+in all the files belonging to the given packages.
+.TP
+.BI "owner " FILE
+Return the name of the package owning the given file.
+.TP
+.B leftovers
+Search and propose merges for
+.I pac{new,orig,save}
+files.
+.TP
+.B foreigns
+Show installed packages not found in the sync databases.
+.TP
+.B orphans
+Show packages not listed as a dependency by any package.
+.SH ABBREVIATIONS
+Most of the actions have an equivalent one letter form which always corresponds
+to the first letter of the full form.
+
+Some actions also feature an uppercase one letter form:
+.TP
+.B R
+Remove installed dependencies.
+.TP
+.B S
+Search in the sync databases and the AUR.
+
+.TP
+.B F
+Search in the AUR if no packages match in the sync databases.
+
+.TP
+.B D
+Download even if the download directory already exists.
+
+.TP
+.BI "H " STRING
+Opens every home pages from the results of a
+.B search
+action on the given
+.BI STRING .
+
+.TP
+.BI "L " "STRING PKG " ...
+Filter results of the 
+.B list
+action with
+.IR STRING .
+
+.TP
+.B U
+Looks for AUR updates.
+
+.TP
+.B Q
+Be verbose.
+.P
+Actions without a one letter form: 
+.BR leftovers , 
+.BR "foreigns " and
+.BR orphans .
+.SH CONFIGURATION
+The following environment variables are used:
+.IP \[bu] 2
+.B XDG_AUR_HOME
+-- where should the downloaded AUR packages be stored?
+.IP \[bu]
+.B BROWSER
+-- the browser used for opening the packages home pages.
+.IP \[bu]
+.B OWL_MAX_URL
+-- the maximum number of URL this program is allowed to send to the
+.B BROWSER
+in one go.
+.SH AUTHOR
+.EX
+Bastien Dejean <baskerville at lavabit dot com>
+.EE
+.SH HOMEPAGE
+.TP
+https://github.com/baskerville/owl
+.SH SEE ALSO
+.BR pacman (8),
+.BR makepkg (8),
+.BR cower (1)
