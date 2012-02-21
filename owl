@@ -60,12 +60,12 @@ case $action in
         fi
         ;;
     f|F|find)
-        pacman -Ssq "$@"
-        [ $? -ne 0 -a "$action" = "F" ] && cower -sq "$@"
+        pacman -Ss "$@"
+        [ $? -ne 0 -a "$action" = "F" ] && cower -s "$@"
         ;;
     s|S|search)
-        [ "$action" = "S" ] && pacman -Ssq "$@"
-        cower -sq "$@"
+        [ "$action" = "S" ] && pacman -Ss "$@"
+        cower -s "$@"
         ;;
     o|owner)
         pacman -Qo "$@"
@@ -104,7 +104,7 @@ case $action in
                 cower -ddf "$1" > "$tmp_out" 2> /dev/null
 
                 if [ -s "$tmp_out" ]; then
-                    list_of_programs=$(cat "$tmp_out" | tac | sed 's/.* \([^ ]\+\) downloaded.*/\1/') 
+                    list_of_programs=$(cat "$tmp_out" | tac | sed 's/.* \([^ ]\+\) downloaded.*/\1/')
                     for i in $list_of_programs; do
                         cd "$XDG_AUR_HOME/$i"
                         makepkg -ifs
@@ -153,7 +153,7 @@ case $action in
         ;;
     h|H|home)
         if [ $action = "H" ]; then
-            pkg_list=$(pacman -Ssq "$@"; cower -sq "$@") 
+            pkg_list=$(pacman -Ssq "$@"; cower -sq "$@")
             if [ -n "$pkg_list" ]; then
                 set $pkg_list
             fi
