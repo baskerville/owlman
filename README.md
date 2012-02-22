@@ -101,4 +101,4 @@ The following environment variables are handled:
 
 ## Dependencies
 
-`dash` (or any POSIX shell), `cower`, `pacman` and `bash` (for package name completion).
+`sudo`, `dash` (or any POSIX shell), `cower`, `pacman` and `bash` (for package name completion).
