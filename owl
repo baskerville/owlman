@@ -60,12 +60,20 @@ case $action in
         fi
         ;;
     f|F|find)
-        pacman -Ssq "$@"
-        [ $? -ne 0 -a "$action" = "F" ] && cower -sq "$@"
+        if [ "$action" = "F" ] ; then
+            pacman -Ss "$@"
+        else
+            pacman -Ssq "$@"
+        fi
         ;;
     s|S|search)
-        [ "$action" = "S" ] && pacman -Ssq "$@"
-        cower -sq "$@"
+        if [ "$action" = "S" ] ; then
+            pacman -Ss "$@"
+            cower -s "$@"
+        else
+            pacman -Ssq "$@"
+            cower -sq "$@"
+        fi
         ;;
     o|owner)
         pacman -Qo "$@"

@@ -47,7 +47,7 @@
             Restrict the output of 'list' to executable files.
 
         etc PKG ...
-            Restrict the output of 'list' to configuration files
+            Restrict the output of 'list' to configuration files.
 
         man PKG ...
             Restrict the output of 'list' to manual files.
@@ -76,10 +76,6 @@ Some actions also feature an uppercase one letter form:
 
 - `R`: also remove installed dependencies.
 
-- `S`: also searches in the sync databases.
-
-- `F`: also searches in the AUR if no packages match in the sync databases.
-
 - `D`: downloads even if the download directory already exists.
 
 - `H string`: opens every home pages from the results of a `search` action on the given *string*.
@@ -88,13 +84,13 @@ Some actions also feature an uppercase one letter form:
 
 - `U`: looks for AUR updates.
 
-- `Q`: be verbose.
+- `Q | F | S`: be verbose.
 
 Actions without a one letter form: `leftovers`, `foreigns` and `orphans`.
 
 ## Configuration
 
-The following environment variables should be set by the user (preferably in .bash_profile or something similar):
+The following environment variables are handled:
 
 - **XDG_AUR_HOME** -- where should the downloaded AUR packages be stored?
 
@@ -105,4 +101,4 @@ The following environment variables should be set by the user (preferably in .ba
 
 ## Dependencies
 
-`dash`, `cower`, `pacman` and `bash` (for package name completion).
+`dash` (or any POSIX shell), `cower`, `pacman` and `bash` (for package name completion).
