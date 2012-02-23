@@ -3,10 +3,34 @@
 XDG_AUR_HOME=${XDG_AUR_HOME:-~/src/aur}
 BROWSER=${BROWSER:-web_browser}
 OWL_MAX_URL=${OWL_MAX_URL:-16}
+OWL_SUDO_WARN=${OWL_SUDO_WARN:-true}
 
 usage() {
     printf "usage: $(basename "$0") <action> [...]\n"
     exit 1
+}
+
+white() {
+    printf "\033[1;37m%s\033[0m" "$@"
+}
+
+magenta() {
+    printf "\033[1;35m%s\033[0m" "$@"
+}
+
+warning() {
+    if [ -t 1 ] ; then
+        printf "$(magenta '==>') $(white "$@")"
+    else
+        printf "==> $@"
+    fi
+}
+
+sudorun() {
+    if [ "$OWL_SUDO_WARN" = "true" ] ; then
+        warning "Running sudo\n"
+    fi
+    sudo $@
 }
 
 if [ $# -lt 1 ]; then
@@ -38,7 +62,7 @@ case $action in
         if [ "$action" = "U" ]; then
             cower -u
         else
-            sudo pacman -Syu
+            sudorun pacman -Syu
         fi
         ;;
     i|info)
@@ -96,16 +120,16 @@ case $action in
         ;;
     r|R|remove)
         if [ "$action" = "R" ]; then
-            sudo pacman -Rs "$@"
+            sudorun pacman -Rs "$@"
         else
-            sudo pacman -R "$@"
+            sudorun pacman -R "$@"
         fi
         ;;
     a|add)
         while [ $# -gt 0 ]; do
             pacman -Si "$1" > /dev/null 2>&1
             if [ $? -eq 0 ]; then
-                sudo pacman -S "$1"
+                sudorun pacman -S "$1"
                 [ $? -ne 0 ] && exit 1
             else
                 cd "$XDG_AUR_HOME"
@@ -142,7 +166,7 @@ case $action in
                 read remove_leftover
                 case "$remove_leftover" in
                     y|yes|Y|Yes)
-                        sudo rm "$i"
+                        sudorun rm "$i"
                         ;;
                 esac
             fi

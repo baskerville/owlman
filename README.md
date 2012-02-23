@@ -96,6 +96,8 @@ The following environment variables are handled:
 
 - **BROWSER** -- the browser used for opening the package's home pages.
 
+- **OWL_SUDO_WARN** -- print a warning each time sudo is run (default value: 'true').
+
 - **OWL_MAX_URL** -- the maximum number of URL this program is allowed to send to
   the BROWSER in one go.
 
