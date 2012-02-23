@@ -106,6 +106,32 @@ The following environment variables are handled:
 - **OWL_MAX_URL** -- the maximum number of URL this program is allowed to send to
   the BROWSER in one go.
 
+Color related variables (self-explained):
+
+- **OWL_LOCAL_COLOR**
+
+- **OWL_CORE_COLOR**
+
+- **OWL_EXTRA_COLOR**
+
+- **OWL_COMMUNITY_COLOR**
+
+- **OWL_TESTING_COLOR**
+
+- **OWL_AUR_COLOR**
+
+- **OWL_SEP_COLOR**
+
+- **OWL_NAME_COLOR**
+
+- **OWL_VERSION_COLOR**
+
+- **OWL_OBSOLETE_COLOR**
+
+- **OWL_INSTALLED_COLOR**
+
+The valid values for the aforementioned variables are : black, red, green, yellow, blue, magenta, cyan, white, bold.
+
 ## Dependencies
 
 `sudo`, `dash` (or any POSIX shell), `cower`, `pacman` and `bash` (for package name completion).
