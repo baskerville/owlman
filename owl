@@ -257,10 +257,10 @@ case $action in
         pacman -Qlq "$@" | grep '/man./.'
         ;;
     foreigns)
-        pacman -Qm | owl_color_filter
+        pacman -Qm
         ;;
     orphans)
-        pacman -Qdt | owl_color_filter
+        pacman -Qdt
         ;;
     *)
         echo "action '$action' is unknown" >&2
