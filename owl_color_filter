@@ -2,6 +2,7 @@
 
 COLOR_NAMES="black red green yellow blue magenta cyan white NA bold"
 OWL_COLOR_RESULTS=${OWL_COLOR_RESULTS:-true}
+
 OWL_CORE_COLOR=${OWL_CORE_COLOR:-green}
 OWL_EXTRA_COLOR=${OWL_EXTRA_COLOR:-blue}
 OWL_COMMUNITY_COLOR=${OWL_COMMUNITY_COLOR:-yellow}
@@ -10,6 +11,7 @@ OWL_AUR_COLOR=${OWL_AUR_COLOR:-red}
 OWL_SEP_COLOR=${OWL_SEP_COLOR:-black}
 OWL_NAME_COLOR=${OWL_SEP_NAME:-bold}
 OWL_VERSION_COLOR=${OWL_VERSION_COLOR:-black}
+OWL_OBSOLETE_COLOR=${OWL_OBSOLETE_COLOR:-red}
 
 cprint() {
     color=$1
@@ -21,6 +23,8 @@ cprint() {
     done
     printf "\033[1;$((30 + ci))m%s\033[0m" "$@"
 }
+
+OBSOLETE_TAG=$(cprint "$OWL_OBSOLETE_COLOR" "<!>")
 
 rprint() {
     repo=$1
@@ -49,11 +53,13 @@ rprint() {
     cprint "$OWL_SEP_COLOR" "$sep"
     cprint "$OWL_NAME_COLOR" "$pkgname "
     cprint "$OWL_VERSION_COLOR" "$ver "
+    end=$(printf "%s" "$end" | sed "s/<!>/$OBSOLETE_TAG/")
     printf "%s" "$end"
 }
 
 if [ -t 1 -a "$OWL_COLOR_RESULTS" = "true" ] ; then
     # the following line allows to read a line as if
+    OLD_IFS="$IFS"
     IFS=""
     while read line ; do
         case "$line" in
@@ -69,6 +75,7 @@ if [ -t 1 -a "$OWL_COLOR_RESULTS" = "true" ] ; then
         printf "\n"
         IFS=""
     done
+    IFS="$OLD_IFS"
 else
     cat
 fi
