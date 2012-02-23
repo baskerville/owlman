@@ -49,7 +49,7 @@ rprint() {
     cprint "$OWL_SEP_COLOR" "$sep"
     cprint "$OWL_NAME_COLOR" "$pkgname "
     cprint "$OWL_VERSION_COLOR" "$ver "
-    printf "$end"
+    printf "%s" "$end"
 }
 
 if [ -t 1 -a "$OWL_COLOR_RESULTS" = "true" ] ; then
@@ -60,10 +60,10 @@ if [ -t 1 -a "$OWL_COLOR_RESULTS" = "true" ] ; then
             [a-z]*)
                 # we need to re-enable space as argument separator
                 IFS=" "
-                rprint $(printf "$line" | sed 's/^\([a-z]\+\)\(.\)\([^ ]\+\) \([^ ]\+\)\(.*\)/\1 \2 \3 \4 \5/')
+                rprint $(printf "%s" "$line" | sed 's/^\([a-z]\+\)\(.\)\([^ ]\+\) \([^ ]\+\)\(.*\)/\1 \2 \3 \4 \5/')
                 ;;
             *)
-                echo "$line"
+                printf "%s\n" "$line"
                 ;;
         esac
         printf "\n"
