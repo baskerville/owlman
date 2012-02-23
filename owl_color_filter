@@ -34,7 +34,7 @@ rprint() {
             cprint "$OWL_CORE_COLOR" "$repo"
             ;;
         extra)
-            cprint "$OWL_CORE_COLOR" "$repo"
+            cprint "$OWL_EXTRA_COLOR" "$repo"
             ;;
         community)
             cprint "$OWL_COMMUNITY_COLOR" "$repo"
