@@ -98,6 +98,8 @@ The following environment variables are handled:
 
 - **OWL_SUDO_WARN** -- print a warning each time sudo is run (default value: 'true').
 
+- **OWL_COLOR_RESULTS** -- colorize search results (default value: 'true').
+
 - **OWL_MAX_URL** -- the maximum number of URL this program is allowed to send to
   the BROWSER in one go.
 
