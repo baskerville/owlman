@@ -78,25 +78,25 @@ case $action in
         ;;
     q|Q|query)
         if [ "$action" = "Q" ]; then
-            pacman -Qs "$@" | owl_color_filter
-        else
             pacman -Qsq "$@"
+        else
+            pacman -Qs "$@" | owl_color_filter
         fi
         ;;
     f|F|find)
         if [ "$action" = "F" ] ; then
-            pacman -Ss "$@" | owl_color_filter
-        else
             pacman -Ssq "$@"
+        else
+            pacman -Ss "$@" | owl_color_filter
         fi
         ;;
     s|S|search)
         if [ "$action" = "S" ] ; then
-            pacman -Ss "$@" | owl_color_filter
-            cower -s "$@" | owl_color_filter
-        else
             pacman -Ssq "$@"
             cower -sq "$@"
+        else
+            pacman -Ss "$@" | owl_color_filter
+            cower -s "$@" | owl_color_filter
         fi
         ;;
     o|owner)
@@ -225,10 +225,10 @@ case $action in
         pacman -Qlq "$@" | grep '/man./.'
         ;;
     foreigns)
-        pacman -Qmq
+        pacman -Qm | owl_color_filter
         ;;
     orphans)
-        pacman -Qdtq
+        pacman -Qdt | owl_color_filter
         ;;
     *)
         echo "action '$action' is unknown" >&2

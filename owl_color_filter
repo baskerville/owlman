@@ -3,6 +3,7 @@
 COLOR_NAMES="black red green yellow blue magenta cyan white NA bold"
 OWL_COLOR_RESULTS=${OWL_COLOR_RESULTS:-true}
 
+OWL_LOCAL_COLOR=${OWL_LOCAL_COLOR:-cyan}
 OWL_CORE_COLOR=${OWL_CORE_COLOR:-green}
 OWL_EXTRA_COLOR=${OWL_EXTRA_COLOR:-blue}
 OWL_COMMUNITY_COLOR=${OWL_COMMUNITY_COLOR:-yellow}
@@ -36,6 +37,9 @@ rprint() {
     shift 4
     end=$@
     case $repo in
+        local)
+            cprint "$OWL_LOCAL_COLOR" "$repo"
+            ;;
         core)
             cprint "$OWL_CORE_COLOR" "$repo"
             ;;

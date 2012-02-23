@@ -84,7 +84,7 @@ Some actions also feature an uppercase one letter form:
 
 - `U`: looks for AUR updates.
 
-- `Q | F | S`: be verbose.
+- `Q | F | S`: be quiet.
 
 Actions without a one letter form: `leftovers`, `foreigns` and `orphans`.
 
