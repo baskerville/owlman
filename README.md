@@ -13,6 +13,9 @@
         update
             Update package list and upgrade all packages afterwards.
 
+        checkout
+            Grab changes for all the local AUR packages.
+
         add PKG ...
             Install the given packages.
 
