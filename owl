@@ -78,22 +78,22 @@ case $action in
         ;;
     q|Q|query)
         if [ "$action" = "Q" ]; then
-            pacman -Qs "$@"
+            pacman -Qs "$@" | owl_color_filter
         else
             pacman -Qsq "$@"
         fi
         ;;
     f|F|find)
         if [ "$action" = "F" ] ; then
-            pacman -Ss "$@"
+            pacman -Ss "$@" | owl_color_filter
         else
             pacman -Ssq "$@"
         fi
         ;;
     s|S|search)
         if [ "$action" = "S" ] ; then
-            pacman -Ss "$@"
-            cower -s "$@"
+            pacman -Ss "$@" | owl_color_filter
+            cower -s "$@" | owl_color_filter
         else
             pacman -Ssq "$@"
             cower -sq "$@"

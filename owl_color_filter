@@ -1,0 +1,74 @@
+#! /bin/dash
+
+COLOR_NAMES="black red green yellow blue magenta cyan white NA bold"
+OWL_COLOR_RESULTS=${OWL_COLOR_RESULTS:-true}
+OWL_CORE_COLOR=${OWL_CORE_COLOR:-green}
+OWL_EXTRA_COLOR=${OWL_EXTRA_COLOR:-blue}
+OWL_COMMUNITY_COLOR=${OWL_COMMUNITY_COLOR:-yellow}
+OWL_TESTING_COLOR=${OWL_TESTING_COLOR:-magenta}
+OWL_AUR_COLOR=${OWL_AUR_COLOR:-red}
+OWL_SEP_COLOR=${OWL_SEP_COLOR:-black}
+OWL_NAME_COLOR=${OWL_SEP_NAME:-bold}
+OWL_VERSION_COLOR=${OWL_VERSION_COLOR:-black}
+
+cprint() {
+    color=$1
+    shift
+    ci=0
+    for c in $COLOR_NAMES; do
+        [ "$color" = "$c" ] && break
+        ci=$((ci + 1))
+    done
+    printf "\033[1;$((30 + ci))m%s\033[0m" "$@"
+}
+
+rprint() {
+    repo=$1
+    sep=$2
+    pkgname=$3
+    ver=$4
+    shift 4
+    end=$@
+    case $repo in
+        core)
+            cprint "$OWL_CORE_COLOR" "$repo"
+            ;;
+        extra)
+            cprint "$OWL_CORE_COLOR" "$repo"
+            ;;
+        community)
+            cprint "$OWL_COMMUNITY_COLOR" "$repo"
+            ;;
+        testing)
+            cprint "$OWL_TESTING_COLOR" "$repo"
+            ;;
+        aur)
+            cprint "$OWL_AUR_COLOR" "$repo"
+            ;;
+    esac
+    cprint "$OWL_SEP_COLOR" "$sep"
+    cprint "$OWL_NAME_COLOR" "$pkgname "
+    cprint "$OWL_VERSION_COLOR" "$ver "
+    printf "$end"
+}
+
+if [ -t 1 -a "$OWL_COLOR_RESULTS" = "true" ] ; then
+    # the following line allows to read a line as if
+    IFS=""
+    while read line ; do
+        case "$line" in
+            [a-z]*)
+                # we need to re-enable space as argument separator
+                IFS=" "
+                rprint $(printf "$line" | sed 's/^\([a-z]\+\)\(.\)\([^ ]\+\) \([^ ]\+\)\(.*\)/\1 \2 \3 \4 \5/')
+                ;;
+            *)
+                printf "$line\n"
+                ;;
+        esac
+        printf "\n"
+        IFS=""
+    done
+else
+    cat
+fi
