@@ -76,8 +76,12 @@ case $action in
             format=${rp##*.}
             relat=${path#"$XDG_AUR_HOME/"}
             name=${relat%%/*}
-            green "$name"
-            printf "\n"
+            if [ -t 1 ] ; then
+                green "$name"
+                printf "\n"
+            else
+                printf "%s\n" "$name"
+            fi
             cd "$path"
             case "$format" in
                 git)
