@@ -63,7 +63,7 @@ if [ -t 1 -a "$OWL_COLOR_RESULTS" = "true" ] ; then
                 rprint $(printf "$line" | sed 's/^\([a-z]\+\)\(.\)\([^ ]\+\) \([^ ]\+\)\(.*\)/\1 \2 \3 \4 \5/')
                 ;;
             *)
-                printf "$line\n"
+                echo "$line"
                 ;;
         esac
         printf "\n"
