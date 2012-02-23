@@ -12,6 +12,7 @@ OWL_SEP_COLOR=${OWL_SEP_COLOR:-black}
 OWL_NAME_COLOR=${OWL_SEP_NAME:-bold}
 OWL_VERSION_COLOR=${OWL_VERSION_COLOR:-black}
 OWL_OBSOLETE_COLOR=${OWL_OBSOLETE_COLOR:-red}
+OWL_INSTALLED_COLOR=${OWL_INSTALLED_COLOR:-cyan}
 
 cprint() {
     color=$1
@@ -25,6 +26,7 @@ cprint() {
 }
 
 OBSOLETE_TAG=$(cprint "$OWL_OBSOLETE_COLOR" "<!>")
+INSTALLED_TAG=$(cprint "$OWL_INSTALLED_COLOR" "[installed]")
 
 rprint() {
     repo=$1
@@ -53,7 +55,7 @@ rprint() {
     cprint "$OWL_SEP_COLOR" "$sep"
     cprint "$OWL_NAME_COLOR" "$pkgname "
     cprint "$OWL_VERSION_COLOR" "$ver "
-    end=$(printf "%s" "$end" | sed "s/<!>/$OBSOLETE_TAG/")
+    end=$(printf "%s" "$end" | sed "s/<!>/$OBSOLETE_TAG/;s/\[installed\]/$INSTALLED_TAG/")
     printf "%s" "$end"
 }
 
