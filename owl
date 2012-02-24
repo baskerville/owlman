@@ -70,10 +70,10 @@ case $action in
         fi
         ;;
     c|checkout)
-        repos=$(find "$XDG_AUR_HOME" -type d -regex '.*/\.\(git\|hg\|svn\)' | grep -v '\-build/')
+        repos=$(find "$XDG_AUR_HOME" -type d -regex '.*/\(\.git\|\.hg\|\.bzr\|\.svn\|_darcs\|CVS\)$' | grep -v '\-build/')
         for rp in $repos ; do
             path=${rp%/*}
-            format=${rp##*.}
+            format=$(printf "%s" "$rp" | sed 's:^.*[^A-Za-z]\([A-Za-z]\+\)$:\1:')
             relat=${path#"$XDG_AUR_HOME/"}
             name=${relat%%/*}
             pacman -Q "$name" > /dev/null 2>&1
@@ -104,9 +104,22 @@ case $action in
                     hg pull -u | tee "$tmp_out"
                     grep -iq '^no changes found' "$tmp_out" && no_changes=1
                     ;;
+                bzr)
+                    bzr update > "$tmp_out" 2>&1
+                    grep -iq '^tree is up to date' "$tmp_out" && no_changes=1
+                    ;;
                 svn)
                     svn update | tee "$tmp_out"
                     grep -iq '^at revision' "$tmp_out" && no_changes=1
+                    ;;
+                darcs)
+                    darcs pull | tee "$tmp_out"
+                    grep -iq '^no remote changes to pull' "$tmp_out" && no_changes=1
+                    ;;
+                CVS)
+                    cvs update > "$tmp_out" 2>&1
+                    cat "$tmp_out"
+                    grep -iqv '^cvs update:' "$tmp_out" || no_changes=1
                     ;;
             esac
             if [ $no_changes -eq 0 ] ; then
