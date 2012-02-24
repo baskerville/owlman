@@ -70,7 +70,7 @@ case $action in
         fi
         ;;
     c|checkout)
-        repos=$(find "$XDG_AUR_HOME" -type d -regex '.*/\(\.git\|\.hg\|\.bzr\|\.svn\|_darcs\|CVS\)$' | grep -v '\-build/')
+        repos=$(find "$XDG_AUR_HOME" -maxdepth 4 -type d -regex '.*/\(\.git\|\.hg\|\.bzr\|\.svn\|_darcs\|CVS\)$' | grep -v '\-build/')
         for rp in $repos ; do
             path=${rp%/*}
             format=$(printf "%s" "$rp" | sed 's:^.*[^A-Za-z]\([A-Za-z]\+\)$:\1:')
