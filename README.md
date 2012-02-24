@@ -61,6 +61,9 @@
         owner FILE
             Return the name of the package owning the given file.
 
+        clean
+            Remove unused repositories in the cache directory.
+
         leftovers
             Search and propose merges for 'pac{new,orig,save}' files.
 
@@ -89,7 +92,7 @@ Some actions also feature an uppercase one letter form:
 
 - `Q | F | S`: be quiet.
 
-Actions without a one letter form: `leftovers`, `foreigns` and `orphans`.
+Actions without a one letter form: `clean`, `leftovers`, `foreigns` and `orphans`.
 
 ## Configuration
 

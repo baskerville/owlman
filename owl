@@ -301,6 +301,19 @@ case $action in
     m|man)
         pacman -Qlq "$@" | grep '/man./.'
         ;;
+    clean)
+        if [ ! -d "$XDG_AUR_HOME" ] ; then
+            prinft "%s\n" "the cache directory is invalid" >&2
+            exit 1
+        fi
+        cd "$XDG_AUR_HOME"
+        for i in * ; do
+            if [ -d "$i" ] ; then
+                pacman -Q "$i" > /dev/null 2>&1
+                [ $? -eq 1 ] && rm -vrf -- "$i"
+            fi
+        done
+        ;;
     foreigns)
         pacman -Qm
         ;;

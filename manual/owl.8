@@ -75,6 +75,9 @@ in all the files belonging to the given packages.
 .BI "owner " FILE
 Return the name of the package owning the given file.
 .TP
+.B clean
+Remove unused repositories in the cache directory.
+.TP
 .B leftovers
 Search and propose merges for
 .I pac{new,orig,save}
@@ -122,6 +125,7 @@ Be quiet.
 
 .P
 Actions without a one letter form: 
+.BR clean , 
 .BR leftovers , 
 .BR "foreigns " and
 .BR orphans .
