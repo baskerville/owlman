@@ -14,7 +14,7 @@
             Update package list and upgrade all packages afterwards.
 
         checkout
-            Grab changes for all the local AUR packages.
+            Grab changes for all the cached AUR packages.
 
         add PKG ...
             Install the given packages.

@@ -85,6 +85,13 @@ case $action in
                     printf "%s" "==> $name "
                 fi
                 printf "%s\n" "is not installed"
+                printf "%s" "remove it from the cache [y/N]? "
+                read answer
+                case "$answer" in
+                    y|Y|yes|Yes)
+                        rm -vrf "$XDG_AUR_HOME/$name"
+                        ;;
+                esac
                 continue
             fi
             if [ -t 1 ] ; then
@@ -124,9 +131,9 @@ case $action in
             esac
             if [ $no_changes -eq 0 ] ; then
                 echo -n "reinstall package '$name' [Y/n]? "
-                read reinst_pkg
-                [ -z "$reinst_pkg" ] && reinst_pkg="yes"
-                case "$reinst_pkg" in
+                read answer
+                [ -z "$answer" ] && answer="yes"
+                case "$answer" in
                     y|yes|Y|Yes)
                         cd "$XDG_AUR_HOME/$name"
                         makepkg -fi
@@ -226,15 +233,15 @@ case $action in
         do
             if [ -e "$i" ]; then
                 echo -n "merge '$i' [y/N]? "
-                read merge_leftover
-                case "$merge_leftover" in
+                read answer
+                case "$answer" in
                     y|yes|Y|Yes)
                         vimdiff "${i%.*}" "$i"
                         ;;
                 esac
                 echo -n "remove '$i' [y/N]? "
-                read remove_leftover
-                case "$remove_leftover" in
+                read answer
+                case "$answer" in
                     y|yes|Y|Yes)
                         sudorun rm "$i"
                         ;;
