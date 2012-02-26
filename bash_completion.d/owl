@@ -22,7 +22,7 @@ _owl()
     if [[ $COMP_CWORD -ge 1 ]] ; then
         local current_word="${COMP_WORDS[COMP_CWORD]}"
         if [[ $COMP_CWORD -eq 1 ]] ; then
-            local actions='update add remove download info page home find search query list bin etc man grep owner leftovers foreigns orphans'
+            local actions='update install remove download view page home find search query list bin etc man grep owner cleanup leftovers foreigns orphans'
             COMPREPLY=( $(compgen -W "$actions" -- "$current_word") )
             return 0
         else
@@ -35,7 +35,7 @@ _owl()
                     [[ $second_word == L && $COMP_CWORD -eq 2 ]] && return 0
                     packages="$(_local_packages)"
                     ;;
-                a | add | i | info | h | home)
+                i | install | v | view | h | home)
                     packages="$(_sync_packages "$current_word"; _aur_packages "$current_word")"
                     ;; 
                 d | D | download | p | page)

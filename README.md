@@ -16,7 +16,7 @@
         checkout
             Grab changes for all the cached AUR packages.
 
-        add PKG ...
+        install PKG ...
             Install the given packages.
 
         remove PKG ...
@@ -25,7 +25,7 @@
         download PKG ...
             Download the given packages from the AUR.
 
-        info PKG ...
+        view PKG ...
             Retreive informations on the given packages.
 
         page PKG ...
@@ -61,7 +61,7 @@
         owner FILE
             Return the name of the package owning the given file.
 
-        clean
+        cleanup
             Remove unused repositories in the cache directory.
 
         leftovers
@@ -92,7 +92,7 @@ Some actions also feature an uppercase one letter form:
 
 - `Q | F | S`: be quiet.
 
-Actions without a one letter form: `clean`, `leftovers`, `foreigns` and `orphans`.
+Actions without a one letter form: `cleanup`, `leftovers`, `foreigns` and `orphans`.
 
 ## Configuration
 

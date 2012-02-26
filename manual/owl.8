@@ -17,7 +17,7 @@ Update package list and upgrade all packages afterwards.
 .B checkout
 Grab changes for all the cached AUR packages.
 .TP
-.BI "add " "PKG " ...
+.BI "install " "PKG " ...
 Install the given packages.
 .TP
 .BI "remove " "PKG " ...
@@ -26,7 +26,7 @@ Remove the given packages.
 .BI "download " "PKG " ...
 Download the given packages from the AUR.
 .TP
-.BI "info " "PKG " ...
+.BI "view " "PKG " ...
 Retreive informations on the given packages.
 .TP
 .BI "page " "PKG " ...
@@ -75,7 +75,7 @@ in all the files belonging to the given packages.
 .BI "owner " FILE
 Return the name of the package owning the given file.
 .TP
-.B clean
+.B cleanup
 Remove unused repositories in the cache directory.
 .TP
 .B leftovers
@@ -125,7 +125,7 @@ Be quiet.
 
 .P
 Actions without a one letter form: 
-.BR clean , 
+.BR cleanup , 
 .BR leftovers , 
 .BR "foreigns " and
 .BR orphans .
