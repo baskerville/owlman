@@ -64,7 +64,18 @@ getinfos() {
 case $action in
     u|U|update)
         if [ "$action" = "U" ]; then
-            cower -u
+            cower -u | tee "$tmp_out"
+            for line in "$(cat "$tmp_out")" ; do
+                name=$(printf "%s" "$line" | sed 's/^:: *\([^ ]\+\) .*$/\1/')
+                printf "reinstall '%s'? [Y/n] " "$name"
+                read answer
+                [ -z "$answer" ] && answer='yes'
+                case $answer in 
+                    y|Y|yes|Yes)
+                        owl install "$name"
+                        ;;
+                esac
+            done
         else
             sudorun pacman -Syu
         fi
@@ -277,7 +288,7 @@ case $action in
             fi
             shift
             if [ $((counter % OWL_MAX_URL)) -eq 0 -a $counter -gt 0 -a $# -gt 0 ]; then
-                echo -n "continue [Y/n] ($# remaining)?"
+                echo -n "continue [Y/n] ($# remaining)? "
                 read answer
                 [ -z "$answer" ] && answer='y'
 
