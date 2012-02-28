@@ -66,17 +66,14 @@ case $action in
         if [ "$action" = "U" ]; then
             cower -u | tee "$tmp_out"
             if [ -s "$tmp_out" ] ; then
-                for line in "$(cat "$tmp_out")" ; do
-                    name=$(printf "%s" "$line" | sed 's/^:: *\([^ ]\+\) .*$/\1/')
-                    printf "reinstall '%s'? [Y/n] " "$name"
+                    printf "reinstall packages? [Y/n] "
                     read answer
                     [ -z "$answer" ] && answer='yes'
                     case $answer in 
                         y|Y|yes|Yes)
-                            owl install "$name"
+                            owl install $(cat "$tmp_out" | sed 's/^:: *\([^ ]\+\) .*$/\1/' | xargs)
                             ;;
                     esac
-                done
             fi
         else
             sudorun pacman -Syu
