@@ -29,7 +29,7 @@ _owl()
             local second_word=${COMP_WORDS[1]}
             local packages=""
             case $second_word in
-                l | L | list | b | bin | e | etc | m | man | g | grep | r | R | remove)
+                l | L | list | b | bin | e | etc | m | man | g | grep | r | R | RR | remove)
                     [[ $second_word == g && $COMP_CWORD -eq 2 ]] && return 0
                     [[ $second_word == grep && $COMP_CWORD -eq 2 ]] && return 0
                     [[ $second_word == L && $COMP_CWORD -eq 2 ]] && return 0

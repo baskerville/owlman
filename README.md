@@ -80,7 +80,7 @@ to the first letter of the full form.
 
 Some actions also feature an uppercase one letter form:
 
-- `R`: also remove installed dependencies.
+- `R`: equivalent to `pacman`'s `-Rs`
 
 - `D`: downloads even if the download directory already exists.
 
@@ -91,6 +91,8 @@ Some actions also feature an uppercase one letter form:
 - `U`: looks for AUR updates.
 
 - `Q | F | S`: be quiet.
+
+The `remove` action features the following form: `RR` which is equivalent to `pacman`'s `-Rc`.
 
 Actions without a one letter form: `cleanup`, `leftovers`, `foreigns` and `orphans`.
 

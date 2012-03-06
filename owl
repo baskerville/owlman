@@ -205,8 +205,10 @@ case $action in
             cower -df "$@"
         fi
         ;;
-    r|R|remove)
-        if [ "$action" = "R" ]; then
+    r|R|RR|remove)
+        if [ "$action" = "RR" ]; then
+            sudorun pacman -Rc "$@"
+        elif [ "$action" = "R" ]; then
             sudorun pacman -Rs "$@"
         else
             sudorun pacman -R "$@"

@@ -95,7 +95,9 @@ to the first letter of the full form.
 Some actions also feature an uppercase one letter form:
 .TP
 .B R
-Remove installed dependencies.
+Equivalent to
+.IR pacman "'s"
+.BR -Rs .
 
 .TP
 .B D
@@ -124,6 +126,14 @@ Looks for AUR updates.
 Be quiet.
 
 .P
+The
+.B remove
+action features the following form:
+.B RR
+which is equivalent to 
+.IR pacman "'s"
+.BR -Rc .
+
 Actions without a one letter form: 
 .BR cleanup , 
 .BR leftovers , 
