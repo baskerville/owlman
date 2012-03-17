@@ -27,7 +27,7 @@ cprint() {
 }
 
 OBSOLETE_TAG=$(cprint "$OWL_OBSOLETE_COLOR" "<!>")
-INSTALLED_TAG=$(cprint "$OWL_INSTALLED_COLOR" "[installed]")
+INSTALLED_TAG=$(cprint "$OWL_INSTALLED_COLOR" "installed")
 
 rprint() {
     repo=$1
@@ -59,7 +59,7 @@ rprint() {
     cprint "$OWL_SEP_COLOR" "$sep"
     cprint "$OWL_NAME_COLOR" "$pkgname "
     cprint "$OWL_VERSION_COLOR" "$ver "
-    end=$(printf "%s" "$end" | sed "s/<!>/$OBSOLETE_TAG/;s/\[installed\]/$INSTALLED_TAG/")
+    end=$(printf "%s" "$end" | sed "s/<!>/$OBSOLETE_TAG/;s/\[installed\([^]]*\)\]/[$INSTALLED_TAG\1]/")
     printf "%s" "$end"
 }
 
