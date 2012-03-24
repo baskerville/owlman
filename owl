@@ -37,7 +37,7 @@ sudorun() {
     sudo $@
 }
 
-if [ $# -lt 1 ]; then
+if [ $# -lt 1 ] ; then
     usage
 fi
 
@@ -46,11 +46,11 @@ shift
 tmp_out=/tmp/owl.$$
 
 getinfos() {
-    while [ $# -gt 0 ]; do
+    while [ $# -gt 0 ] ; do
         pacman -Si "$1" > "$tmp_out" 2>&1
-        if [ $? -ne 0 ]; then
+        if [ $? -ne 0 ] ; then
             cower -i "$1" > "$tmp_out" 2>&1
-            if [ $? -ne 0 ]; then
+            if [ $? -ne 0 ] ; then
                 echo "package '$1' was not found" >&2
                 exit 1
             fi
@@ -61,9 +61,63 @@ getinfos() {
     done
 }
 
+aur_update=0
+quiet_results=0
+fetch_deps=0
+rm_cascade=0
+rm_recur=0
+crawl_homes=0
+
+while getopts "qadcsh-:" opt ; do
+    case $opt in
+        q)
+            quiet_results=1
+            ;;
+        a)
+            aur_update=1
+            ;;
+        d)
+            fetch_deps=1
+            ;;
+        c)
+            rm_cascade=1
+            ;;
+        s)
+            rm_recur=1
+            ;;
+        h)
+            crawl_homes=1
+            ;;
+        -)
+            case $OPTARG in
+                quiet)
+                    quiet_results=1
+                    ;;
+                aur)
+                    aur_update=1
+                    ;;
+                dependencies)
+                    fetch_deps=1
+                    ;;
+                cascade)
+                    rm_cascade=1
+                    ;;
+                recursive)
+                    rm_recur=1
+                    ;;
+                crawl-homes)
+                    crawl_homes=1
+                    ;;
+            esac
+            ;;
+    esac
+done
+
+shift $(($OPTIND - 1))
+
 case $action in
-    u|U|update)
-        if [ "$action" = "U" ]; then
+    update)
+        if [ $aur_update -eq 1 ] ; then
             cower -u | tee "$tmp_out"
             if [ -s "$tmp_out" ] ; then
                     printf "reinstall packages? [Y/n] "
@@ -79,7 +133,7 @@ case $action in
             sudorun pacman -Syu
         fi
         ;;
-    c|checkout)
+    checkout)
         repos=$(find "$XDG_AUR_HOME" -maxdepth 4 -type d -regex '.*/\(\.git\|\.hg\|\.bzr\|\.svn\|_darcs\|CVS\)$' | grep -v '\-build/')
         for rp in $repos ; do
             path=${rp%/*}
@@ -152,79 +206,79 @@ case $action in
             fi
         done
         ;;
-    v|view)
+    info)
         getinfos "$@"
         ;;
-    l|L|list)
+    list | listgrep)
         pattern='.'
-        if [ "$action" = "L" ]; then
+        if [ "$action" = "listgrep" ] ; then
             pattern=$1
             shift
         fi
         pacman -Qlq "$@" | grep -i "$pattern"
         ;;
-    q|Q|query)
-        if [ "$action" = "Q" ]; then
-            pacman -Qsq "$@"
-        else
-            pacman -Qs "$@" | owl_color_filter
+    query | find | search)
+        if [ "$action" = "query" ] ; then
+            if [ $quiet_results -eq 1 ] ; then
+                pacman -Qsq "$@"
+            else
+                pacman -Qs "$@" | owl_color_filter
+            fi
+        elif [ "$action" = "find" ] ; then
+            if [ $quiet_results -eq 1 ] ; then
+                pacman -Ssq "$@"
+            else
+                pacman -Ss "$@" | owl_color_filter
+            fi
+        elif [ "$action" = "search" ] ; then
+            if [ $quiet_results -eq 1 ] ; then
+                pacman -Ssq "$@"
+                cower -sq "$@"
+            else
+                pacman -Ss "$@" | owl_color_filter
+                cower -s "$@" | owl_color_filter
+            fi
         fi
         ;;
-    f|F|find)
-        if [ "$action" = "F" ] ; then
-            pacman -Ssq "$@"
-        else
-            pacman -Ss "$@" | owl_color_filter
-        fi
-        ;;
-    s|S|search)
-        if [ "$action" = "S" ] ; then
-            pacman -Ssq "$@"
-            cower -sq "$@"
-        else
-            pacman -Ss "$@" | owl_color_filter
-            cower -s "$@" | owl_color_filter
-        fi
-        ;;
-    o|owner)
+    owner)
         pacman -Qo "$@"
         ;;
-    g|grep)
+    grep)
         pattern=$1
         shift
         pkg_files=$(pacman -Qlq "$@")
-        if [ $? -eq 0 ]; then
+        if [ $? -eq 0 ] ; then
             [ ! "$pattern" = "\n" ] && grep -Ii "$pattern" $pkg_files
         fi
         ;;
-    d|D|download)
+    download)
         cd "$XDG_AUR_HOME"
-        if [ "$action" = "D" ]; then
+        if [ $fetch_deps -eq 1 ] ; then
             cower -ddf "$@"
         else
             cower -df "$@"
         fi
         ;;
-    r|R|RR|remove)
-        if [ "$action" = "RR" ]; then
+    remove)
+        if [ $rm_cascade -eq 1 ] ; then
             sudorun pacman -Rc "$@"
-        elif [ "$action" = "R" ]; then
+        elif [ $rm_recur -eq 1 ] ; then
             sudorun pacman -Rs "$@"
         else
             sudorun pacman -R "$@"
         fi
         ;;
-    i|install)
-        while [ $# -gt 0 ]; do
+    install)
+        while [ $# -gt 0 ] ; do
             pacman -Si "$1" > /dev/null 2>&1
-            if [ $? -eq 0 ]; then
+            if [ $? -eq 0 ] ; then
                 sudorun pacman -S "$1"
                 [ $? -ne 0 ] && exit 1
             else
                 cd "$XDG_AUR_HOME"
                 cower -ddf "$1" > "$tmp_out" 2> /dev/null
 
-                if [ -s "$tmp_out" ]; then
+                if [ -s "$tmp_out" ] ; then
                     list_of_programs=$(cat "$tmp_out" | tac | sed 's/.* \([^ ]\+\) downloaded.*/\1/') 
                     for i in $list_of_programs; do
                         cd "$XDG_AUR_HOME/$i"
@@ -243,7 +297,7 @@ case $action in
         log_lo=$(grep -Eo '/[[:graph:]]+\.pac(new|orig|save)' /var/log/pacman.log | sort -u)
         for i in $log_lo
         do
-            if [ -e "$i" ]; then
+            if [ -e "$i" ] ; then
                 echo -n "merge '$i' [y/N]? "
                 read answer
                 case "$answer" in
@@ -261,10 +315,10 @@ case $action in
             fi
         done
         ;;
-    p|page)
-        while [ $# -gt 0 ]; do
+    page)
+        while [ $# -gt 0 ] ; do
             uri=$(getinfos "$1" | grep -m 1 -o 'https://aur.*') > /dev/null 2>&1
-            if [ -n "$uri" ]; then
+            if [ -n "$uri" ] ; then
                 $BROWSER $uri > /dev/null 2>&1
             else
                 echo "package '$1' is not in AUR" >&2
@@ -272,23 +326,23 @@ case $action in
             shift
         done
         ;;
-    h|H|home)
-        if [ $action = "H" ]; then
+    home)
+        if [ $crawl_homes -eq 1 ] ; then
             pkg_list=$(pacman -Ssq "$@"; cower -sq "$@") 
-            if [ -n "$pkg_list" ]; then
+            if [ -n "$pkg_list" ] ; then
                 set $pkg_list
             fi
         fi
         counter=0
-        while [ $# -gt 0 ]; do
+        while [ $# -gt 0 ] ; do
             uri=$(getinfos "$1" | grep -m 1 -o 'https\?://.*')
-            if [ -n "$uri" ]; then
+            if [ -n "$uri" ] ; then
                 echo "$1: $uri"
                 $BROWSER $uri > /dev/null 2>&1
                 counter=$((counter+1))
             fi
             shift
-            if [ $((counter % OWL_MAX_URL)) -eq 0 -a $counter -gt 0 -a $# -gt 0 ]; then
+            if [ $((counter % OWL_MAX_URL)) -eq 0 -a $counter -gt 0 -a $# -gt 0 ] ; then
                 echo -n "continue [Y/n] ($# remaining)? "
                 read answer
                 [ -z "$answer" ] && answer='y'
@@ -304,13 +358,13 @@ case $action in
             fi
         done
         ;;
-    b|bin)
+    listbin)
         pacman -Qlq "$@" | grep '/s\?bin/.'
         ;;
-    e|etc)
+    listetc)
         pacman -Qlq "$@" | grep '/etc/.'
         ;;
-    m|man)
+    listman)
         pacman -Qlq "$@" | grep '/man./.'
         ;;
     cleanup)

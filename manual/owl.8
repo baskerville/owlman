@@ -2,8 +2,8 @@
 .SH NAME
 owl \- Pacman and cower wrapper focused on simplicity
 .SH SYNOPSIS
-.B owl
-.IR ACTION
+.BI owl\ ACTION
+.RI [ OPTIONS ]
 .RI [ ARGUMENTS ]
 .SH DESCRIPTION
 owl is a simple wrapper for pacman and cower, providing seamless access to all the available Arch Linux packages.
@@ -52,17 +52,20 @@ Search locally for packages matching
 .BI "list " "PKG " ...
 List all the files owned by the given packages.
 .TP
-.BI "bin " "PKG " ...
+.BI "listgrep " "STRING PKG " ...
+Restrict the output of 'list' to packages matching STRING.
+.TP
+.BI "listbin " "PKG " ...
 Restrict the output of
 .B list
 to executable files.
 .TP
-.BI "etc " "PKG " ...
+.BI "listetc " "PKG " ...
 Restrict the output of
 .B list
 to configuration files.
 .TP
-.BI "man " "PKG " ...
+.BI "listman " "PKG " ...
 Restrict the output of
 .B list
 to manual files.
@@ -88,57 +91,25 @@ Show installed packages not found in the sync databases.
 .TP
 .B orphans
 Show packages not listed as a dependency by any package.
-.SH ABBREVIATIONS
-Most of the actions have an equivalent one letter form which always corresponds
-to the first letter of the full form.
-
-Some actions also feature an uppercase one letter form:
+.SH OPTIONS
 .TP
-.B R
-Equivalent to
-.IR pacman "'s"
-.BR -Rs .
-
+.BI -a ,\ --aur
+Only update AUR packages.
 .TP
-.B D
-Download even if the download directory already exists.
-
+.BI -s ,\ --recursive
+See pacman's remove options.
 .TP
-.BI "H " STRING
-Opens every home pages from the results of a
-.B search
-action on the given
-.IR STRING .
-
+.BI -c ,\ --cascade
+See pacman's remove options.
 .TP
-.BI "L " "STRING PKG " ...
-Filter results of the 
-.B list
-action with
-.IR STRING .
-
+.BI -q ,\ --quiet
+Provide quiet search results.
 .TP
-.B U
-Looks for AUR updates.
-
+.BI -d ,\ --dependencies
+Fetch dependencies.
 .TP
-.B Q | F | S
-Be quiet.
-
-.P
-The
-.B remove
-action features the following form:
-.B RR
-which is equivalent to 
-.IR pacman "'s"
-.BR -Rc .
-
-Actions without a one letter form: 
-.BR cleanup , 
-.BR leftovers , 
-.BR "foreigns " and
-.BR orphans .
+.BI -h ,\ --crawl-homes
+Open every pages of all the packages matching the argument.
 .SH CONFIGURATION
 The following environment variables are used:
 .IP \[bu] 2
@@ -183,10 +154,12 @@ Color related variables (self-explained):
 .IP \[bu]
 .B OWL_INSTALLED_COLOR
 .P
-The valid values for the aforementioned variables are : black, red, green, yellow, blue, magenta, cyan, white, bold.
+The valid values for the aforementioned variables are:
+
+.IR black ,\  red ,\  green ,\  yellow ,\  blue ,\  magenta ,\  cyan ,\  white ,\  bold .
 .SH AUTHOR
 .EX
-Bastien Dejean <baskerville at lavabit dot com>
+Bastien Dejean <baskerville a lavabit o com>
 .EE
 .SH HOMEPAGE
 .TP

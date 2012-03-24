@@ -25,7 +25,7 @@
         download PKG ...
             Download the given packages from the AUR.
 
-        view PKG ...
+        info PKG ...
             Retreive informations on the given packages.
 
         page PKG ...
@@ -46,13 +46,16 @@
         list PKG ...
             List all the files owned by the given packages.
 
-        bin PKG ...
+        listgrep STRING PKG ...
+            Restrict the output of 'list' to packages matching STRING.
+
+        listbin PKG ...
             Restrict the output of 'list' to executable files.
 
-        etc PKG ...
+        listetc PKG ...
             Restrict the output of 'list' to configuration files.
 
-        man PKG ...
+        listman PKG ...
             Restrict the output of 'list' to manual files.
 
         grep STRING PKG ...
@@ -73,28 +76,17 @@
         orphans
             Show packages not listed as a dependency by any package.
 
-## Abbreviations
+## Options
 
-Most of the actions have an equivalent one letter form which always corresponds
-to the first letter of the full form.
+- **-a, --aur** -- only update AUR packages.
 
-Some actions also feature an uppercase one letter form:
+- **-s, --recursive** -- see pacman's remove options.
 
-- `R`: equivalent to `pacman`'s `-Rs`
+- **-c, --cascade** -- see pacman's remove options.
 
-- `D`: downloads even if the download directory already exists.
+- **-d, --dependencies** -- fetch dependencies.
 
-- `H string`: opens every home pages from the results of a `search` action on the given *string*.
-
-- `L string pkg ...`: filter results of the `list` action with *string*.
-
-- `U`: looks for AUR updates.
-
-- `Q | F | S`: be quiet.
-
-The `remove` action features the following form: `RR` which is equivalent to `pacman`'s `-Rc`.
-
-Actions without a one letter form: `cleanup`, `leftovers`, `foreigns` and `orphans`.
+- **-h, --crawl-homes** -- open every pages of all the packages matching the argument.
 
 ## Configuration
 
