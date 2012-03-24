@@ -93,66 +93,66 @@ Show installed packages not found in the sync databases.
 Show packages not listed as a dependency by any package.
 .SH OPTIONS
 .TP
-.BR -a ,\ --aur
+.BR -a ,\  --aur
 Only update AUR packages.
 .TP
-.BR -s ,\ --recursive
+.BR -s ,\  --recursive
 See pacman's remove options.
 .TP
-.BR -c ,\ --cascade
+.BR -c ,\  --cascade
 See pacman's remove options.
 .TP
-.BR -q ,\ --quiet
+.BR -q ,\  --quiet
 Provide quiet search results.
 .TP
-.BR -d ,\ --dependencies
+.BR -d ,\  --dependencies
 Fetch dependencies.
 .TP
-.BR -h ,\ --crawl-homes
+.BR -h ,\  --crawl-homes
 Open every pages of all the packages matching the argument.
 .SH CONFIGURATION
 The following environment variables are used:
 .IP \[bu] 2
-.B XDG_AUR_HOME
+.I XDG_AUR_HOME
 -- where should the downloaded AUR packages be stored?
 .IP \[bu]
-.B BROWSER
+.I BROWSER
 -- the browser used for opening the packages home pages.
 .IP \[bu]
-.B OWL_SUDO_WARN
+.I OWL_SUDO_WARN
 -- print a warning each time sudo is run (default value: 'true').
 .IP \[bu]
-.B OWL_COLOR_RESULTS
+.I OWL_COLOR_RESULTS
 -- colorize search results (default value: 'true').
 .IP \[bu]
-.B OWL_MAX_URL
+.I OWL_MAX_URL
 -- the maximum number of URL this program is allowed to send to the
-.B BROWSER
+.I BROWSER
 in one go.
 .P
 Color related variables (self-explained):
 .IP \[bu] 2
-.B OWL_LOCAL_COLOR
+.I OWL_LOCAL_COLOR
 .IP \[bu]
-.B OWL_CORE_COLOR
+.I OWL_CORE_COLOR
 .IP \[bu]
-.B OWL_EXTRA_COLOR
+.I OWL_EXTRA_COLOR
 .IP \[bu]
-.B OWL_COMMUNITY_COLOR
+.I OWL_COMMUNITY_COLOR
 .IP \[bu]
-.B OWL_TESTING_COLOR
+.I OWL_TESTING_COLOR
 .IP \[bu]
-.B OWL_AUR_COLOR
+.I OWL_AUR_COLOR
 .IP \[bu]
-.B OWL_SEP_COLOR
+.I OWL_SEP_COLOR
 .IP \[bu]
-.B OWL_NAME_COLOR
+.I OWL_NAME_COLOR
 .IP \[bu]
-.B OWL_VERSION_COLOR
+.I OWL_VERSION_COLOR
 .IP \[bu]
-.B OWL_OBSOLETE_COLOR
+.I OWL_OBSOLETE_COLOR
 .IP \[bu]
-.B OWL_INSTALLED_COLOR
+.I OWL_INSTALLED_COLOR
 .P
 The valid values for the aforementioned variables are:
 
