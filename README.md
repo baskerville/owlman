@@ -13,7 +13,7 @@
         update
             Update package list and upgrade all packages afterwards.
 
-        checkout
+        pull
             Grab changes for all the cached AUR packages.
 
         install PKG ...

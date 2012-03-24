@@ -14,7 +14,7 @@ It is inspired by homebrew.
 .B update
 Update package list and upgrade all packages afterwards.
 .TP
-.B checkout
+.B pull
 Grab changes for all the cached AUR packages.
 .TP
 .BI "install " "PKG " ...
@@ -93,22 +93,22 @@ Show installed packages not found in the sync databases.
 Show packages not listed as a dependency by any package.
 .SH OPTIONS
 .TP
-.BI -a ,\ --aur
+.BR -a ,\ --aur
 Only update AUR packages.
 .TP
-.BI -s ,\ --recursive
+.BR -s ,\ --recursive
 See pacman's remove options.
 .TP
-.BI -c ,\ --cascade
+.BR -c ,\ --cascade
 See pacman's remove options.
 .TP
-.BI -q ,\ --quiet
+.BR -q ,\ --quiet
 Provide quiet search results.
 .TP
-.BI -d ,\ --dependencies
+.BR -d ,\ --dependencies
 Fetch dependencies.
 .TP
-.BI -h ,\ --crawl-homes
+.BR -h ,\ --crawl-homes
 Open every pages of all the packages matching the argument.
 .SH CONFIGURATION
 The following environment variables are used:

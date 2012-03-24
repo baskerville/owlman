@@ -133,7 +133,7 @@ case $action in
             sudorun pacman -Syu
         fi
         ;;
-    checkout)
+    pull)
         repos=$(find "$XDG_AUR_HOME" -maxdepth 4 -type d -regex '.*/\(\.git\|\.hg\|\.bzr\|\.svn\|_darcs\|CVS\)$' | grep -v '\-build/')
         for rp in $repos ; do
             path=${rp%/*}
