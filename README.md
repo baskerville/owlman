@@ -7,7 +7,7 @@
 ## Usage
 
     SYNOPSIS
-        owl <action> [arguments]
+        owl <ACTION> [OPTIONS] [ARGUMENTS]
 
     ACTIONS
         update
