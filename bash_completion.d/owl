@@ -34,7 +34,7 @@ _owl()
                 ;;
         esac
         if [[ $COMP_CWORD -eq 1 ]] ; then
-            local actions='update install remove download info page home find search query list listgrep listbin listetc listman grep owner cleanup leftovers foreigns orphans'
+            local actions='update checkout install remove download info page home find search query list listgrep listbin listetc listman grep owner cleanup leftovers foreigns orphans'
             COMPREPLY=( $(compgen -W "$actions" -- "$current_word") )
             return 0
         else
