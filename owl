@@ -358,16 +358,16 @@ case $action in
             fi
         done
         ;;
-    listbin)
+    bin)
         pacman -Qlq "$@" | grep '/s\?bin/.'
         ;;
-    listetc)
+    etc)
         pacman -Qlq "$@" | grep '/etc/.'
         ;;
-    listman)
+    man)
         pacman -Qlq "$@" | grep '/man./.'
         ;;
-    listdoc)
+    doc)
         pacman -Qlq "$@" | grep '/share/doc/.'
         ;;
     cleanup)
