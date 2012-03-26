@@ -58,6 +58,9 @@
         listman PKG ...
             Restrict the output of 'list' to manual files.
 
+        listdoc PKG ...
+            Restrict the output of 'list' to documentation files.
+
         grep STRING PKG ...
             Search for STRING in all the files belonging to the given packages.
 

@@ -367,6 +367,9 @@ case $action in
     listman)
         pacman -Qlq "$@" | grep '/man./.'
         ;;
+    listdoc)
+        pacman -Qlq "$@" | grep '/share/doc/.'
+        ;;
     cleanup)
         if [ ! -d "$XDG_AUR_HOME" ] ; then
             prinft "%s\n" "the cache directory is invalid" >&2
