@@ -38,7 +38,7 @@
             Search for packages matching STRING in the sync databases.
 
         search STRING
-            Search for packages matching STRING in the AUR.
+            Search for packages matching STRING in all databases.
 
         query STRING
             Search locally for packages matching STRING.
@@ -62,7 +62,7 @@
             Restrict the output of 'list' to documentation files.
 
         grep STRING PKG ...
-            Search for STRING in all the files belonging to the given packages.
+            Grep STRING in all the files of all the given packages.
 
         owner FILE
             Return the name of the package owning the given file.
