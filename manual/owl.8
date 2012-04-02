@@ -35,11 +35,6 @@ Opens the given packages AUR pages.
 .BI "home " "PKG " ...
 Opens the given packages home pages.
 .TP
-.BI "find " STRING
-Search for packages matching
-.I STRING
-in the sync databases.
-.TP
 .BI "search " STRING
 Search for packages matching
 .I STRING
@@ -99,7 +94,10 @@ Show packages not listed as a dependency by any package.
 .SH OPTIONS
 .TP
 .BR -a ,\  --aur
-Only update AUR packages.
+Retrain the action to the AUR packages.
+.TP
+.BR -o ,\  --repo
+Restrain the action to the sync packages.
 .TP
 .BR -s ,\  --recursive
 See pacman's remove options.
@@ -113,7 +111,7 @@ Provide quiet search results.
 .BR -d ,\  --dependencies
 Fetch dependencies.
 .TP
-.BR -h ,\  --crawl-homes
+.BR -w ,\  --crawl-homes
 Open every pages of all the packages matching the argument.
 .SH CONFIGURATION
 The following environment variables are used:

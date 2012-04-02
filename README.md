@@ -34,9 +34,6 @@
         home PKG ...
             Opens the given packages home pages.
 
-        find STRING
-            Search for packages matching STRING in the sync databases.
-
         search STRING
             Search for packages matching STRING in all databases.
 
@@ -81,7 +78,9 @@
 
 ## Options
 
-- **-a, --aur** -- only update AUR packages.
+- **-a, --aur** -- restrain the action to the AUR packages.
+
+- **-o, --repo** -- restrain the action to the sync packages.
 
 - **-s, --recursive** -- see pacman's remove options.
 
@@ -89,7 +88,7 @@
 
 - **-d, --dependencies** -- fetch dependencies.
 
-- **-h, --crawl-homes** -- open every pages of all the packages matching the argument.
+- **-w, --crawl-homes** -- open every pages of all the packages matching the argument.
 
 ## Configuration
 

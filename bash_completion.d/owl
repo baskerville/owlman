@@ -23,18 +23,18 @@ _owl()
         local current_word="${COMP_WORDS[COMP_CWORD]}"
         case $current_word in
             --*)
-                local long_opts='--aur --recursive --cascade --dependencies --quiet --crawl-homes'
+                local long_opts='--aur --repo --recursive --cascade --dependencies --quiet --crawl-homes'
                 COMPREPLY=( $(compgen -W "$long_opts" -- "$current_word") )
                 return 0
                 ;;
             -*)
-                local short_opts='-a -s -c -d -q -h'
+                local short_opts='-a -o -s -c -d -q -w'
                 COMPREPLY=( $(compgen -W "$short_opts" -- "$current_word") )
                 return 0
                 ;;
         esac
         if [[ $COMP_CWORD -eq 1 ]] ; then
-            local actions='update pull install remove download info page home find search query list listgrep bin etc man doc grep owner cleanup leftovers foreigns orphans'
+            local actions='update pull install remove download info page home search query list listgrep bin etc man doc grep owner cleanup leftovers foreigns orphans'
             COMPREPLY=( $(compgen -W "$actions" -- "$current_word") )
             return 0
         else

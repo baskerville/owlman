@@ -61,20 +61,24 @@ getinfos() {
     done
 }
 
-aur_update=0
+aur_only=0
+repo_only=0
 quiet_results=0
 fetch_deps=0
 rm_cascade=0
 rm_recur=0
 crawl_homes=0
 
-while getopts "qadcsh-:" opt ; do
+while getopts "qaodcsw-:" opt ; do
     case $opt in
         q)
             quiet_results=1
             ;;
         a)
-            aur_update=1
+            aur_only=1
+            ;;
+        o)
+            repo_only=1
             ;;
         d)
             fetch_deps=1
@@ -85,7 +89,7 @@ while getopts "qadcsh-:" opt ; do
         s)
             rm_recur=1
             ;;
-        h)
+        w)
             crawl_homes=1
             ;;
         -)
@@ -94,7 +98,10 @@ while getopts "qadcsh-:" opt ; do
                     quiet_results=1
                     ;;
                 aur)
-                    aur_update=1
+                    aur_only=1
+                    ;;
+                repo)
+                    repo_only=1
                     ;;
                 dependencies)
                     fetch_deps=1
@@ -117,7 +124,7 @@ shift $(($OPTIND - 1))
 
 case $action in
     update)
-        if [ $aur_update -eq 1 ] ; then
+        if [ $aur_only -eq 1 ] ; then
             cower -u | tee "$tmp_out"
             if [ -s "$tmp_out" ] ; then
                     printf "reinstall packages? [Y/n] "
@@ -217,26 +224,27 @@ case $action in
         fi
         pacman -Qlq "$@" | grep -i "$pattern"
         ;;
-    query | find | search)
+    query | search)
         if [ "$action" = "query" ] ; then
             if [ $quiet_results -eq 1 ] ; then
                 pacman -Qsq "$@"
             else
                 pacman -Qs "$@" | owl_color_filter
             fi
-        elif [ "$action" = "find" ] ; then
-            if [ $quiet_results -eq 1 ] ; then
-                pacman -Ssq "$@"
-            else
-                pacman -Ss "$@" | owl_color_filter
-            fi
         elif [ "$action" = "search" ] ; then
-            if [ $quiet_results -eq 1 ] ; then
-                pacman -Ssq "$@"
-                cower -sq "$@"
-            else
-                pacman -Ss "$@" | owl_color_filter
-                cower -s "$@" | owl_color_filter
+            if [ $aur_only -eq 0 ] ; then
+                if [ $quiet_results -eq 1 ] ; then
+                    pacman -Ssq "$@"
+                else
+                    pacman -Ss "$@" | owl_color_filter
+                fi
+            fi
+            if [ $repo_only -eq 0 ] ; then
+                if [ $quiet_results -eq 1 ] ; then
+                    cower -sq "$@"
+                else
+                    cower -s "$@" | owl_color_filter
+                fi
             fi
         fi
         ;;
