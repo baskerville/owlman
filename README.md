@@ -67,6 +67,9 @@
         grep STRING PKG ...
             Grep STRING in all the files of all the given packages.
 
+        category PKG ...
+            Return the category of the given AUR packages.
+
         owner FILE
             Return the name of the package owning the given file.
 

@@ -251,6 +251,9 @@ case $action in
     owner)
         pacman -Qo "$@"
         ;;
+    category)
+        cower -i "$@" | grep -i '^category' | sed 's/[^:]\+: \(.*\)/\1/'
+        ;;
     grep)
         pattern=$1
         shift
