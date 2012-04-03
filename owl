@@ -366,6 +366,12 @@ case $action in
             fi
         done
         ;;
+    deps)
+        pacman -Qi "$@" | grep -i '^depends on' | sed 's/[^:]\+: \(.*\)/\1/'
+        ;;
+    uses)
+        pacman -Qii "$@" | grep -i '^required by' | sed 's/[^:]\+: \(.*\)/\1/'
+        ;;
     bin)
         pacman -Qlq "$@" | grep '/s\?bin/.'
         ;;
