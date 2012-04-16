@@ -70,7 +70,7 @@ rm_cascade=0
 rm_recur=0
 crawl_homes=0
 
-while getopts "qaodcsw-:" opt ; do
+while getopts "qaoldcsw-:" opt ; do
     case $opt in
         q)
             quiet_results=1
