@@ -91,6 +91,8 @@
 
 - **-o, --repo** -- restrain the action to the sync packages.
 
+- **-l, --local** -- restrain the action to the local packages.
+
 - **-s, --recursive** -- see pacman's remove options.
 
 - **-c, --cascade** -- see pacman's remove options.

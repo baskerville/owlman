@@ -63,6 +63,7 @@ getinfos() {
 
 aur_only=0
 repo_only=0
+local_only=0
 quiet_results=0
 fetch_deps=0
 rm_cascade=0
@@ -79,6 +80,9 @@ while getopts "qaodcsw-:" opt ; do
             ;;
         o)
             repo_only=1
+            ;;
+        l)
+            local_only=1
             ;;
         d)
             fetch_deps=1
@@ -102,6 +106,9 @@ while getopts "qaodcsw-:" opt ; do
                     ;;
                 repo)
                     repo_only=1
+                    ;;
+                local)
+                    local_only=1
                     ;;
                 dependencies)
                     fetch_deps=1
@@ -214,7 +221,11 @@ case $action in
         done
         ;;
     info)
-        getinfos "$@"
+        if [ $local_only -eq 1 ] ; then
+            pacman -Qi "$@"
+        else
+            getinfos "$@"
+        fi
         ;;
     list | listgrep)
         pattern='.'
