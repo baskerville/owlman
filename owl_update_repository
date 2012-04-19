@@ -1,0 +1,55 @@
+#! /bin/dash
+
+if [ $# -eq 0 ] ; then
+    printf "'%s' %s\n" "$0" "requires a path as argument" >&2
+    exit 3
+fi
+
+repo=$1
+format=$(find "$repo" -maxdepth 1 -type d -regex '.*\(\.git\|\.hg\|\.bzr\|\.svn\|_darcs\|CVS\)' -printf '%f' | head -1 | tr -dc '[:alpha:]')
+
+if [ -z "$format" ] ; then
+    printf "%s\n" "no repository found" >&2
+    exit 2
+fi
+
+no_changes=0
+tmp_out=$(mktemp)
+
+cd "$repo"
+
+case "$format" in
+    git)
+        git pull | tee "$tmp_out"
+        if [ -s "$tmp_out" ] ; then
+            grep -iq '^already up-to-date' "$tmp_out" && no_changes=1
+        else
+            no_changes=1
+        fi
+        ;;
+    hg)
+        hg pull -u | tee "$tmp_out"
+        grep -iq '^no changes found' "$tmp_out" && no_changes=1
+        ;;
+    bzr)
+        bzr update > "$tmp_out" 2>&1
+        grep -iq '^tree is up to date' "$tmp_out" && no_changes=1
+        ;;
+    svn)
+        svn update | tee "$tmp_out"
+        grep -iq '^at revision' "$tmp_out" && no_changes=1
+        ;;
+    darcs)
+        darcs pull | tee "$tmp_out"
+        grep -iq '^no remote changes to pull' "$tmp_out" && no_changes=1
+        ;;
+    CVS)
+        cvs update > "$tmp_out" 2>&1
+        cat "$tmp_out"
+        grep -iqv '^cvs update:' "$tmp_out" || no_changes=1
+        ;;
+esac
+
+rm "$tmp_out"
+
+exit $no_changes

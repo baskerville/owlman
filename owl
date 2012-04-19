@@ -148,12 +148,11 @@ case $action in
         fi
         ;;
     pull)
-        repos=$(find "$XDG_AUR_HOME" -maxdepth 4 -type d -regex '.*/\(\.git\|\.hg\|\.bzr\|\.svn\|_darcs\|CVS\)$' | grep -v '\-build/')
-        for rp in $repos ; do
-            path=${rp%/*}
-            format=$(printf "%s" "$rp" | sed 's:^.*[^A-Za-z]\([A-Za-z]\+\)$:\1:')
-            relat=${path#"$XDG_AUR_HOME/"}
-            name=${relat%%/*}
+        repos=$(find "$XDG_AUR_HOME" -mindepth 3 -maxdepth 3 -type d -regex ".*/src/[^/]+" | grep -v '\-build$')
+        for repo in $repos ; do
+            [ ! -e "$repo" ] && continue
+            from_home=${repo#"$XDG_AUR_HOME/"}
+            name=${from_home%%/*}
             pacman -Q "$name" > /dev/null 2>&1
             if [ $? -eq 1 ] ; then
                 if [ -t 1 ] ; then
@@ -178,36 +177,7 @@ case $action in
             else
                 printf "%s\n" "$name"
             fi
-            no_changes=0
-            cd "$path"
-            case "$format" in
-                git)
-                    git pull | tee "$tmp_out"
-                    grep -iq '^already up-to-date' "$tmp_out" && no_changes=1
-                    ;;
-                hg)
-                    hg pull -u | tee "$tmp_out"
-                    grep -iq '^no changes found' "$tmp_out" && no_changes=1
-                    ;;
-                bzr)
-                    bzr update > "$tmp_out" 2>&1
-                    grep -iq '^tree is up to date' "$tmp_out" && no_changes=1
-                    ;;
-                svn)
-                    svn update | tee "$tmp_out"
-                    grep -iq '^at revision' "$tmp_out" && no_changes=1
-                    ;;
-                darcs)
-                    darcs pull | tee "$tmp_out"
-                    grep -iq '^no remote changes to pull' "$tmp_out" && no_changes=1
-                    ;;
-                CVS)
-                    cvs update > "$tmp_out" 2>&1
-                    cat "$tmp_out"
-                    grep -iqv '^cvs update:' "$tmp_out" || no_changes=1
-                    ;;
-            esac
-            if [ $no_changes -eq 0 ] ; then
+            if owl_update_repository "$repo" ; then
                 echo -n "reinstall package '$name' [Y/n]? "
                 read answer
                 [ -z "$answer" ] && answer="yes"
