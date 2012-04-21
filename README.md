@@ -93,6 +93,8 @@
 
 - **-l, --local** -- restrain the action to the local packages.
 
+- **-i, --ignore-outdated -- exclude outdated AUR packages from search results.
+
 - **-s, --recursive** -- see pacman's remove options.
 
 - **-c, --cascade** -- see pacman's remove options.
@@ -112,6 +114,8 @@ The following environment variables are handled:
 - **OWL_SUDO_WARN** -- print a warning each time sudo is run (default value: 'true').
 
 - **OWL_COLOR_RESULTS** -- colorize search results (default value: 'true').
+
+- **OWL_IGNORE_OUTDATED** -- wether to ignore outdated AUR results (default value: 'false').
 
 - **OWL_MAX_URL** -- the maximum number of URL this program is allowed to send to
   the BROWSER in one go.

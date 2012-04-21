@@ -111,6 +111,9 @@ Restrain the action to the sync packages.
 .BR -l ,\  --local
 Restrain the action to the local packages.
 .TP
+.BR -i ,\  --ignore-outdated
+Exclude outdated AUR packages from search results.
+.TP
 .BR -s ,\  --recursive
 See pacman's remove options.
 .TP
@@ -139,6 +142,9 @@ The following environment variables are used:
 .IP \[bu]
 .I OWL_COLOR_RESULTS
 -- colorize search results (default value: 'true').
+.IP \[bu]
+.I OWL_IGNORE_OUTDATED
+-- whether to ignore outdated AUR results (default value: 'false').
 .IP \[bu]
 .I OWL_MAX_URL
 -- the maximum number of URL this program is allowed to send to the

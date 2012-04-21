@@ -4,6 +4,7 @@ XDG_AUR_HOME=${XDG_AUR_HOME:-~/src/aur}
 BROWSER=${BROWSER:-web_browser}
 OWL_MAX_URL=${OWL_MAX_URL:-16}
 OWL_SUDO_WARN=${OWL_SUDO_WARN:-true}
+OWL_IGNORE_OUTDATED=${OWL_IGNORE_OUTDATED:-false}
 
 usage() {
     printf "usage: $(basename "$0") <action> [...]\n"
@@ -64,13 +65,14 @@ getinfos() {
 aur_only=0
 repo_only=0
 local_only=0
+ignore_outdated=0
 quiet_results=0
 fetch_deps=0
 rm_cascade=0
 rm_recur=0
 crawl_homes=0
 
-while getopts "qaoldcsw-:" opt ; do
+while getopts "qaolidcsw-:" opt ; do
     case $opt in
         q)
             quiet_results=1
@@ -83,6 +85,9 @@ while getopts "qaoldcsw-:" opt ; do
             ;;
         l)
             local_only=1
+            ;;
+        i)
+            ignore_outdated=1
             ;;
         d)
             fetch_deps=1
@@ -109,6 +114,9 @@ while getopts "qaoldcsw-:" opt ; do
                     ;;
                 local)
                     local_only=1
+                    ;;
+                ignore-outdated)
+                    ignore_outdated=1
                     ;;
                 dependencies)
                     fetch_deps=1
@@ -222,9 +230,17 @@ case $action in
             fi
             if [ $repo_only -eq 0 ] ; then
                 if [ $quiet_results -eq 1 ] ; then
-                    cower -sq "$@"
+                    if [ $ignore_outdated -eq 1 -o "$OWL_IGNORE_OUTDATED" = "true" ] ; then
+                        cower -osq "$@"
+                    else
+                        cower -sq "$@"
+                    fi
                 else
-                    cower -s "$@" | owl_color_filter
+                    if [ $ignore_outdated -eq 1 -o "$OWL_IGNORE_OUTDATED" = "true" ] ; then
+                        cower -os "$@" | owl_color_filter
+                    else
+                        cower -s "$@" | owl_color_filter
+                    fi
                 fi
             fi
         fi
