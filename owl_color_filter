@@ -26,7 +26,7 @@ cprint() {
     printf "\033[1;$((30 + ci))m%s\033[0m" "$@"
 }
 
-OBSOLETE_TAG=$(cprint "$OWL_OBSOLETE_COLOR" "<!>")
+OBSOLETE_TAG="<$(cprint "$OWL_OBSOLETE_COLOR" "!")>"
 INSTALLED_TAG=$(cprint "$OWL_INSTALLED_COLOR" "installed")
 
 rprint() {
