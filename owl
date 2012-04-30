@@ -386,7 +386,7 @@ case $action in
         ;;
     cleanup)
         if [ ! -d "$XDG_AUR_HOME" ] ; then
-            prinft "%s\n" "the cache directory is invalid" >&2
+            printf "%s\n" "the cache directory is invalid" >&2
             exit 1
         fi
         cd "$XDG_AUR_HOME"
