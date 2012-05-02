@@ -160,39 +160,39 @@ case $action in
         for repo in $repos ; do
             [ ! -e "$repo" ] && continue
             from_home=${repo#"$XDG_AUR_HOME/"}
-            name=${from_home%%/*}
-            pacman -Q "$name" > /dev/null 2>&1
+            pkgname=${from_home%%/*}
+            pacman -Q "$pkgname" > /dev/null 2>&1
             if [ $? -eq 1 ] ; then
                 if [ -t 1 ] ; then
                     magenta "==> "
-                    white "$name "
+                    white "$pkgname "
                 else
-                    printf "%s" "==> $name "
+                    printf "%s" "==> $pkgname "
                 fi
                 printf "%s\n" "is not installed"
                 printf "%s" "remove it from the cache [y/N]? "
                 read answer
                 case "$answer" in
                     y|Y|yes|Yes)
-                        rm -vrf "$XDG_AUR_HOME/$name"
+                        rm -vrf "$XDG_AUR_HOME/$pkgname"
                         ;;
                 esac
                 continue
             fi
             if [ -t 1 ] ; then
-                green "$name"
+                green "$pkgname"
                 printf "\n"
             else
-                printf "%s\n" "$name"
+                printf "%s\n" "$pkgname"
             fi
             if owl_update_repository "$repo" ; then
-                echo -n "reinstall package '$name' [Y/n]? "
+                echo -n "reinstall package '$pkgname' [Y/n]? "
                 read answer
                 [ -z "$answer" ] && answer="yes"
                 case "$answer" in
                     y|yes|Y|Yes)
-                        cd "$XDG_AUR_HOME/$name"
-                        makepkg -fi
+                        cd "$XDG_AUR_HOME/$pkgname"
+                        makepkg -ifs
                         ;;
                 esac
             fi
@@ -260,11 +260,10 @@ case $action in
         fi
         ;;
     download)
-        cd "$XDG_AUR_HOME"
         if [ $fetch_deps -eq 1 ] ; then
-            cower -ddf "$@"
+            cower -ddf -t "$XDG_AUR_HOME" "$@"
         else
-            cower -df "$@"
+            cower -df -t "$XDG_AUR_HOME" "$@"
         fi
         ;;
     remove)
@@ -283,13 +282,11 @@ case $action in
                 sudorun pacman -S "$1"
                 [ $? -ne 0 ] && exit 1
             else
-                cd "$XDG_AUR_HOME"
-                cower -ddf "$1" > "$tmp_out" 2> /dev/null
-
+                cower -ddf -t "$XDG_AUR_HOME" "$1" | tee "$tmp_out"
                 if [ -s "$tmp_out" ] ; then
                     list_of_programs=$(cat "$tmp_out" | tac | sed 's/.* \([^ ]\+\) downloaded.*/\1/') 
-                    for i in $list_of_programs; do
-                        cd "$XDG_AUR_HOME/$i"
+                    for pkgname in $list_of_programs; do
+                        cd "$XDG_AUR_HOME/$pkgname"
                         makepkg -ifs
                         [ $? -ne 0 ] && exit 1
                     done
@@ -390,10 +387,10 @@ case $action in
             exit 1
         fi
         cd "$XDG_AUR_HOME"
-        for i in * ; do
-            if [ -d "$i" ] ; then
-                pacman -Q "$i" > /dev/null 2>&1
-                [ $? -eq 1 ] && rm -vrf -- "$i"
+        for pkgname in * ; do
+            if [ -d "$pkgname" ] ; then
+                pacman -Q "$pkgname" > /dev/null 2>&1
+                [ $? -eq 1 ] && rm -vrf -- "$pkgname"
             fi
         done
         ;;
