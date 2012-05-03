@@ -34,7 +34,7 @@ _owl()
                 ;;
         esac
         if [[ $COMP_CWORD -eq 1 ]] ; then
-            local actions='update pull install remove download info deps uses page home search query list listgrep bin etc man doc grep category owner cleanup leftovers foreigns orphans'
+            local actions='update pull install remove download info deps uses page home search query list listgrep bin etc man doc grep category owns cleanup leftovers foreigns orphans'
             COMPREPLY=( $(compgen -W "$actions" -- "$current_word") )
             return 0
         else
@@ -52,7 +52,7 @@ _owl()
                 download | page | category)
                     packages="$(_aur_packages "$current_word")"
                     ;; 
-                owner)
+                owns)
                     compopt -o filenames
                     COMPREPLY=( $(compgen -f "$current_word") )
                     return 0

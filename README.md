@@ -70,7 +70,7 @@
         category PKG ...
             Return the category of the given AUR packages.
 
-        owner FILE
+        owns FILE
             Return the name of the package owning the given file.
 
         cleanup

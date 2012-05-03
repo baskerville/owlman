@@ -245,7 +245,7 @@ case $action in
             fi
         fi
         ;;
-    owner)
+    owns)
         pacman -Qo "$@"
         ;;
     category)
