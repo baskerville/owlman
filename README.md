@@ -67,6 +67,9 @@
         grep STRING PKG ...
             Grep STRING in all the files of all the given packages.
 
+        repository PKG ...
+            Return the repository of the given packages.
+
         category PKG ...
             Return the category of the given AUR packages.
 

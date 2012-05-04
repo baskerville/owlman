@@ -248,8 +248,8 @@ case $action in
     owns)
         pacman -Qo "$@"
         ;;
-    category)
-        cower -i "$@" | grep -i '^category' | sed 's/[^:]\+: \(.*\)/\1/'
+    repository | category)
+        getinfos "$@" | grep -i "^$action" | sed 's/[^:]\+: \(.*\)/\1/'
         ;;
     grep)
         pattern=$1
