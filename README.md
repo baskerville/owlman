@@ -99,7 +99,7 @@
 
 - **-l, --local** -- restrain the action to the local packages.
 
-- **-i, --ignore-outdated -- exclude outdated AUR packages from search results.
+- **-i, --ignore-outdated** -- exclude outdated AUR packages from search results.
 
 - **-s, --recursive** -- see pacman's remove options.
 
