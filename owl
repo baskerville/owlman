@@ -248,7 +248,7 @@ case $action in
     owns)
         pacman -Qo "$@"
         ;;
-    repository | category)
+    repository | category | description)
         getinfos "$@" | grep -i "^$action" | sed 's/[^:]\+: \(.*\)/\1/'
         ;;
     grep)
@@ -395,10 +395,18 @@ case $action in
         done
         ;;
     foreigns)
-        pacman -Qm
+        if [ $quiet_results -eq 1 ] ; then
+            pacman -Qmq
+        else
+            pacman -Qm
+        fi
         ;;
     orphans)
-        pacman -Qdt
+        if [ $quiet_results -eq 1 ] ; then
+            pacman -Qdtq
+        else
+            pacman -Qdt
+        fi
         ;;
     *)
         echo "action '$action' is unknown" >&2

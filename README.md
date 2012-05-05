@@ -70,6 +70,9 @@
         repository PKG ...
             Return the repository of the given packages.
 
+        description PKG ...
+            Return the description of the given packages.
+
         category PKG ...
             Return the category of the given AUR packages.
 
