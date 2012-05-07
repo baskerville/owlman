@@ -248,7 +248,7 @@ case $action in
     owns)
         pacman -Qo "$@"
         ;;
-    repository | category | description)
+    version | repository | category | description)
         getinfos "$@" | grep -i "^$action" | sed 's/[^:]\+: \(.*\)/\1/'
         ;;
     grep)
