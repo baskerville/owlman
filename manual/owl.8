@@ -26,6 +26,15 @@ Remove the given packages.
 .BI "download " "PKG " ...
 Download the given packages from the AUR.
 .TP
+.BI "search " STRING
+Search for packages matching
+.I STRING
+in all databases.
+.TP
+.BI "query " STRING
+Search locally for packages matching
+.IR STRING .
+.TP
 .BI "info " "PKG " ...
 Retreive informations on the given packages.
 .TP
@@ -35,20 +44,26 @@ Show dependencies for the given packages.
 .BI "uses " "PKG " ...
 Show packages that specify the given packages as dependency.
 .TP
+.BI "owns " FILE
+Return the name of the package owning the given file.
+.TP
+.BI "version " "PKG " ...
+Return the version of the given packages.
+.TP
+.BI "repository " "PKG " ...
+Return the repository of the given packages.
+.TP
+.BI "description " "PKG " ...
+Return the description of the given packages.
+.TP
+.BI "category " "PKG " ...
+Return the category of the given AUR packages.
+.TP
 .BI "page " "PKG " ...
 Opens the given packages AUR pages.
 .TP
 .BI "home " "PKG " ...
 Opens the given packages home pages.
-.TP
-.BI "search " STRING
-Search for packages matching
-.I STRING
-in all databases.
-.TP
-.BI "query " STRING
-Search locally for packages matching
-.IR STRING .
 .TP
 .BI "list " "PKG " ...
 List all the files owned by the given packages.
@@ -81,21 +96,6 @@ Grep for
 .I STRING
 in all the files of all the given packages.
 .TP
-.BI "version " "PKG " ...
-Return the version of the given packages.
-.TP
-.BI "repository " "PKG " ...
-Return the repository of the given packages.
-.TP
-.BI "description " "PKG " ...
-Return the description of the given packages.
-.TP
-.BI "category " "PKG " ...
-Return the category of the given AUR packages.
-.TP
-.BI "owns " FILE
-Return the name of the package owning the given file.
-.TP
 .B cleanup
 Remove unused repositories in the cache directory.
 .TP
@@ -110,32 +110,33 @@ Show installed packages not found in the sync databases.
 .B orphans
 Show packages not listed as a dependency by any package.
 .SH OPTIONS
+The actions on which the options applies are given between parenthesis.
 .TP
-.BR -a ,\  --aur
-Retrain the action to the AUR packages.
-.TP
-.BR -o ,\  --repo
-Restrain the action to the sync packages.
-.TP
-.BR -l ,\  --local
-Restrain the action to the local packages.
-.TP
-.BR -i ,\  --ignore-outdated
-Exclude outdated AUR packages from search results.
-.TP
-.BR -s ,\  --recursive
-See pacman's remove options.
-.TP
-.BR -c ,\  --cascade
-See pacman's remove options.
-.TP
-.BR -q ,\  --quiet
+.BR -q ,\  --quiet "  (search, query, foreigns, orphans)"
 Provide quiet search results.
 .TP
-.BR -d ,\  --dependencies
+.BR -a ,\  --aur "  (update, search)"
+Retrain the action to the AUR packages.
+.TP
+.BR -o ,\  --repo "  (search)"
+Restrain the action to the sync packages.
+.TP
+.BR -l ,\  --local "  (info)"
+Restrain the action to the local packages.
+.TP
+.BR -i ,\  --ignore-outdated "  (search)"
+Exclude outdated AUR packages from search results.
+.TP
+.BR -s ,\  --recursive "  (remove)"
+See pacman's remove options.
+.TP
+.BR -c ,\  --cascade "  (remove)"
+See pacman's remove options.
+.TP
+.BR -d ,\  --dependencies "  (download)"
 Fetch dependencies.
 .TP
-.BR -w ,\  --crawl-homes
+.BR -w ,\  --crawl-homes "  (home)"
 Open every pages of all the packages matching the argument.
 .SH CONFIGURATION
 The following environment variables are used:

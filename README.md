@@ -25,6 +25,12 @@
         download PKG ...
             Download the given packages from the AUR.
 
+        search STRING
+            Search for packages matching STRING in all databases.
+
+        query STRING
+            Search locally for packages matching STRING.
+
         info PKG ...
             Retreive informations on the given packages.
 
@@ -34,17 +40,26 @@
         uses PKG ...
             Show packages that specify the given packages as dependency.
 
+        owns FILE
+            Return the name of the package owning the given file.
+
+        version PKG ...
+            Return the version of the given packages.
+
+        repository PKG ...
+            Return the repository of the given packages.
+
+        description PKG ...
+            Return the description of the given packages.
+
+        category PKG ...
+            Return the category of the given AUR packages.
+
         page PKG ...
             Opens the given packages AUR pages.
 
         home PKG ...
             Opens the given packages home pages.
-
-        search STRING
-            Search for packages matching STRING in all databases.
-
-        query STRING
-            Search locally for packages matching STRING.
 
         list PKG ...
             List all the files owned by the given packages.
@@ -67,21 +82,6 @@
         grep STRING PKG ...
             Grep STRING in all the files of all the given packages.
 
-        version PKG ...
-            Return the version of the given packages.
-
-        repository PKG ...
-            Return the repository of the given packages.
-
-        description PKG ...
-            Return the description of the given packages.
-
-        category PKG ...
-            Return the category of the given AUR packages.
-
-        owns FILE
-            Return the name of the package owning the given file.
-
         cleanup
             Remove unused repositories in the cache directory.
 
@@ -95,22 +95,24 @@
             Show packages not listed as a dependency by any package.
 
 ## Options
+The actions on which the options applies are given between parenthesis.
 
-- **-a, --aur** -- restrain the action to the AUR packages.
+- **-q, --quiet** -- provide quiet search results (*search*, *query*, *foreigns*, *orphans*).
 
-- **-o, --repo** -- restrain the action to the sync packages.
+- **-a, --aur** -- restrain the action to the AUR packages (*update*, *search*).
+- **-o, --repo** -- restrain the action to the sync packages (*search*).
 
-- **-l, --local** -- restrain the action to the local packages.
+- **-l, --local** -- restrain the action to the local packages (*info*).
 
-- **-i, --ignore-outdated** -- exclude outdated AUR packages from search results.
+- **-i, --ignore-outdated** -- exclude outdated AUR packages from search results (*search*).
 
-- **-s, --recursive** -- see pacman's remove options.
+- **-s, --recursive** -- see pacman's remove options (*remove*).
 
-- **-c, --cascade** -- see pacman's remove options.
+- **-c, --cascade** -- see pacman's remove options (*remove*).
 
-- **-d, --dependencies** -- fetch dependencies.
+- **-d, --dependencies** -- fetch dependencies (*download*).
 
-- **-w, --crawl-homes** -- open every pages of all the packages matching the argument.
+- **-w, --crawl-homes** -- open every pages of all the packages matching the argument (*home*).
 
 ## Configuration
 

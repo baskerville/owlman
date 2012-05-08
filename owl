@@ -62,11 +62,11 @@ getinfos() {
     done
 }
 
+quiet_results=0
 aur_only=0
 repo_only=0
 local_only=0
 ignore_outdated=0
-quiet_results=0
 fetch_deps=0
 rm_cascade=0
 rm_recur=0
