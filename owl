@@ -205,9 +205,9 @@ case $action in
             getinfos "$@"
         fi
         ;;
-    list | listgrep)
+    list | lsgrep)
         pattern='.'
-        if [ "$action" = "listgrep" ] ; then
+        if [ "$action" = "lsgrep" ] ; then
             pattern=$1
             shift
         fi
