@@ -369,16 +369,16 @@ case $action in
     uses)
         pacman -Qii "$@" | grep -i '^required by' | sed 's/[^:]\+: \(.*\)/\1/'
         ;;
-    bin)
+    binlist)
         pacman -Qlq "$@" | grep '/s\?bin/.'
         ;;
-    etc)
+    etclist)
         pacman -Qlq "$@" | grep '/etc/.'
         ;;
-    man)
+    manlist)
         pacman -Qlq "$@" | grep '/man./.'
         ;;
-    doc)
+    doclist)
         pacman -Qlq "$@" | grep '/share/doc/[^/]\+/.'
         ;;
     cleanup)
