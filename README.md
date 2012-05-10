@@ -86,7 +86,7 @@
             Remove unused repositories in the cache directory.
 
         leftovers
-            Search and propose merges for 'pac{new,orig,save}' files.
+            Find and merge 'pac{new,orig,save}' files.
 
         foreigns
             Show installed packages not found in the sync databases.
@@ -95,11 +95,12 @@
             Show packages not listed as a dependency by any package.
 
 ## Options
-The actions on which the options applies are given between parenthesis.
+The actions on which each option applies are given between parenthesis.
 
 - **-q, --quiet** -- provide quiet search results (*search*, *query*, *foreigns*, *orphans*).
 
 - **-a, --aur** -- restrain the action to the AUR packages (*update*, *search*).
+
 - **-o, --repo** -- restrain the action to the sync packages (*search*).
 
 - **-l, --local** -- restrain the action to the local packages (*info*).
