@@ -256,7 +256,7 @@ case $action in
         shift
         pkg_files=$(pacman -Qlq "$@")
         if [ $? -eq 0 ] ; then
-            [ ! "$pattern" = "\n" ] && grep -Ii "$pattern" $pkg_files
+            [ ! "$pattern" = "\n" ] && grep -Ii "$pattern" $pkg_files 2> /dev/null
         fi
         ;;
     download)
