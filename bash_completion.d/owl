@@ -46,11 +46,14 @@ _owl()
                     [[ $second_word == lsgrep && $COMP_CWORD -eq 2 ]] && return 0
                     packages="$(_local_packages)"
                     ;;
-                install | info | home | version | repository | description)
+                install | info | home | version | description)
                     packages="$(_sync_packages "$current_word"; _aur_packages "$current_word")"
                     ;; 
                 download | page | category)
                     packages="$(_aur_packages "$current_word")"
+                    ;; 
+                repository)
+                    packages="$(_sync_packages "$current_word")"
                     ;; 
                 owns)
                     compopt -o filenames
