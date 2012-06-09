@@ -303,13 +303,16 @@ case $action in
         for i in $log_lo
         do
             if [ -e "$i" ] ; then
-                echo -n "merge '$i' [y/N]? "
-                read answer
-                case "$answer" in
-                    y|yes|Y|Yes)
-                        vimdiff "${i%.*}" "$i"
-                        ;;
-                esac
+                ext=${i##*.}
+                if [ "$ext" != "pacsave" ] ; then
+                    echo -n "merge '$i' [y/N]? "
+                    read answer
+                    case "$answer" in
+                        y|yes|Y|Yes)
+                            vimdiff "${i%.*}" "$i"
+                            ;;
+                    esac
+                fi
                 echo -n "remove '$i' [y/N]? "
                 read answer
                 case "$answer" in
