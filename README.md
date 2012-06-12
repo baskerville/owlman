@@ -70,6 +70,9 @@
         binlist PKG ...
             Restrict the output of 'list' to executable files.
 
+        liblist PKG ...
+            Restrict the output of 'list' to library files.
+
         etclist PKG ...
             Restrict the output of 'list' to configuration files.
 
