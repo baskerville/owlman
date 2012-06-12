@@ -375,6 +375,9 @@ case $action in
     binlist)
         pacman -Qlq "$@" | grep '/s\?bin/.'
         ;;
+    liblist)
+        pacman -Qlq "$@" | grep '/lib/.'
+        ;;
     etclist)
         pacman -Qlq "$@" | grep '/etc/.'
         ;;
