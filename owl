@@ -261,7 +261,7 @@ case $action in
         fi
         ;;
     downgrade)
-        if [ -d "$XDG_PACMAN_CACHE" ] ; then
+        if [ -d "$XDG_PACMAN_CACHE" -a $# -gt 0 ] ; then
             previous_pkg=$(ls -1tc "$XDG_PACMAN_CACHE/$@"* | head -n 2 | tail -n 1)
             if [ -e "$previous_pkg" ] ; then
                 sudorun pacman -U "$previous_pkg"
