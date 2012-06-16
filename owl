@@ -1,6 +1,7 @@
 #! /bin/dash
 
-XDG_AUR_HOME=${XDG_AUR_HOME:-~/src/aur}
+XDG_AUR_HOME=${XDG_AUR_HOME:-"$HOME/src/aur"}
+XDG_PACMAN_CACHE=${XDG_PACMAN_CACHE:-/var/cache/pacman/pkg}
 BROWSER=${BROWSER:-web_browser}
 OWL_MAX_URL=${OWL_MAX_URL:-16}
 OWL_SUDO_WARN=${OWL_SUDO_WARN:-true}
@@ -259,11 +260,12 @@ case $action in
             [ ! "$pattern" = "\n" ] && grep -Ii "$pattern" $pkg_files 2> /dev/null
         fi
         ;;
-    download)
-        if [ $fetch_deps -eq 1 ] ; then
-            cower -ddf -t "$XDG_AUR_HOME" "$@"
-        else
-            cower -df -t "$XDG_AUR_HOME" "$@"
+    downgrade)
+        if [ -d "$XDG_PACMAN_CACHE" ] ; then
+            previous_pkg=$(ls -1tc "$XDG_PACMAN_CACHE/$@"* | head -n 2 | tail -n 1)
+            if [ -e "$previous_pkg" ] ; then
+                sudorun pacman -U "$previous_pkg"
+            fi
         fi
         ;;
     remove)
@@ -273,6 +275,13 @@ case $action in
             sudorun pacman -Rs "$@"
         else
             sudorun pacman -R "$@"
+        fi
+        ;;
+    download)
+        if [ $fetch_deps -eq 1 ] ; then
+            cower -ddf -t "$XDG_AUR_HOME" "$@"
+        else
+            cower -df -t "$XDG_AUR_HOME" "$@"
         fi
         ;;
     install)

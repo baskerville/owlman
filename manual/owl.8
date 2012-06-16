@@ -20,6 +20,9 @@ Grab changes for all the cached AUR packages.
 .BI "install " "PKG " ...
 Install the given packages.
 .TP
+.BI "downgrade " PKG
+Downgrade the given package.
+.TP
 .BI "remove " "PKG " ...
 Remove the given packages.
 .TP
@@ -148,6 +151,9 @@ The following environment variables are used:
 .IP \[bu] 2
 .I XDG_AUR_HOME
 -- where should the downloaded AUR packages be stored?
+.IP \[bu]
+.I XDG_PACMAN_CACHE
+-- pacman's CacheDir.
 .IP \[bu]
 .I BROWSER
 -- the browser used for opening the packages home pages.

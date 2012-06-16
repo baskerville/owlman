@@ -19,6 +19,9 @@
         install PKG ...
             Install the given packages.
 
+        downgrade PKG
+            Downgrade the given package.
+
         remove PKG ...
             Remove the given packages.
 
@@ -123,6 +126,8 @@ The actions on which each option applies are given between parenthesis.
 The following environment variables are handled:
 
 - **XDG_AUR_HOME** -- where should the downloaded AUR packages be stored?
+
+- **XDG_PACMAN_CACHE** -- pacman's *CacheDir*.
 
 - **BROWSER** -- the browser used for opening the package's home pages.
 
