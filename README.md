@@ -19,8 +19,8 @@
         install PKG ...
             Install the given packages.
 
-        downgrade PKG
-            Downgrade the given package.
+        downgrade PKG ...
+            Downgrade the given packages.
 
         remove PKG ...
             Remove the given packages.

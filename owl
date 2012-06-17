@@ -261,11 +261,26 @@ case $action in
         fi
         ;;
     downgrade)
-        if [ -d "$XDG_PACMAN_CACHE" -a $# -gt 0 ] ; then
-            previous_pkg=$(ls -1tc "$XDG_PACMAN_CACHE/$@"* | head -n 2 | tail -n 1)
-            if [ -e "$previous_pkg" ] ; then
-                sudorun pacman -U "$previous_pkg"
+        if [ ! -d "$XDG_PACMAN_CACHE" ] ; then
+            echo "pacman's cache directory doesn't exist" >&2
+            exit 1
+        fi
+        while [ $# -gt 0 ] ; do
+            pkgname=$1
+            pacman -Q "$pkgname" > /dev/null 2>&1
+            if [ $? -ne 0 ] ; then
+                echo "package '$pkgname' was not found" >&2
+                exit 1
             fi
+            previous_pkg=$(ls -1tc "$XDG_PACMAN_CACHE/$pkgname"-[0-9]* 2> /dev/null | head -n 2 | tail -n 1)
+            if [ -e "$previous_pkg" ] ; then
+                printf "%s\n" "$previous_pkg" >> "$tmp_out"
+            fi
+            shift
+        done
+        if [ -s "$tmp_out" ] ; then
+            sudorun pacman -U $(cat "$tmp_out")
+            : > "$tmp_out"
         fi
         ;;
     remove)
