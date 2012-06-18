@@ -45,7 +45,8 @@ warning() {
 
 sudorun() {
     if [ "$OWL_SUDO_WARN" = "true" ] ; then
-        warning "Running sudo\n"
+        warning "Running sudo"
+        printf "\n"
     fi
     sudo $@
 }
@@ -187,7 +188,8 @@ case $action in
                 esac
                 continue
             fi
-            green "$pkgname\n"
+            green "$pkgname"
+            printf "\n"
             if owl_update_repository "$repo" ; then
                 printf "reinstall package '%s' [Y/n]? " "$pkgname"
                 read answer
