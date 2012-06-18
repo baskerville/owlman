@@ -95,7 +95,7 @@
             Show the last NUM (7 if omitted) installed packages.
 
         leftovers
-            Find and merge 'pac{new,orig,save}' files.
+            Find, merge and remove 'pac{new,orig,save}' files.
 
         foreigns
             Show installed packages not found in the sync databases.
