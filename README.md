@@ -91,6 +91,9 @@
         cleanup
             Remove unused repositories in the cache directory.
 
+        last [NUM]
+            Show the last NUM (7 if omitted) installed packages.
+
         leftovers
             Find and merge 'pac{new,orig,save}' files.
 

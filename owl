@@ -390,6 +390,10 @@ case $action in
             fi
         done
         ;;
+    last)
+        num=${@:-7}
+        expac --timefmt=%s '%b\t%n' | sort -rn | head -n "$num" | awk '{print $2}'
+        ;;
     deps)
         pacman -Qi "$@" | grep -i '^depends on' | sed 's/[^:]\+: \(.*\)/\1/'
         ;;
