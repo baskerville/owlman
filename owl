@@ -404,6 +404,9 @@ case $action in
     uses)
         pacman -Qii "$@" | grep -i '^required by' | sed 's/[^:]\+: \(.*\)/\1/'
         ;;
+    check)
+        pacman -Qk "$@"
+        ;;
     binlist)
         pacman -Qlq "$@" | grep '/s\?bin/.'
         ;;

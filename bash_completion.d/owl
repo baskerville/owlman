@@ -34,14 +34,14 @@ _owl()
                 ;;
         esac
         if [[ $COMP_CWORD -eq 1 ]] ; then
-            local actions='update pull install downgrade remove download info deps uses page home search query list lsgrep binlist liblist etclist manlist doclist grep version repository description category owns cleanup last leftovers foreigns orphans'
+            local actions='update pull install downgrade check remove download info deps uses page home search query list lsgrep binlist liblist etclist manlist doclist grep version repository description category owns cleanup last leftovers foreigns orphans'
             COMPREPLY=( $(compgen -W "$actions" -- "$current_word") )
             return 0
         else
             local second_word=${COMP_WORDS[1]}
             local packages=""
             case $second_word in
-                list | lsgrep | binlist | liblist | etclist | manlist | doclist | grep | downgrade | remove | deps | uses)
+                list | lsgrep | binlist | liblist | etclist | manlist | doclist | grep | downgrade | check | remove | deps | uses)
                     [[ $second_word == grep && $COMP_CWORD -eq 2 ]] && return 0
                     [[ $second_word == lsgrep && $COMP_CWORD -eq 2 ]] && return 0
                     packages="$(_local_packages)"

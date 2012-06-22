@@ -88,6 +88,9 @@
         grep STRING PKG ...
             Grep STRING in all the files of all the given packages.
 
+        check PKG ...
+            Check that all files owned by the given packages exist.
+
         cleanup
             Remove unused repositories in the cache directory.
 
