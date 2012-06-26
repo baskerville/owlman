@@ -423,7 +423,7 @@ case $action in
         pacman -Qlq "$@" | grep '/share/doc/[^/]\+/.'
         ;;
     refresh)
-        pacman -Syy
+        sudorun pacman -Syy
         ;;
     cleanup)
         if [ ! -d "$XDG_AUR_HOME" ] ; then
