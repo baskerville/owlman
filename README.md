@@ -10,6 +10,9 @@
         owl <ACTION> [OPTIONS] [ARGUMENTS]
 
     ACTIONS
+        refresh
+            Update package list.
+
         update
             Update package list and upgrade all packages afterwards.
 
