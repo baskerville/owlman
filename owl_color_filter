@@ -19,7 +19,7 @@ OWL_INSTALLED_COLOR=${OWL_INSTALLED_COLOR:-cyan}
 cprint() {
     color=$1
     shift
-    if [ "$color" == "default" ] ; then
+    if [ "$color" = "default" ] ; then
         printf "%s" "$@"
         return
     fi
