@@ -397,7 +397,7 @@ case $action in
         ;;
     last)
         num=${@:-7}
-        awk '/\] installed / { match($0, /\] installed ([^ ]+)/, groups); print groups[1]; }' "$PACMAN_LOG" | tail -n "$num"
+        awk '/\] (installed|upgraded) / { match($0, /\] (installed|upgraded) ([^ ]+)/, groups); print groups[2]; }' "$PACMAN_LOG" | tail -n "$num"
         ;;
     deps)
         pacman -Qi "$@" | grep -i '^depends on' | sed 's/[^:]\+: \(.*\)/\1/'
