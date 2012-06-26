@@ -6,6 +6,7 @@ BROWSER=${BROWSER:-web_browser}
 OWL_MAX_URL=${OWL_MAX_URL:-16}
 OWL_SUDO_WARN=${OWL_SUDO_WARN:-true}
 OWL_IGNORE_OUTDATED=${OWL_IGNORE_OUTDATED:-false}
+PACMAN_LOG="/var/log/pacman.log"
 
 usage() {
     printf "usage: %s <action> [...]\n" "${0##*/}"
@@ -327,7 +328,7 @@ case $action in
         done
         ;;
     leftovers)
-        log_lo=$(grep -Eo '/[[:graph:]]+\.pac(new|orig|save)' /var/log/pacman.log | sort -u)
+        log_lo=$(grep -Eo '/[[:graph:]]+\.pac(new|orig|save)' "$PACMAN_LOG" | sort -u)
         for i in $log_lo
         do
             if [ -e "$i" ] ; then
@@ -396,7 +397,7 @@ case $action in
         ;;
     last)
         num=${@:-7}
-        expac --timefmt=%s '%b\t%n' | sort -rn | head -n "$num" | awk '{print $2}'
+        awk '/\] installed / { match($0, /\] installed ([^ ]+)/, groups); print groups[1]; }' "$PACMAN_LOG" | tail -n "$num"
         ;;
     deps)
         pacman -Qi "$@" | grep -i '^depends on' | sed 's/[^:]\+: \(.*\)/\1/'
