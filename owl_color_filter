@@ -9,8 +9,9 @@ OWL_EXTRA_COLOR=${OWL_EXTRA_COLOR:-blue}
 OWL_COMMUNITY_COLOR=${OWL_COMMUNITY_COLOR:-yellow}
 OWL_TESTING_COLOR=${OWL_TESTING_COLOR:-magenta}
 OWL_AUR_COLOR=${OWL_AUR_COLOR:-red}
+OWL_OTHER_COLOR=${OWL_OTHER_COLOR:-default}
 OWL_SEP_COLOR=${OWL_SEP_COLOR:-black}
-OWL_NAME_COLOR=${OWL_SEP_NAME:-bold}
+OWL_NAME_COLOR=${OWL_NAME_COLOR:-bold}
 OWL_VERSION_COLOR=${OWL_VERSION_COLOR:-black}
 OWL_OBSOLETE_COLOR=${OWL_OBSOLETE_COLOR:-red}
 OWL_INSTALLED_COLOR=${OWL_INSTALLED_COLOR:-cyan}
@@ -18,6 +19,10 @@ OWL_INSTALLED_COLOR=${OWL_INSTALLED_COLOR:-cyan}
 cprint() {
     color=$1
     shift
+    if [ "$color" == "default" ] ; then
+        printf "%s" "$@"
+        return
+    fi
     ci=0
     for c in $COLOR_NAMES; do
         [ "$color" = "$c" ] && break
@@ -54,6 +59,9 @@ rprint() {
             ;;
         aur)
             cprint "$OWL_AUR_COLOR" "$repo"
+            ;;
+        *)
+            cprint "$OWL_OTHER_COLOR" "$repo"
             ;;
     esac
     cprint "$OWL_SEP_COLOR" "$sep"

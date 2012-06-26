@@ -160,6 +160,8 @@ Color related variables (self-explained):
 
 - **OWL_AUR_COLOR**
 
+- **OWL_OTHER_COLOR**
+
 - **OWL_SEP_COLOR**
 
 - **OWL_NAME_COLOR**
@@ -170,7 +172,7 @@ Color related variables (self-explained):
 
 - **OWL_INSTALLED_COLOR**
 
-The valid values for the aforementioned variables are : black, red, green, yellow, blue, magenta, cyan, white, bold.
+The valid values for the aforementioned variables are : default, black, red, green, yellow, blue, magenta, cyan, white, bold.
 
 ## Dependencies
 
