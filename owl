@@ -409,19 +409,19 @@ case $action in
         pacman -Qk "$@"
         ;;
     binlist)
-        pacman -Qlq "$@" | grep '/s\?bin/.'
+        pacman -Qlq "$@" | grep '/s\?bin/.*[^/]$'
         ;;
     liblist)
-        pacman -Qlq "$@" | grep '/lib/.'
+        pacman -Qlq "$@" | grep '/lib/.*[^/]$'
         ;;
     etclist)
-        pacman -Qlq "$@" | grep '/etc/.'
+        pacman -Qlq "$@" | grep '/etc/.*[^/]$'
         ;;
     manlist)
-        pacman -Qlq "$@" | grep '/man./.'
+        pacman -Qlq "$@" | grep '/man./.*[^/]$'
         ;;
     doclist)
-        pacman -Qlq "$@" | grep '/share/doc/[^/]\+/.'
+        pacman -Qlq "$@" | grep '/share/doc/[^/]\+/.*[^/]$'
         ;;
     refresh)
         sudorun pacman -Syy
