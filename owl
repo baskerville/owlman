@@ -61,10 +61,35 @@ shift
 tmp_out=/tmp/owl.$$
 
 getinfos() {
+    extended_infos=0
+    pacopt=-Si
+    cowopt=-i
+    while getopts "e-:" opt ; do
+        case $opt in
+            e)
+                extended_infos=1
+                ;;
+            -)
+                case $OPTARG in
+                    extended)
+                        extended_infos=1
+                        ;;
+                esac
+                ;;
+        esac
+    done
+
+    shift $((OPTIND - 1))
+
+    if [ $extended_infos -eq 1 ] ; then
+        pacopt=-Sii
+        cowopt=-ii
+    fi
+
     while [ $# -gt 0 ] ; do
-        pacman -Si "$1" > "$tmp_out" 2>&1
+        pacman $pacopt "$1" > "$tmp_out" 2>&1
         if [ $? -ne 0 ] ; then
-            cower -i "$1" > "$tmp_out" 2>&1
+            cower $cowopt "$1" > "$tmp_out" 2>&1
             if [ $? -ne 0 ] ; then
                 missing_pkg "$1"
                 exit 1
@@ -400,10 +425,14 @@ case $action in
         awk '/\] (installed|upgraded) / { match($0, /\] (installed|upgraded) ([^ ]+)/, groups); print groups[2]; }' "$PACMAN_LOG" | tail -n "$num"
         ;;
     deps)
-        pacman -Qi "$@" | grep -i '^depends on' | sed 's/[^:]\+: \(.*\)/\1/'
+        cmd=getinfos
+        [ $local_only -eq 1 ] && cmd="pacman -Qi"
+        $cmd "$@" | grep -i '^depends on' | sed 's/[^:]\+: \(.*\)/\1/'
         ;;
     uses)
-        pacman -Qii "$@" | grep -i '^required by' | sed 's/[^:]\+: \(.*\)/\1/'
+        cmd="getinfos --extended"
+        [ $local_only -eq 1 ] && cmd="pacman -Qii"
+        $cmd "$@" | grep -i '^required by' | sed 's/[^:]\+: \(.*\)/\1/'
         ;;
     check)
         pacman -Qk "$@"
