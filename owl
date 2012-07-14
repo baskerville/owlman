@@ -280,7 +280,9 @@ case $action in
         pacman -Qo "$@"
         ;;
     version | repository | category | description)
-        getinfos "$@" | grep -i "^$action" | sed 's/[^:]\+: \(.*\)/\1/'
+        cmd=getinfos
+        [ $local_only -eq 1 ] && cmd="pacman -Qi"
+        $cmd "$@" | grep -i "^$action" | sed 's/[^:]\+: \(.*\)/\1/'
         ;;
     grep)
         pattern=$1

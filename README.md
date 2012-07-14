@@ -118,7 +118,7 @@ The actions on which each option applies are given between parenthesis.
 
 - **-o, --repo** -- restrain the action to the sync packages (*search*).
 
-- **-l, --local** -- restrain the action to the local packages (*info*, *deps*, *uses*).
+- **-l, --local** -- restrain the action to the local packages (*info*, *deps*, *uses*, *version*, *repository*, *category*, *description*).
 
 - **-i, --ignore-outdated** -- exclude outdated AUR packages from search results (*search*).
 
