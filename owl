@@ -277,7 +277,9 @@ case $action in
         fi
         ;;
     owns)
-        pacman -Qo "$@"
+        pacopt="-Qo"
+        [ $quiet_results -eq 1 ] && pacopt="-Qoq"
+        pacman $pacopt "$@"
         ;;
     version | repository | category | description)
         cmd=getinfos

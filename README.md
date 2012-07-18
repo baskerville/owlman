@@ -112,7 +112,7 @@
 ## Options
 The actions on which each option applies are given between parenthesis.
 
-- **-q, --quiet** -- provide quiet search results (*search*, *query*, *foreigns*, *orphans*).
+- **-q, --quiet** -- provide quiet search results (*search*, *query*, *foreigns*, *orphans*, *owns*).
 
 - **-a, --aur** -- restrain the action to the AUR packages (*update*, *search*).
 
