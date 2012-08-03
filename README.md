@@ -22,6 +22,9 @@
         install PKG ...
             Install the given packages.
 
+        upgrade PKG ...
+            Upgrade the given packages.
+
         downgrade PKG ...
             Downgrade the given packages.
 

@@ -333,7 +333,7 @@ case $action in
             cower -df -t "$XDG_AUR_HOME" "$@"
         fi
         ;;
-    install)
+    install | upgrade)
         while [ $# -gt 0 ] ; do
             pacman -Si "$1" > /dev/null 2>&1
             if [ $? -eq 0 ] ; then
