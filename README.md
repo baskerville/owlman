@@ -64,6 +64,9 @@
         category PKG ...
             Return the category of the given AUR packages.
 
+        license PKG ...
+            Return the license of the given packages.
+
         page PKG ...
             Opens the given packages AUR pages.
 

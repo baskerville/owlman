@@ -34,7 +34,7 @@ _owl()
                 ;;
         esac
         if [[ $COMP_CWORD -eq 1 ]] ; then
-            local actions='refresh update pull install upgrade downgrade check remove download info deps uses page home search query list lsgrep binlist liblist etclist manlist doclist grep version repository description category owns cleanup last leftovers foreigns orphans'
+            local actions='refresh update pull install upgrade downgrade check remove download info deps uses page home search query list lsgrep binlist liblist etclist manlist doclist grep version repository description category license owns cleanup last leftovers foreigns orphans'
             COMPREPLY=( $(compgen -W "$actions" -- "$current_word") )
             return 0
         else
@@ -46,7 +46,7 @@ _owl()
                     [[ $second_word == lsgrep && $COMP_CWORD -eq 2 ]] && return 0
                     packages="$(_local_packages)"
                     ;;
-                install | info | home | version | description)
+                install | info | home | version | description | license)
                     packages="$(_sync_packages "$current_word"; _aur_packages "$current_word")"
                     ;; 
                 download | page | category)
