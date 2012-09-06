@@ -317,7 +317,7 @@ case $action in
             : > "$tmp_out"
         fi
         ;;
-    remove)
+    remove | uninstall)
         if [ $rm_cascade -eq 1 ] ; then
             sudorun pacman -Rc "$@"
         elif [ $rm_recur -eq 1 ] ; then

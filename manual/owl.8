@@ -29,7 +29,7 @@ Upgrade the given packages.
 .BI "downgrade " "PKG " ...
 Downgrade the given packages.
 .TP
-.BI "remove " "PKG " ...
+.BI "remove | uninstall " "PKG " ...
 Remove the given packages.
 .TP
 .BI "download " "PKG " ...
@@ -152,10 +152,10 @@ Restrain the action to the local packages.
 .BR -i ,\  --ignore-outdated "  (search)"
 Exclude outdated AUR packages from search results.
 .TP
-.BR -s ,\  --recursive "  (remove)"
+.BR -s ,\  --recursive "  (remove, uninstall)"
 See pacman's remove options.
 .TP
-.BR -c ,\  --cascade "  (remove)"
+.BR -c ,\  --cascade "  (remove, uninstall)"
 See pacman's remove options.
 .TP
 .BR -d ,\  --dependencies "  (download)"
