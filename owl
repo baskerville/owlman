@@ -335,6 +335,16 @@ case $action in
         ;;
     install | upgrade)
         while [ $# -gt 0 ] ; do
+            if [ "$action" = "upgrade" ] ; then
+                pacman -Q "$1" > /dev/null 2>&1
+                if [ $? -ne 0 ] ; then
+                    magenta "==> "
+                    white "$1 "
+                    printf "%s\n" "is not installed"
+                    shift
+                    continue
+                fi
+            fi
             pacman -Si "$1" > /dev/null 2>&1
             if [ $? -eq 0 ] ; then
                 sudorun pacman -S "$1"
