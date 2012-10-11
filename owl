@@ -439,7 +439,7 @@ case $action in
         awk '/\] (installed|upgraded) / { match($0, /\] (installed|upgraded) ([^ ]+)/, groups); print groups[2]; }' "$PACMAN_LOG" | tail -n "$num"
         ;;
     deps)
-        cmd=getinfos
+        cmd="getinfos --extended"
         [ $local_only -eq 1 ] && cmd="pacman -Qi"
         $cmd "$@" | grep -i '^depends on' | sed 's/[^:]\+: \(.*\)/\1/'
         ;;
