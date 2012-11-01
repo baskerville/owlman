@@ -100,7 +100,7 @@
         check PKG ...
             Check that all files owned by the given packages exist.
 
-        cleanup
+        prune
             Remove unused repositories in the cache directory.
 
         last [NUM]

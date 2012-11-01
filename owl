@@ -474,7 +474,7 @@ case $action in
     refresh)
         sudorun pacman -Syy
         ;;
-    cleanup)
+    prune)
         if [ ! -d "$XDG_AUR_HOME" ] ; then
             printf "%s\n" "the cache directory is invalid" >&2
             exit 1
