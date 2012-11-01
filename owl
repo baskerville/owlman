@@ -6,6 +6,7 @@ BROWSER=${BROWSER:-web_browser}
 OWL_MAX_URL=${OWL_MAX_URL:-16}
 OWL_SUDO_WARN=${OWL_SUDO_WARN:-true}
 OWL_IGNORE_OUTDATED=${OWL_IGNORE_OUTDATED:-false}
+OWL_CLEAN_UP=${OWL_CLEAN_UP:-false}
 PACMAN_LOG="/var/log/pacman.log"
 
 usage() {
@@ -355,7 +356,11 @@ case $action in
                     list_of_programs=$(cat "$tmp_out" | tac | sed 's/.* \([^ ]\+\) downloaded.*/\1/') 
                     for pkgname in $list_of_programs; do
                         cd "$XDG_AUR_HOME/$pkgname"
-                        makepkg -ifs
+                        if [ "$OWL_CLEAN_UP" = "true" ] ; then
+                            makepkg -ifsc
+                        else
+                            makepkg -ifs
+                        fi
                         [ $? -ne 0 ] && exit 1
                     done
                     : > "$tmp_out"

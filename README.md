@@ -150,7 +150,9 @@ The following environment variables are handled:
 
 - **OWL_COLOR_RESULTS** -- colorize search results (default value: 'true').
 
-- **OWL_IGNORE_OUTDATED** -- wether to ignore outdated AUR results (default value: 'false').
+- **OWL_IGNORE_OUTDATED** -- whether to ignore outdated AUR results (default value: 'false').
+
+- **OWL_CLEAN_UP** -- whether to clean up after a non-git build 'makepkg -c flag' (default value: 'false').
 
 - **OWL_MAX_URL** -- the maximum number of URL this program is allowed to send to
   the BROWSER in one go.
