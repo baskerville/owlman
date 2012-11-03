@@ -46,6 +46,9 @@
         deps PKG ...
             Show dependencies for the given packages.
 
+        mdeps PKG ...
+            Show make dependencies for the given packages.
+
         uses PKG ...
             Show packages that specify the given packages as dependency.
 

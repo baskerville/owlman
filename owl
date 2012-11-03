@@ -459,6 +459,11 @@ case $action in
         [ $local_only -eq 1 ] && cmd="pacman -Qi"
         $cmd "$@" | grep -i '^depends on' | sed 's/[^:]\+: \(.*\)/\1/'
         ;;
+    mdeps)
+        cmd="getinfos --extended"
+        [ $local_only -eq 1 ] && cmd="pacman -Qi"
+        $cmd "$@" | grep -i '^makedepends' | sed 's/[^:]\+: \(.*\)/\1/'
+        ;;
     uses)
         cmd="getinfos --extended"
         [ $local_only -eq 1 ] && cmd="pacman -Qii"
