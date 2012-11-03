@@ -120,6 +120,8 @@ The actions on which each option applies are given between parenthesis.
 
 - **-q, --quiet** -- provide quiet search results (*search*, *query*, *foreigns*, *orphans*, *owns*).
 
+- **-e, --extended** -- provide extended informations (*info*).
+
 - **-a, --aur** -- restrain the action to the AUR packages (*update*, *search*).
 
 - **-o, --repo** -- restrain the action to the sync packages (*search*).

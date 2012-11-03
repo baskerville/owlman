@@ -103,6 +103,7 @@ getinfos() {
 }
 
 quiet_results=0
+extended_infos=0
 aur_only=0
 repo_only=0
 local_only=0
@@ -112,10 +113,13 @@ rm_cascade=0
 rm_recur=0
 crawl_homes=0
 
-while getopts "qaolidcsw-:" opt ; do
+while getopts "qeaolidcsw-:" opt ; do
     case $opt in
         q)
             quiet_results=1
+            ;;
+        e)
+            extended_infos=1
             ;;
         a)
             aur_only=1
@@ -145,6 +149,9 @@ while getopts "qaolidcsw-:" opt ; do
             case $OPTARG in
                 quiet)
                     quiet_results=1
+                    ;;
+                extended)
+                    extended_infos=1
                     ;;
                 aur)
                     aur_only=1
@@ -234,7 +241,11 @@ case $action in
         if [ $local_only -eq 1 ] ; then
             pacman -Qi "$@"
         else
-            getinfos "$@"
+            if [ $extended_infos -eq 1 ] ; then
+                getinfos --extended "$@"
+            else
+                getinfos "$@"
+            fi
         fi
         ;;
     list | lsgrep)
