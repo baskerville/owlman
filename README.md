@@ -127,7 +127,7 @@ The actions on which each option applies are given between parenthesis.
 
 - **-a, --aur** -- restrain the action to the AUR packages (*update*, *search*).
 
-- **-o, --repo** -- restrain the action to the sync packages (*search*).
+- **-o, --repo** -- restrain the action to the sync packages (*update*, *search*).
 
 - **-l, --local** -- restrain the action to the local packages (*info*, *deps*, *uses*, *version*, *repository*, *category*, *description*).
 
