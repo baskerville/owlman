@@ -45,6 +45,11 @@ warning() {
     white " $@"
 }
 
+info() {
+    green "==>"
+    white " $@"
+}
+
 sudorun() {
     if [ "$OWL_SUDO_WARN" = "true" ] ; then
         warning "Running sudo"
@@ -186,7 +191,14 @@ shift $(($OPTIND - 1))
 
 case $action in
     update)
-        if [ $aur_only -eq 1 ] ; then
+        if [ $aur_only -ne 1 ]; then
+            info "Checking sync repos for updates"
+            printf "\n"
+            sudorun pacman -Syu
+        fi
+        if [ $repo_only -ne 1 ] ; then
+            info "Checking AUR for updates"
+            printf "\n"
             cower -u | tee "$tmp_out"
             if [ -s "$tmp_out" ] ; then
                     printf "reinstall packages? [Y/n] "
@@ -197,9 +209,9 @@ case $action in
                             owl install $(cat "$tmp_out" | sed 's/^:: *\([^ ]\+\) .*$/\1/' | xargs)
                             ;;
                     esac
+            else
+                printf "%s\n" "No AUR updates found"
             fi
-        else
-            sudorun pacman -Syu
         fi
         ;;
     pull)
