@@ -115,21 +115,21 @@ The following environment variables are handled:
 
 - `OWL_AUR_HOME` — where should the downloaded AUR packages be stored?
 
-- `OWL_PACMAN_CACHE` — pacman's *CacheDir*.
+- `OWL_PACMAN_CACHE` — the value of the *CacheDir* variable in `/etc/pacman.conf`.
 
 - `OWL_BROWSER` — the browser used for opening the package's home pages.
 
 - `OWL_EDITOR` — the editor used for opening the package's PKGBUILDs.
 
-- `OWL_SUDO_WARN` — print a warning each time sudo is run (default value: 'true').
+- `OWL_SUDO_WARN` — print a warning each time sudo is run (default: *true*).
 
-- `OWL_COLOR_RESULTS` — colorize search results (default value: 'true').
+- `OWL_COLOR_RESULTS` — colorize search results (default: *true*).
 
-- `OWL_IGNORE_OUTDATED` — whether to ignore outdated AUR results (default value: 'false').
+- `OWL_IGNORE_OUTDATED` — whether to ignore outdated AUR results (default: *false*).
 
-- `OWL_CLEAN_UP` — whether to clean up after a non-git build 'makepkg -c flag' (default value: 'false').
+- `OWL_CLEAN_UP` — whether to pass the `-c` flag to `makepkg` (default: *false*).
 
-- `OWL_MAX_URL` — the maximum number of URL this program is allowed to send to the browser in one go.
+- `OWL_MAX_URL` — the maximum number of URL to send at once via `--crawl-homes`.
 
 ### Color Variables
 
