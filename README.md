@@ -24,7 +24,7 @@
 
 - `downgrade PKGNAME ...` — Downgrade the given packages.
 
-- `remove | uninstall PKGNAME ...` — Remove the given packages.
+- `remove|uninstall PKGNAME ...` — Remove the given packages.
 
 - `download PKGNAME ...` — Download the given packages from the AUR.
 
