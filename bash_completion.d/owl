@@ -34,7 +34,7 @@ _owl()
                 ;;
         esac
         if [[ $COMP_CWORD -eq 1 ]] ; then
-            local actions='refresh update pull install upgrade downgrade check remove uninstall download edit info deps mdeps uses page home search query list lsgrep binlist liblist etclist manlist doclist grep version repository description category license owns prune last leftovers foreigns orphans'
+            local actions='refresh update pull install upgrade downgrade check remove uninstall download abs edit info deps mdeps uses page home search query list lsgrep binlist liblist etclist manlist doclist grep version repository description category license owns prune last leftovers foreigns orphans'
             COMPREPLY=( $(compgen -W "$actions" -- "$current_word") )
             return 0
         else
@@ -52,7 +52,7 @@ _owl()
                 download | edit | page | category)
                     packages="$(_aur_packages "$current_word")"
                     ;; 
-                repository)
+                repository|abs)
                     packages="$(_sync_packages "$current_word")"
                     ;; 
                 owns)

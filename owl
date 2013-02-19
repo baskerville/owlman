@@ -1,14 +1,16 @@
 #! /bin/dash
 
 OWL_AUR_HOME=${OWL_AUR_HOME:-"$HOME/src/aur"}
+OWL_ABS_HOME=${OWL_AUR_HOME:-"$HOME/src/abs"}
+OWL_ABS_ROOT=${OWL_ABS_ROOT:-/var/abs}
 OWL_PACMAN_CACHE=${OWL_PACMAN_CACHE:-/var/cache/pacman/pkg}
+OWL_PACMAN_LOG=${OWL_PACMAN_LOG:-/var/log/pacman.log}
 OWL_BROWSER=${OWL_BROWSER:-${BROWSER:-curl}}
 OWL_EDITOR=${OWL_EDITOR:-${EDITOR:-vim}}
-OWL_MAX_URL=${OWL_MAX_URL:-16}
 OWL_SUDO_WARN=${OWL_SUDO_WARN:-true}
 OWL_IGNORE_OUTDATED=${OWL_IGNORE_OUTDATED:-false}
 OWL_CLEAN_UP=${OWL_CLEAN_UP:-false}
-PACMAN_LOG="/var/log/pacman.log"
+OWL_MAX_URL=${OWL_MAX_URL:-16}
 
 usage() {
     printf "usage: %s <action> [...]\n" "${0##*/}"
@@ -358,6 +360,13 @@ case $action in
             cower -df -t "$OWL_AUR_HOME" "$@"
         fi
         ;;
+    abs)
+        while [ $# -gt 0 ] ; do
+            repo=$(pacman -Si "$1" | grep -i "^repository" | sed 's/[^:]\+: \(.*\)/\1/')
+            [ -n "$repo" ] && sudo abs "$repo/$1" && cp -r "$OWL_ABS_ROOT/$repo/$1" "$OWL_ABS_HOME"
+            shift
+        done
+        ;;
     edit)
         pkgbuild="$OWL_AUR_HOME/$@/PKGBUILD"
         [ -e "$pkgbuild" ] && $OWL_EDITOR "$pkgbuild"
@@ -400,7 +409,7 @@ case $action in
         done
         ;;
     leftovers)
-        log_lo=$(grep -Eo '/[[:graph:]]+\.pac(new|orig|save)' "$PACMAN_LOG" | sort -u)
+        log_lo=$(grep -Eo '/[[:graph:]]+\.pac(new|orig|save)' "$OWL_PACMAN_LOG" | sort -u)
         for i in $log_lo
         do
             if [ -e "$i" ] ; then
@@ -469,7 +478,7 @@ case $action in
         ;;
     last)
         num=${@:-7}
-        awk '/\] (installed|upgraded) / { match($0, /\] (installed|upgraded) ([^ ]+)/, groups); print groups[2]; }' "$PACMAN_LOG" | tail -n "$num"
+        awk '/\] (installed|upgraded) / { match($0, /\] (installed|upgraded) ([^ ]+)/, groups); print groups[2]; }' "$OWL_PACMAN_LOG" | tail -n "$num"
         ;;
     deps)
         cmd="getinfos --extended"

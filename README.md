@@ -4,13 +4,11 @@
 
 `owl` is a `pacman` and `cower` wrapper focused on simplicity.
 
-## Usage
+## Synopsis
 
-### SYNOPSIS
+    owl ACTION [OPTIONS] [ARGUMENTS]
 
-    owl <ACTION> [OPTIONS] [ARGUMENTS]
-
-### ACTIONS
+## Actions and Arguments
 
 - `refresh` — Update package list.
 
@@ -18,63 +16,65 @@
 
 - `pull` — Grab changes for all the cached AUR packages.
 
-- `install PKGNAME ...` — Install the given packages.
+- `install PKG ...` — Install the given packages.
 
-- `upgrade PKGNAME ...` — Upgrade the given packages.
+- `upgrade PKG ...` — Upgrade the given packages.
 
-- `downgrade PKGNAME ...` — Downgrade the given packages.
+- `downgrade PKG ...` — Downgrade the given packages.
 
-- `remove|uninstall PKGNAME ...` — Remove the given packages.
+- `remove|uninstall PKG ...` — Remove the given packages.
 
-- `download PKGNAME ...` — Download the given packages from the AUR.
+- `download PKG ...` — Download the given packages source from the AUR.
 
-- `edit PKGNAME` — Edit the PKGBUILD for the given AUR package.
+- `abs PKG ...` — Download the given sync packages source via `abs`.
+
+- `edit PKG` — Edit the PKGBUILD for the given AUR package.
 
 - `search STRING` — Search for packages matching `STRING` in all databases.
 
 - `query STRING` — Search locally for packages matching `STRING`.
 
-- `info PKGNAME ...` — Retrieve informations on the given packages.
+- `info PKG ...` — Retrieve informations on the given packages.
 
-- `deps PKGNAME ...` — Show dependencies for the given packages.
+- `deps PKG ...` — Show dependencies for the given packages.
 
-- `mdeps PKGNAME ...` — Show make dependencies for the given packages.
+- `mdeps PKG ...` — Show make dependencies for the given packages.
 
-- `uses PKGNAME ...` — Show packages that specify the given packages as dependency.
+- `uses PKG ...` — Show packages that specify the given packages as dependency.
 
 - `owns FILE` — Return the name of the package owning the given file.
 
-- `version PKGNAME ...` — Return the version of the given packages.
+- `version PKG ...` — Return the version of the given packages.
 
-- `repository PKGNAME ...` — Return the repository of the given packages.
+- `repository PKG ...` — Return the repository of the given packages.
 
-- `description PKGNAME ...` — Return the description of the given packages.
+- `description PKG ...` — Return the description of the given packages.
 
-- `category PKGNAME ...` — Return the category of the given AUR packages.
+- `category PKG ...` — Return the category of the given AUR packages.
 
-- `license PKGNAME ...` — Return the license of the given packages.
+- `license PKG ...` — Return the license of the given packages.
 
-- `page PKGNAME ...` — Opens the given packages AUR pages.
+- `page PKG ...` — Opens the given packages AUR pages.
 
-- `home PKGNAME ...` — Opens the given packages home pages.
+- `home PKG ...` — Opens the given packages home pages.
 
-- `list PKGNAME ...` — List all the files owned by the given packages.
+- `list PKG ...` — List all the files owned by the given packages.
 
-- `lsgrep STRING PKGNAME ...` — Restrict the output of *list* to packages matching `STRING`.
+- `lsgrep STRING PKG ...` — Restrict the output of *list* to packages matching `STRING`.
 
-- `binlist PKGNAME ...` — Restrict the output of *list* to executable files.
+- `binlist PKG ...` — Restrict the output of *list* to executable files.
 
-- `liblist PKGNAME ...` — Restrict the output of *list* to library files.
+- `liblist PKG ...` — Restrict the output of *list* to library files.
 
-- `etclist PKGNAME ...` — Restrict the output of *list* to configuration files.
+- `etclist PKG ...` — Restrict the output of *list* to configuration files.
 
-- `manlist PKGNAME ...` — Restrict the output of *list* to manual files.
+- `manlist PKG ...` — Restrict the output of *list* to manual files.
 
-- `doclist PKGNAME ...` — Restrict the output of *list* to documentation files.
+- `doclist PKG ...` — Restrict the output of *list* to documentation files.
 
-- `grep STRING PKGNAME ...` — Grep `STRING` in all the files of all the given packages.
+- `grep STRING PKG ...` — Grep `STRING` in all the files of all the given packages.
 
-- `check PKGNAME ...` — Check that all files owned by the given packages exist.
+- `check PKG ...` — Check that all files owned by the given packages exist.
 
 - `prune` — Remove unused repositories in the cache directory.
 
@@ -115,7 +115,13 @@ The following environment variables are handled:
 
 - `OWL_AUR_HOME` — where should the downloaded AUR packages be stored?
 
+- `OWL_ABS_HOME` — where should the downloaded sync packages be stored?
+
+- `OWL_ABS_ROOT` — the value of the *ABSROOT* variable in `/etc/abs.conf`.
+
 - `OWL_PACMAN_CACHE` — the value of the *CacheDir* variable in `/etc/pacman.conf`.
+
+- `OWL_PACMAN_LOG` — the value of the *LogFile* variable in `/etc/pacman.conf`.
 
 - `OWL_BROWSER` — the browser used for opening the package's home pages.
 
@@ -161,4 +167,4 @@ The valid values for the aforementioned variables are : *default*, *black*, *red
 
 ## Dependencies
 
-`sudo`, `dash` (or any POSIX compliant shell), `cower`, `pacman` and `bash` (for package name completion).
+`sudo`, `dash` (or any POSIX compliant shell), `cower`, `pacman`, `abs` and `bash` (for package name completion).

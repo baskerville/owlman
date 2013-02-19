@@ -37,6 +37,9 @@ Remove the given packages.
 .BI "download " "PKG " ...
 Download the given packages from the AUR.
 .TP
+.BI "abs " "PKG " ...
+Download the given sync packages via abs.
+.TP
 .BI "edit " PKG
 Edit the PKGBUILD for the given AUR package.
 .TP
@@ -180,8 +183,17 @@ The following environment variables are used:
 .I OWL_AUR_HOME
 -- where should the downloaded AUR packages be stored?
 .IP \[bu]
+.I OWL_ABS_HOME
+-- where should the downloaded sync packages be stored?
+.IP \[bu]
+.I OWL_ABS_ROOT
+-- the value of the ABSROOT variable in /etc/abs.conf.
+.IP \[bu]
 .I OWL_PACMAN_CACHE
--- pacman's CacheDir.
+-- the value of the CacheDir variable in /etc/pacman.conf.
+.IP \[bu]
+.I OWL_PACMAN_LOG
+-- the value of the LogFile variable in /etc/pacman.conf.
 .IP \[bu]
 .I OWL_BROWSER
 -- the browser used for opening the packages home pages.
@@ -190,21 +202,23 @@ The following environment variables are used:
 -- the editor used for opening the package's PKGBUILDs.
 .IP \[bu]
 .I OWL_SUDO_WARN
--- print a warning each time sudo is run (default value: 'true').
+-- print a warning each time sudo is run (default: true).
 .IP \[bu]
 .I OWL_COLOR_RESULTS
--- colorize search results (default value: 'true').
+-- colorize search results (default: true).
 .IP \[bu]
 .I OWL_IGNORE_OUTDATED
--- whether to ignore outdated AUR results (default value: 'false').
+-- whether to ignore outdated AUR results (default: false).
 .IP \[bu]
 .I OWL_CLEAN_UP
--- whether to clean up after a non-git build 'makepkg -c flag' (default value: 'false').
+-- whether to pass the
+.B -c
+flag to
+.BR makepkg (8).
 .IP \[bu]
 .I OWL_MAX_URL
--- the maximum number of URL this program is allowed to send to the
-.I BROWSER
-in one go.
+-- the maximum number of URL to send at once via
+.BR --crawl-homes .
 .P
 .SS Color Variables
 .IP \[bu] 2
