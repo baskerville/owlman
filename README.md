@@ -1,4 +1,4 @@
-![owl](https://github.com/baskerville/owl/raw/master/preview/owl_logo.jpg)
+![owl](https://github.com/baskerville/owl/raw/master/logo/owl-logo.jpg)
 
 ## Description
 
