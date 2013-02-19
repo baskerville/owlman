@@ -363,7 +363,7 @@ case $action in
     abs)
         while [ $# -gt 0 ] ; do
             repo=$(pacman -Si "$1" | grep -i "^repository" | sed 's/[^:]\+: \(.*\)/\1/')
-            [ -n "$repo" ] && sudo abs "$repo/$1" && cp -r "$OWL_ABS_ROOT/$repo/$1" "$OWL_ABS_HOME"
+            [ -n "$repo" ] && sudo abs "$repo/$1" && cp -rv "$OWL_ABS_ROOT/$repo/$1" "$OWL_ABS_HOME"
             shift
         done
         ;;
