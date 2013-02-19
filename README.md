@@ -89,25 +89,25 @@
 ## Options
 The actions on which each option applies are given between parenthesis.
 
-- `-q, --quiet` — provide quiet search results (*search*, *query*, *foreigns*, *orphans*, *owns*).
+- `-q, --quiet` — provide quiet search results ( *search*, *query*, *foreigns*, *orphans*, *owns* ).
 
-- `-e, --extended` — provide extended informations (*info*).
+- `-e, --extended` — provide extended informations ( *info* ).
 
-- `-a, --aur` — restrain the action to the AUR packages (*update*, *search*).
+- `-a, --aur` — restrain the action to the AUR packages ( *update*, *search* ).
 
-- `-o, --repo` — restrain the action to the sync packages (*update*, *search*).
+- `-o, --repo` — restrain the action to the sync packages ( *update*, *search* ).
 
-- `-l, --local` — restrain the action to the local packages (*info*, *deps*, *uses*, *version*, *repository*, *category*, *description*).
+- `-l, --local` — restrain the action to the local packages ( *info*, *deps*, *uses*, *version*, *repository*, *category*, *description* ).
 
-- `-i, --ignore-outdated` — exclude outdated AUR packages from search results (*search*).
+- `-i, --ignore-outdated` — exclude outdated AUR packages from search results ( *search* ).
 
-- `-s, --recursive` — see pacman's remove options (*remove*).
+- `-s, --recursive` — see pacman's remove options ( *remove* ).
 
-- `-c, --cascade` — see pacman's remove options (*remove*).
+- `-c, --cascade` — see pacman's remove options ( *remove* ).
 
-- `-d, --dependencies` — fetch dependencies (*download*).
+- `-d, --dependencies` — fetch dependencies ( *download* ).
 
-- `-w, --crawl-homes` — open every pages of all the packages matching the argument (*home*).
+- `-w, --crawl-homes` — open every pages of all the packages matching the argument ( *home* ).
 
 ## Configuration
 
