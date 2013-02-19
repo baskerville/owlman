@@ -1,7 +1,7 @@
 #! /bin/dash
 
 OWL_AUR_HOME=${OWL_AUR_HOME:-"$HOME/src/aur"}
-OWL_ABS_HOME=${OWL_AUR_HOME:-"$HOME/src/abs"}
+OWL_ABS_HOME=${OWL_ABS_HOME:-"$HOME/src/abs"}
 OWL_ABS_ROOT=${OWL_ABS_ROOT:-/var/abs}
 OWL_PACMAN_CACHE=${OWL_PACMAN_CACHE:-/var/cache/pacman/pkg}
 OWL_PACMAN_LOG=${OWL_PACMAN_LOG:-/var/log/pacman.log}
