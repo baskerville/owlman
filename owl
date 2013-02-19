@@ -2,7 +2,8 @@
 
 XDG_AUR_HOME=${XDG_AUR_HOME:-"$HOME/src/aur"}
 XDG_PACMAN_CACHE=${XDG_PACMAN_CACHE:-/var/cache/pacman/pkg}
-BROWSER=${BROWSER:-web_browser}
+BROWSER=${BROWSER:-curl}
+EDITOR=${EDITOR:-vim}
 OWL_MAX_URL=${OWL_MAX_URL:-16}
 OWL_SUDO_WARN=${OWL_SUDO_WARN:-true}
 OWL_IGNORE_OUTDATED=${OWL_IGNORE_OUTDATED:-false}
@@ -356,6 +357,10 @@ case $action in
         else
             cower -df -t "$XDG_AUR_HOME" "$@"
         fi
+        ;;
+    edit)
+        pkgbuild="$XDG_AUR_HOME/$@/PKGBUILD"
+        [ -e "$pkgbuild" ] && $EDITOR "$pkgbuild"
         ;;
     install | upgrade)
         while [ $# -gt 0 ] ; do

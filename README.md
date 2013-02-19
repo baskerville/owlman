@@ -34,6 +34,9 @@
         download PKG ...
             Download the given packages from the AUR.
 
+        edit PKG
+            Edit the PKGBUILD for the given AUR package.
+
         search STRING
             Search for packages matching STRING in all databases.
 
