@@ -29,7 +29,9 @@ Upgrade the given packages.
 .BI "downgrade " "PKG " ...
 Downgrade the given packages.
 .TP
-.BI "remove | uninstall " "PKG " ...
+.B remove
+.TQ
+.BI "uninstall " "PKG " ...
 Remove the given packages.
 .TP
 .BI "download " "PKG " ...
@@ -48,7 +50,7 @@ Search locally for packages matching
 .IR STRING .
 .TP
 .BI "info " "PKG " ...
-Retreive informations on the given packages.
+Retrieve informations on the given packages.
 .TP
 .BI "deps " "PKG " ...
 Show dependencies for the given packages.
@@ -175,14 +177,17 @@ Open every pages of all the packages matching the argument.
 .SH CONFIGURATION
 The following environment variables are used:
 .IP \[bu] 2
-.I XDG_AUR_HOME
+.I OWL_AUR_HOME
 -- where should the downloaded AUR packages be stored?
 .IP \[bu]
-.I XDG_PACMAN_CACHE
+.I OWL_PACMAN_CACHE
 -- pacman's CacheDir.
 .IP \[bu]
-.I BROWSER
+.I OWL_BROWSER
 -- the browser used for opening the packages home pages.
+.IP \[bu]
+.I OWL_EDITOR
+-- the editor used for opening the package's PKGBUILDs.
 .IP \[bu]
 .I OWL_SUDO_WARN
 -- print a warning each time sudo is run (default value: 'true').
@@ -201,7 +206,7 @@ The following environment variables are used:
 .I BROWSER
 in one go.
 .P
-Color related variables (self-explained):
+.SS Color Variables
 .IP \[bu] 2
 .I OWL_LOCAL_COLOR
 .IP \[bu]
@@ -231,12 +236,13 @@ The valid values for the aforementioned variables are:
 
 .IR default ,\  black ,\  red ,\  green ,\  yellow ,\  blue ,\  magenta ,\  cyan ,\  white ,\  bold .
 .SH AUTHOR
-.EX
-Bastien Dejean <baskerville a lavabit o com>
-.EE
-.SH HOMEPAGE
-.TP
-https://github.com/baskerville/owl
+.MT baskerville@lavabit.com
+Bastien Dejean
+.ME
+.SH LINKS
+.UR https://github.com/baskerville/owl
+Homepage
+.UE
 .SH SEE ALSO
 .BR pacman (8),
 .BR makepkg (8),

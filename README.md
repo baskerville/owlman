@@ -60,17 +60,17 @@
 
 - `list PKGNAME ...` — List all the files owned by the given packages.
 
-- `lsgrep STRING PKGNAME ...` — Restrict the output of `list` to packages matching `STRING`.
+- `lsgrep STRING PKGNAME ...` — Restrict the output of *list* to packages matching `STRING`.
 
-- `binlist PKGNAME ...` — Restrict the output of `list` to executable files.
+- `binlist PKGNAME ...` — Restrict the output of *list* to executable files.
 
-- `liblist PKGNAME ...` — Restrict the output of `list` to library files.
+- `liblist PKGNAME ...` — Restrict the output of *list* to library files.
 
-- `etclist PKGNAME ...` — Restrict the output of `list` to configuration files.
+- `etclist PKGNAME ...` — Restrict the output of *list* to configuration files.
 
-- `manlist PKGNAME ...` — Restrict the output of `list` to manual files.
+- `manlist PKGNAME ...` — Restrict the output of *list* to manual files.
 
-- `doclist PKGNAME ...` — Restrict the output of `list` to documentation files.
+- `doclist PKGNAME ...` — Restrict the output of *list* to documentation files.
 
 - `grep STRING PKGNAME ...` — Grep `STRING` in all the files of all the given packages.
 
@@ -89,72 +89,73 @@
 ## Options
 The actions on which each option applies are given between parenthesis.
 
-- **-q, --quiet** -- provide quiet search results (*search*, *query*, *foreigns*, *orphans*, *owns*).
+- `-q, --quiet` — provide quiet search results (*search*, *query*, *foreigns*, *orphans*, *owns*).
 
-- **-e, --extended** -- provide extended informations (*info*).
+- `-e, --extended` — provide extended informations (*info*).
 
-- **-a, --aur** -- restrain the action to the AUR packages (*update*, *search*).
+- `-a, --aur` — restrain the action to the AUR packages (*update*, *search*).
 
-- **-o, --repo** -- restrain the action to the sync packages (*update*, *search*).
+- `-o, --repo` — restrain the action to the sync packages (*update*, *search*).
 
-- **-l, --local** -- restrain the action to the local packages (*info*, *deps*, *uses*, *version*, *repository*, *category*, *description*).
+- `-l, --local` — restrain the action to the local packages (*info*, *deps*, *uses*, *version*, *repository*, *category*, *description*).
 
-- **-i, --ignore-outdated** -- exclude outdated AUR packages from search results (*search*).
+- `-i, --ignore-outdated` — exclude outdated AUR packages from search results (*search*).
 
-- **-s, --recursive** -- see pacman's remove options (*remove*).
+- `-s, --recursive` — see pacman's remove options (*remove*).
 
-- **-c, --cascade** -- see pacman's remove options (*remove*).
+- `-c, --cascade` — see pacman's remove options (*remove*).
 
-- **-d, --dependencies** -- fetch dependencies (*download*).
+- `-d, --dependencies` — fetch dependencies (*download*).
 
-- **-w, --crawl-homes** -- open every pages of all the packages matching the argument (*home*).
+- `-w, --crawl-homes` — open every pages of all the packages matching the argument (*home*).
 
 ## Configuration
 
 The following environment variables are handled:
 
-- **XDG_AUR_HOME** -- where should the downloaded AUR packages be stored?
+- `OWL_AUR_HOME` — where should the downloaded AUR packages be stored?
 
-- **XDG_PACMAN_CACHE** -- pacman's *CacheDir*.
+- `OWL_PACMAN_CACHE` — pacman's *CacheDir*.
 
-- **BROWSER** -- the browser used for opening the package's home pages.
+- `OWL_BROWSER` — the browser used for opening the package's home pages.
 
-- **OWL_SUDO_WARN** -- print a warning each time sudo is run (default value: 'true').
+- `OWL_EDITOR` — the editor used for opening the package's PKGBUILDs.
 
-- **OWL_COLOR_RESULTS** -- colorize search results (default value: 'true').
+- `OWL_SUDO_WARN` — print a warning each time sudo is run (default value: 'true').
 
-- **OWL_IGNORE_OUTDATED** -- whether to ignore outdated AUR results (default value: 'false').
+- `OWL_COLOR_RESULTS` — colorize search results (default value: 'true').
 
-- **OWL_CLEAN_UP** -- whether to clean up after a non-git build 'makepkg -c flag' (default value: 'false').
+- `OWL_IGNORE_OUTDATED` — whether to ignore outdated AUR results (default value: 'false').
 
-- **OWL_MAX_URL** -- the maximum number of URL this program is allowed to send to
-  the BROWSER in one go.
+- `OWL_CLEAN_UP` — whether to clean up after a non-git build 'makepkg -c flag' (default value: 'false').
+
+- `OWL_MAX_URL` — the maximum number of URL this program is allowed to send to the browser in one go.
 
 ### Color Variables
 
-- **OWL_LOCAL_COLOR**
+- `OWL_LOCAL_COLOR`
 
-- **OWL_CORE_COLOR**
+- `OWL_CORE_COLOR`
 
-- **OWL_EXTRA_COLOR**
+- `OWL_EXTRA_COLOR`
 
-- **OWL_COMMUNITY_COLOR**
+- `OWL_COMMUNITY_COLOR`
 
-- **OWL_TESTING_COLOR**
+- `OWL_TESTING_COLOR`
 
-- **OWL_AUR_COLOR**
+- `OWL_AUR_COLOR`
 
-- **OWL_OTHER_COLOR**
+- `OWL_OTHER_COLOR`
 
-- **OWL_SEP_COLOR**
+- `OWL_SEP_COLOR`
 
-- **OWL_NAME_COLOR**
+- `OWL_NAME_COLOR`
 
-- **OWL_VERSION_COLOR**
+- `OWL_VERSION_COLOR`
 
-- **OWL_OBSOLETE_COLOR**
+- `OWL_OBSOLETE_COLOR`
 
-- **OWL_INSTALLED_COLOR**
+- `OWL_INSTALLED_COLOR`
 
 The valid values for the aforementioned variables are : *default*, *black*, *red*, *green*, *yellow*, *blue*, *magenta*, *cyan*, *white*, *bold*.
 

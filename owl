@@ -1,9 +1,9 @@
 #! /bin/dash
 
-XDG_AUR_HOME=${XDG_AUR_HOME:-"$HOME/src/aur"}
-XDG_PACMAN_CACHE=${XDG_PACMAN_CACHE:-/var/cache/pacman/pkg}
-BROWSER=${BROWSER:-curl}
-EDITOR=${EDITOR:-vim}
+OWL_AUR_HOME=${OWL_AUR_HOME:-"$HOME/src/aur"}
+OWL_PACMAN_CACHE=${OWL_PACMAN_CACHE:-/var/cache/pacman/pkg}
+OWL_BROWSER=${OWL_BROWSER:-${BROWSER:-curl}}
+OWL_EDITOR=${OWL_EDITOR:-${EDITOR:-vim}}
 OWL_MAX_URL=${OWL_MAX_URL:-16}
 OWL_SUDO_WARN=${OWL_SUDO_WARN:-true}
 OWL_IGNORE_OUTDATED=${OWL_IGNORE_OUTDATED:-false}
@@ -216,10 +216,10 @@ case $action in
         fi
         ;;
     pull)
-        repos=$(find "$XDG_AUR_HOME" -mindepth 3 -maxdepth 3 -type d -regex ".*/src/[^/]+" | grep -v '\-build$')
+        repos=$(find "$OWL_AUR_HOME" -mindepth 3 -maxdepth 3 -type d -regex ".*/src/[^/]+" | grep -v '\-build$')
         for repo in $repos ; do
             [ ! -e "$repo" ] && continue
-            from_home=${repo#"$XDG_AUR_HOME/"}
+            from_home=${repo#"$OWL_AUR_HOME/"}
             pkgname=${from_home%%/*}
             pacman -Q "$pkgname" > /dev/null 2>&1
             if [ $? -eq 1 ] ; then
@@ -230,7 +230,7 @@ case $action in
                 read answer
                 case "$answer" in
                     y|Y|yes|Yes)
-                        rm -vrf "$XDG_AUR_HOME/$pkgname"
+                        rm -vrf "$OWL_AUR_HOME/$pkgname"
                         ;;
                 esac
                 continue
@@ -243,7 +243,7 @@ case $action in
                 [ -z "$answer" ] && answer="yes"
                 case "$answer" in
                     y|yes|Y|Yes)
-                        cd "$XDG_AUR_HOME/$pkgname"
+                        cd "$OWL_AUR_HOME/$pkgname"
                         makepkg -ifs
                         ;;
                 esac
@@ -320,7 +320,7 @@ case $action in
         fi
         ;;
     downgrade)
-        if [ ! -d "$XDG_PACMAN_CACHE" ] ; then
+        if [ ! -d "$OWL_PACMAN_CACHE" ] ; then
             printf "%s\n" "pacman's cache directory doesn't exist" >&2
             exit 1
         fi
@@ -331,7 +331,7 @@ case $action in
                 missing_pkg "$pkgname"
                 exit 1
             fi
-            previous_pkg=$(ls -1tc "$XDG_PACMAN_CACHE/$pkgname"-[0-9]* 2> /dev/null | head -n 2 | tail -n 1)
+            previous_pkg=$(ls -1tc "$OWL_PACMAN_CACHE/$pkgname"-[0-9]* 2> /dev/null | head -n 2 | tail -n 1)
             if [ -e "$previous_pkg" ] ; then
                 printf "%s\n" "$previous_pkg" >> "$tmp_out"
             fi
@@ -353,14 +353,14 @@ case $action in
         ;;
     download)
         if [ $fetch_deps -eq 1 ] ; then
-            cower -ddf -t "$XDG_AUR_HOME" "$@"
+            cower -ddf -t "$OWL_AUR_HOME" "$@"
         else
-            cower -df -t "$XDG_AUR_HOME" "$@"
+            cower -df -t "$OWL_AUR_HOME" "$@"
         fi
         ;;
     edit)
-        pkgbuild="$XDG_AUR_HOME/$@/PKGBUILD"
-        [ -e "$pkgbuild" ] && $EDITOR "$pkgbuild"
+        pkgbuild="$OWL_AUR_HOME/$@/PKGBUILD"
+        [ -e "$pkgbuild" ] && $OWL_EDITOR "$pkgbuild"
         ;;
     install | upgrade)
         while [ $# -gt 0 ] ; do
@@ -379,11 +379,11 @@ case $action in
                 sudorun pacman -S "$1"
                 [ $? -ne 0 ] && exit 1
             else
-                cower -ddf -t "$XDG_AUR_HOME" "$1" | tee "$tmp_out"
+                cower -ddf -t "$OWL_AUR_HOME" "$1" | tee "$tmp_out"
                 if [ -s "$tmp_out" ] ; then
                     list_of_programs=$(cat "$tmp_out" | tac | sed 's/.* \([^ ]\+\) downloaded.*/\1/') 
                     for pkgname in $list_of_programs; do
-                        cd "$XDG_AUR_HOME/$pkgname"
+                        cd "$OWL_AUR_HOME/$pkgname"
                         if [ "$OWL_CLEAN_UP" = "true" ] ; then
                             makepkg -ifsc
                         else
@@ -428,7 +428,7 @@ case $action in
         while [ $# -gt 0 ] ; do
             uri=$(getinfos "$1" | grep -m 1 -o 'https://aur.*') > /dev/null 2>&1
             if [ -n "$uri" ] ; then
-                $BROWSER $uri > /dev/null 2>&1
+                $OWL_BROWSER $uri > /dev/null 2>&1
             else
                 printf "package '%s' is not in AUR\n" "$1" >&2
             fi
@@ -447,7 +447,7 @@ case $action in
             uri=$(getinfos "$1" | grep -m 1 -o 'https\?://.*')
             if [ -n "$uri" ] ; then
                 printf "%s: %s\n" "$1" "$uri"
-                $BROWSER $uri > /dev/null 2>&1
+                $OWL_BROWSER $uri > /dev/null 2>&1
                 counter=$((counter+1))
             fi
             shift
@@ -508,11 +508,11 @@ case $action in
         sudorun pacman -Syy
         ;;
     prune)
-        if [ ! -d "$XDG_AUR_HOME" ] ; then
+        if [ ! -d "$OWL_AUR_HOME" ] ; then
             printf "%s\n" "the cache directory is invalid" >&2
             exit 1
         fi
-        cd "$XDG_AUR_HOME"
+        cd "$OWL_AUR_HOME"
         for pkgname in * ; do
             if [ -d "$pkgname" ] ; then
                 pacman -Q "$pkgname" > /dev/null 2>&1
