@@ -6,120 +6,85 @@
 
 ## Usage
 
-    SYNOPSIS
-        owl <ACTION> [OPTIONS] [ARGUMENTS]
+### SYNOPSIS
 
-    ACTIONS
-        refresh
-            Update package list.
+    owl <ACTION> [OPTIONS] [ARGUMENTS]
 
-        update
-            Update package list and upgrade all packages afterwards.
+### ACTIONS
 
-        pull
-            Grab changes for all the cached AUR packages.
+- `refresh` — Update package list.
 
-        install PKG ...
-            Install the given packages.
+- `update` — Update package list and upgrade all packages afterwards.
 
-        upgrade PKG ...
-            Upgrade the given packages.
+- `pull` — Grab changes for all the cached AUR packages.
 
-        downgrade PKG ...
-            Downgrade the given packages.
+- `install PKGNAME ...` — Install the given packages.
 
-        remove | uninstall PKG ...
-            Remove the given packages.
+- `upgrade PKGNAME ...` — Upgrade the given packages.
 
-        download PKG ...
-            Download the given packages from the AUR.
+- `downgrade PKGNAME ...` — Downgrade the given packages.
 
-        edit PKG
-            Edit the PKGBUILD for the given AUR package.
+- `remove | uninstall PKGNAME ...` — Remove the given packages.
 
-        search STRING
-            Search for packages matching STRING in all databases.
+- `download PKGNAME ...` — Download the given packages from the AUR.
 
-        query STRING
-            Search locally for packages matching STRING.
+- `edit PKGNAME` — Edit the PKGBUILD for the given AUR package.
 
-        info PKG ...
-            Retreive informations on the given packages.
+- `search STRING` — Search for packages matching `STRING` in all databases.
 
-        deps PKG ...
-            Show dependencies for the given packages.
+- `query STRING` — Search locally for packages matching `STRING`.
 
-        mdeps PKG ...
-            Show make dependencies for the given packages.
+- `info PKGNAME ...` — Retrieve informations on the given packages.
 
-        uses PKG ...
-            Show packages that specify the given packages as dependency.
+- `deps PKGNAME ...` — Show dependencies for the given packages.
 
-        owns FILE
-            Return the name of the package owning the given file.
+- `mdeps PKGNAME ...` — Show make dependencies for the given packages.
 
-        version PKG ...
-            Return the version of the given packages.
+- `uses PKGNAME ...` — Show packages that specify the given packages as dependency.
 
-        repository PKG ...
-            Return the repository of the given packages.
+- `owns FILE` — Return the name of the package owning the given file.
 
-        description PKG ...
-            Return the description of the given packages.
+- `version PKGNAME ...` — Return the version of the given packages.
 
-        category PKG ...
-            Return the category of the given AUR packages.
+- `repository PKGNAME ...` — Return the repository of the given packages.
 
-        license PKG ...
-            Return the license of the given packages.
+- `description PKGNAME ...` — Return the description of the given packages.
 
-        page PKG ...
-            Opens the given packages AUR pages.
+- `category PKGNAME ...` — Return the category of the given AUR packages.
 
-        home PKG ...
-            Opens the given packages home pages.
+- `license PKGNAME ...` — Return the license of the given packages.
 
-        list PKG ...
-            List all the files owned by the given packages.
+- `page PKGNAME ...` — Opens the given packages AUR pages.
 
-        lsgrep STRING PKG ...
-            Restrict the output of 'list' to packages matching STRING.
+- `home PKGNAME ...` — Opens the given packages home pages.
 
-        binlist PKG ...
-            Restrict the output of 'list' to executable files.
+- `list PKGNAME ...` — List all the files owned by the given packages.
 
-        liblist PKG ...
-            Restrict the output of 'list' to library files.
+- `lsgrep STRING PKGNAME ...` — Restrict the output of `list` to packages matching `STRING`.
 
-        etclist PKG ...
-            Restrict the output of 'list' to configuration files.
+- `binlist PKGNAME ...` — Restrict the output of `list` to executable files.
 
-        manlist PKG ...
-            Restrict the output of 'list' to manual files.
+- `liblist PKGNAME ...` — Restrict the output of `list` to library files.
 
-        doclist PKG ...
-            Restrict the output of 'list' to documentation files.
+- `etclist PKGNAME ...` — Restrict the output of `list` to configuration files.
 
-        grep STRING PKG ...
-            Grep STRING in all the files of all the given packages.
+- `manlist PKGNAME ...` — Restrict the output of `list` to manual files.
 
-        check PKG ...
-            Check that all files owned by the given packages exist.
+- `doclist PKGNAME ...` — Restrict the output of `list` to documentation files.
 
-        prune
-            Remove unused repositories in the cache directory.
+- `grep STRING PKGNAME ...` — Grep `STRING` in all the files of all the given packages.
 
-        last [NUM]
-            Show the last NUM (7 if omitted) installed packages.
+- `check PKGNAME ...` — Check that all files owned by the given packages exist.
 
-        leftovers
-            Find, merge and remove 'pac{new,orig,save}' files.
+- `prune` — Remove unused repositories in the cache directory.
 
-        foreigns
-            Show installed packages not found in the sync databases.
+- `last [NUM]` — Show the last `NUM` (7 if omitted) installed packages.
 
-        orphans
-            Show packages not listed as a dependency by any package.
+- `leftovers` — Find, merge and remove `pac{new,orig,save}` files.
+
+- `foreigns` — Show installed packages not found in the sync databases.
+
+- `orphans` — Show packages not listed as a dependency by any package.
 
 ## Options
 The actions on which each option applies are given between parenthesis.
@@ -165,7 +130,7 @@ The following environment variables are handled:
 - **OWL_MAX_URL** -- the maximum number of URL this program is allowed to send to
   the BROWSER in one go.
 
-Color related variables (self-explained):
+### Color Variables
 
 - **OWL_LOCAL_COLOR**
 
@@ -191,8 +156,8 @@ Color related variables (self-explained):
 
 - **OWL_INSTALLED_COLOR**
 
-The valid values for the aforementioned variables are : default, black, red, green, yellow, blue, magenta, cyan, white, bold.
+The valid values for the aforementioned variables are : *default*, *black*, *red*, *green*, *yellow*, *blue*, *magenta*, *cyan*, *white*, *bold*.
 
 ## Dependencies
 
-`sudo`, `dash` (or any POSIX shell), `cower`, `pacman` and `bash` (for package name completion).
+`sudo`, `dash` (or any POSIX compliant shell), `cower`, `pacman` and `bash` (for package name completion).
