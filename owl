@@ -13,7 +13,7 @@ OWL_CLEAN_UP=${OWL_CLEAN_UP:-false}
 OWL_MAX_URL=${OWL_MAX_URL:-16}
 
 usage() {
-    printf "usage: %s <action> [...]\n" "${0##*/}"
+    printf "Usage: %s <action> [...]\n" "${0##*/}"
     exit 1
 }
 
@@ -40,7 +40,7 @@ magenta() {
 }
 
 missing_pkg() {
-    printf "package '%s' was not found\n" "$@" >&2
+    printf "Package '%s' was not found.\n" "$@" >&2
 } 
 
 warning() {
@@ -55,7 +55,7 @@ info() {
 
 sudorun() {
     if [ "$OWL_SUDO_WARN" = "true" ] ; then
-        warning "Running sudo"
+        warning "Running sudo."
         printf "\n"
     fi
     sudo $@
@@ -195,16 +195,16 @@ shift $(($OPTIND - 1))
 case $action in
     update)
         if [ $aur_only -ne 1 ]; then
-            info "Checking sync repos for updates"
+            info "Checking sync repos for updates."
             printf "\n"
             sudorun pacman -Syu
         fi
         if [ $repo_only -ne 1 ] ; then
-            info "Checking AUR for updates"
+            info "Checking AUR for updates."
             printf "\n"
             cower -u | tee "$tmp_out"
             if [ -s "$tmp_out" ] ; then
-                    printf "reinstall packages? [Y/n] "
+                    printf "Reinstall packages? [Y/n] "
                     read answer
                     [ -z "$answer" ] && answer='yes'
                     case $answer in 
@@ -213,7 +213,7 @@ case $action in
                             ;;
                     esac
             else
-                printf "%s\n" "No AUR updates found"
+                printf "%s\n" "No AUR updates found."
             fi
         fi
         ;;
@@ -227,8 +227,8 @@ case $action in
             if [ $? -eq 1 ] ; then
                 magenta "==> "
                 white "$pkgname "
-                printf "%s\n" "is not installed"
-                printf "%s" "remove it from the cache [y/N]? "
+                printf "%s\n" "is not installed."
+                printf "%s" "Remove it from the cache [y/N]? "
                 read answer
                 case "$answer" in
                     y|Y|yes|Yes)
@@ -240,7 +240,7 @@ case $action in
             green "$pkgname"
             printf "\n"
             if owl_update_repository "$repo" ; then
-                printf "reinstall package '%s' [Y/n]? " "$pkgname"
+                printf "Reinstall package '%s' [Y/n]? " "$pkgname"
                 read answer
                 [ -z "$answer" ] && answer="yes"
                 case "$answer" in
@@ -323,7 +323,7 @@ case $action in
         ;;
     downgrade)
         if [ ! -d "$OWL_PACMAN_CACHE" ] ; then
-            printf "%s\n" "pacman's cache directory doesn't exist" >&2
+            printf "%s\n" "Pacman's cache directory doesn't exist." >&2
             exit 1
         fi
         while [ $# -gt 0 ] ; do
@@ -378,7 +378,7 @@ case $action in
                 if [ $? -ne 0 ] ; then
                     magenta "==> "
                     white "$1 "
-                    printf "%s\n" "is not installed"
+                    printf "%s\n" "is not installed."
                     shift
                     continue
                 fi
@@ -415,7 +415,7 @@ case $action in
             if [ -e "$i" ] ; then
                 ext=${i##*.}
                 if [ "$ext" != "pacsave" ] ; then
-                    printf "merge '%s' [y/N]? " "$i"
+                    printf "Merge '%s' [y/N]? " "$i"
                     read answer
                     case "$answer" in
                         y|yes|Y|Yes)
@@ -423,7 +423,7 @@ case $action in
                             ;;
                     esac
                 fi
-                printf "remove '%s' [y/N]? " "$i"
+                printf "Remove '%s' [y/N]? " "$i"
                 read answer
                 case "$answer" in
                     y|yes|Y|Yes)
@@ -439,7 +439,7 @@ case $action in
             if [ -n "$uri" ] ; then
                 $OWL_BROWSER $uri > /dev/null 2>&1
             else
-                printf "package '%s' is not in AUR\n" "$1" >&2
+                printf "Package '%s' is not in AUR.\n" "$1" >&2
             fi
             shift
         done
@@ -461,7 +461,7 @@ case $action in
             fi
             shift
             if [ $((counter % OWL_MAX_URL)) -eq 0 -a $counter -gt 0 -a $# -gt 0 ] ; then
-                printf "continue [Y/n] (%i remaining)? " "$#"
+                printf "Continue [Y/n] (%i remaining)? " "$#"
                 read answer
                 [ -z "$answer" ] && answer='y'
 
@@ -518,7 +518,7 @@ case $action in
         ;;
     prune)
         if [ ! -d "$OWL_AUR_HOME" ] ; then
-            printf "%s\n" "the cache directory is invalid" >&2
+            printf "%s\n" "The cache directory is invalid." >&2
             exit 1
         fi
         cd "$OWL_AUR_HOME"
@@ -544,7 +544,7 @@ case $action in
         fi
         ;;
     *)
-        printf "action '%s' is unknown\n" "$action" >&2
+        printf "Unknown action: '%s'.\n" "$action" >&2
         exit 1
         ;;
 esac
