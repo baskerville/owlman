@@ -129,7 +129,7 @@ The following environment variables are handled:
 
 - `OWL_SUDO_WARN` — print a warning each time sudo is run (default: *true*).
 
-- `OWL_COLOR_RESULTS` — colorize search results (default: *true*).
+- `OWL_COLORIZE_RESULTS` — colorize search results (default: *true*).
 
 - `OWL_IGNORE_OUTDATED` — whether to ignore outdated AUR results (default: *false*).
 

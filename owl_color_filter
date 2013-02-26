@@ -1,7 +1,7 @@
 #! /bin/dash
 
 COLOR_NAMES="black red green yellow blue magenta cyan white NA bold"
-OWL_COLOR_RESULTS=${OWL_COLOR_RESULTS:-true}
+OWL_COLORIZE_RESULTS=${OWL_COLORIZE_RESULTS:-true}
 
 OWL_LOCAL_COLOR=${OWL_LOCAL_COLOR:-cyan}
 OWL_CORE_COLOR=${OWL_CORE_COLOR:-green}
@@ -71,7 +71,7 @@ rprint() {
     printf "%s" "$end"
 }
 
-if [ -t 1 -a "$OWL_COLOR_RESULTS" = "true" ] ; then
+if [ -t 1 -a "$OWL_COLORIZE_RESULTS" = "true" ] ; then
     # the following line allows to read a line as if
     OLD_IFS="$IFS"
     IFS=""
