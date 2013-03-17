@@ -2,6 +2,7 @@
 
 OWL_AUR_HOME=${OWL_AUR_HOME:-"$HOME/src/aur"}
 OWL_ABS_HOME=${OWL_ABS_HOME:-"$HOME/src/abs"}
+OWL_CHANGELOG_DB=${OWL_CHANGELOG_DB:-"$XDG_DATA_HOME/changelog_db"}
 OWL_ABS_ROOT=${OWL_ABS_ROOT:-/var/abs}
 OWL_PACMAN_CACHE=${OWL_PACMAN_CACHE:-/var/cache/pacman/pkg}
 OWL_PACMAN_LOG=${OWL_PACMAN_LOG:-/var/log/pacman.log}
@@ -474,6 +475,27 @@ case $action in
                         ;;
                 esac
             fi
+        done
+        ;;
+    changelog)
+        if [ ! -e "$OWL_CHANGELOG_DB" ] ; then
+            printf "The changelog database doesn't exist.\n" >&2
+            exit 1
+        fi
+        while [ $# -gt 0 ] ; do
+            url=$(grep "^$1[[:space:]]" "$OWL_CHANGELOG_DB" | cut -f 2)
+            if [ -z "$url" ] ; then
+                printf "Not in the changelog database: '%s'.\n" "$1" >&2
+            else
+                version=$(getinfos "$1" | grep -i "^version" | sed 's/[^:]\+ *: *\([^-]\+\)-[0-9]\+/\1/')
+                url=$(eval printf "%s" $url)
+                if [ $quiet_results -eq 1 ] ; then
+                    printf "%s\n" "$url"
+                else
+                    $BROWSER "$url"
+                fi
+            fi
+            shift
         done
         ;;
     last)

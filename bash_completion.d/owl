@@ -34,7 +34,7 @@ _owl()
                 ;;
         esac
         if [[ $COMP_CWORD -eq 1 ]] ; then
-            local actions='refresh update pull install upgrade downgrade check remove uninstall download abs edit info deps mdeps uses page home search query list lsgrep binlist liblist etclist manlist doclist grep version repository description category license owns prune last leftovers foreigns orphans'
+            local actions='refresh update pull install upgrade downgrade check remove uninstall download abs edit info deps mdeps uses page home changelog search query list lsgrep binlist liblist etclist manlist doclist grep version repository description category license owns prune last leftovers foreigns orphans'
             COMPREPLY=( $(compgen -W "$actions" -- "$current_word") )
             return 0
         else
@@ -55,6 +55,13 @@ _owl()
                 repository|abs)
                     packages="$(_sync_packages "$current_word")"
                     ;; 
+                changelog)
+                    if [ -n "$OWL_CHANGELOG_DB" ] ; then
+                        packages=$(grep -o "^$current_word[^[:space:]]*" "$OWL_CHANGELOG_DB")
+                    else
+                        packages="$(_sync_packages "$current_word"; _aur_packages "$current_word")"
+                    fi
+                    ;;
                 owns)
                     compopt -o filenames
                     COMPREPLY=( $(compgen -f "$current_word") )

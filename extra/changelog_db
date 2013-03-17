@@ -1,0 +1,2 @@
+potrace	http://potrace.sourceforge.net/ChangeLog
+linux	http://www.kernel.org/pub/linux/kernel/v${version%%.*}.0/ChangeLog-$version

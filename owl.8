@@ -86,6 +86,9 @@ Opens the given packages AUR pages.
 .BI "home " "PKG " ...
 Opens the given packages home pages.
 .TP
+.BI "changelog " "PKG " ...
+Opens the given packages *changelog* pages.
+.TP
 .BI "list " "PKG " ...
 List all the files owned by the given packages.
 .TP
@@ -146,7 +149,7 @@ Show packages not listed as a dependency by any package.
 .SH OPTIONS
 The actions on which each option applies are given between parenthesis.
 .TP
-.BR -q ,\  --quiet "  (search, query, foreigns, orphans, owns)"
+.BR -q ,\  --quiet "  (search, query, foreigns, orphans, owns, changelog)"
 Provide quiet search results.
 .TP
 .BR -e ,\  --extended "  (info)"
@@ -183,6 +186,9 @@ The following environment variables are used:
 .IP \[bu]
 .I OWL_ABS_HOME
 -- where should the downloaded sync packages be stored?
+.IP \[bu]
+.I OWL_CHANGELOG_DB
+-- path to the database of changelog URLs.
 .IP \[bu]
 .I OWL_ABS_ROOT
 -- the value of the ABSROOT variable in /etc/abs.conf.

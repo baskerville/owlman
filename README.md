@@ -58,6 +58,8 @@
 
 - `home PKG ...` — Opens the given packages home pages.
 
+- `changelog PKG ...` — Opens the given packages *changelog* pages.
+
 - `list PKG ...` — List all the files owned by the given packages.
 
 - `lsgrep STRING PKG ...` — Restrict the output of *list* to packages matching `STRING`.
@@ -89,7 +91,7 @@
 ## Options
 The actions on which each option applies are given between parenthesis.
 
-- `-q, --quiet` — provide quiet search results ( *search*, *query*, *foreigns*, *orphans*, *owns* ).
+- `-q, --quiet` — provide quiet search results ( *search*, *query*, *foreigns*, *orphans*, *owns*, *changelog* ).
 
 - `-e, --extended` — provide extended informations ( *info* ).
 
@@ -116,6 +118,8 @@ The following environment variables are handled:
 - `OWL_AUR_HOME` — where should the downloaded AUR packages be stored?
 
 - `OWL_ABS_HOME` — where should the downloaded sync packages be stored?
+
+- `OWL_CHANGELOG_DB` — path to the database of changelog URLs.
 
 - `OWL_ABS_ROOT` — the value of the *ABSROOT* variable in `/etc/abs.conf`.
 
