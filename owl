@@ -384,8 +384,9 @@ case $action in
                     continue
                 fi
             fi
-            pacman -Si "$1" > /dev/null 2>&1
-            if [ $? -eq 0 ] ; then
+
+            { pacman -Si "$1" || pacman -Sg "$1"; } > "$tmp_out" 2> /dev/null
+            if [ -s "$tmp_out" ] ; then
                 sudorun pacman -S "$1"
                 [ $? -ne 0 ] && exit 1
             else
