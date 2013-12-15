@@ -373,21 +373,11 @@ case $action in
         ;;
     edit)
         pkgbuild="$OWL_AUR_HOME/$@/PKGBUILD"
-        [ -e "$pkgbuild" ] && $OWL_EDITOR "$pkgbuild"
+        [ -e "$pkgbuild" ] || cower -df -t "$OWL_AUR_HOME" "$@"
+        [ $? -eq 0 ] && $OWL_EDITOR "$pkgbuild"
         ;;
-    install | upgrade)
+    install)
         while [ $# -gt 0 ] ; do
-            if [ "$action" = "upgrade" ] ; then
-                pacman -Q "$1" > /dev/null 2>&1
-                if [ $? -ne 0 ] ; then
-                    magenta "==> "
-                    white "$1 "
-                    printf "%s\n" "is not installed."
-                    shift
-                    continue
-                fi
-            fi
-
             { pacman -Si "$1" || pacman -Sg "$1"; } > "$tmp_out" 2> /dev/null
             if [ -s "$tmp_out" ] ; then
                 sudorun pacman -S "$1"
@@ -410,6 +400,28 @@ case $action in
                     missing_pkg "$1"
                 fi
             fi
+            shift
+        done
+        ;;
+    upgrade)
+        while [ $# -gt 0 ] ; do
+            pacman -Q "$1" > /dev/null 2>&1
+            if [ $? -ne 0 ] ; then
+                magenta "==> "
+                white "$1 "
+                printf "%s\n" "is not installed."
+                shift
+                continue
+            fi
+            pkgdir="$OWL_AUR_HOME/$1"
+            [ -d "$pkgdir" ] || cower -df -t "$OWL_AUR_HOME" "$1"
+            cd "$pkgdir" 2> /dev/null || exit 1
+            if [ "$OWL_CLEAN_UP" = "true" ] ; then
+                makepkg -ifsc
+            else
+                makepkg -ifs
+            fi
+            [ $? -ne 0 ] && exit 1
             shift
         done
         ;;
