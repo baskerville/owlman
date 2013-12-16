@@ -125,7 +125,7 @@ rm_cascade=0
 rm_recur=0
 crawl_homes=0
 
-while getopts "qeaolidcsw-:" opt ; do
+while getopts "qeaolidcrw-:" opt ; do
     case $opt in
         q)
             quiet_results=1
@@ -151,7 +151,7 @@ while getopts "qeaolidcsw-:" opt ; do
         c)
             rm_cascade=1
             ;;
-        s)
+        r)
             rm_recur=1
             ;;
         w)
