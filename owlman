@@ -124,8 +124,9 @@ fetch_deps=0
 rm_cascade=0
 rm_recur=0
 crawl_homes=0
+sort_by_votes=0
 
-while getopts "qeaolidcrw-:" opt ; do
+while getopts "qeaolidcrsw-:" opt ; do
     case $opt in
         q)
             quiet_results=1
@@ -153,6 +154,9 @@ while getopts "qeaolidcrw-:" opt ; do
             ;;
         r)
             rm_recur=1
+            ;;
+        s)
+            sort_by_votes=1
             ;;
         w)
             crawl_homes=1
@@ -185,6 +189,9 @@ while getopts "qeaolidcrw-:" opt ; do
                     ;;
                 recursive)
                     rm_recur=1
+                    ;;
+                sort-by-votes)
+                    sort_by_votes=1
                     ;;
                 crawl-homes)
                     crawl_homes=1
@@ -291,19 +298,15 @@ case $action in
                 fi
             fi
             if [ $repo_only -eq 0 ] ; then
+                opts="-s"
+                filter=owlman_color_filter
                 if [ $quiet_results -eq 1 ] ; then
-                    if [ $ignore_outdated -eq 1 -o "$OWLMAN_IGNORE_OUTDATED" = "true" ] ; then
-                        cower -osq "$@"
-                    else
-                        cower -sq "$@"
-                    fi
-                else
-                    if [ $ignore_outdated -eq 1 -o "$OWLMAN_IGNORE_OUTDATED" = "true" ] ; then
-                        cower -os "$@" | owlman_color_filter
-                    else
-                        cower -s "$@" | owlman_color_filter
-                    fi
+                    opts="$opts -q"
+                    filter=cat
                 fi
+                [ $ignore_outdated -eq 1 -o "$OWLMAN_IGNORE_OUTDATED" = "true" ] && opts="$opts -o"
+                [ $sort_by_votes -eq 1 ] && opts="$opts --sort=votes"
+                cower $opts "$@" | $filter
             fi
         fi
         ;;

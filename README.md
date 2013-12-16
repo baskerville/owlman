@@ -101,7 +101,9 @@ The actions on which each option applies are given between parenthesis.
 
 - `-i, --ignore-outdated` — exclude outdated AUR packages from search results ( *search* ).
 
-- `-r, --recursive` — see pacman's remove options ( *remove* ).
+- `-r, --recursive` — see pacman's remove options ( *remove*, *uninstall* ).
+
+- `-s, --sort-by-votes` — see cower's sorting options ( *search* ).
 
 - `-c, --cascade` — see pacman's remove options ( *remove* ).
 
