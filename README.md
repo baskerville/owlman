@@ -1,12 +1,10 @@
-![owl](https://github.com/baskerville/owl/raw/master/logo/owl-logo.jpg)
-
 ## Description
 
-`owl` is a `pacman` and `cower` wrapper focused on simplicity.
+`owlman` is a `pacman` and `cower` wrapper focused on simplicity.
 
 ## Synopsis
 
-    owl ACTION [OPTIONS] [ARGUMENTS]
+    owlman ACTION [OPTIONS] [ARGUMENTS]
 
 ## Actions and Arguments
 
@@ -115,57 +113,57 @@ The actions on which each option applies are given between parenthesis.
 
 The following environment variables are handled:
 
-- `OWL_AUR_HOME` — where should the downloaded AUR packages be stored?
+- `OWLMAN_AUR_HOME` — where should the downloaded AUR packages be stored?
 
-- `OWL_ABS_HOME` — where should the downloaded sync packages be stored?
+- `OWLMAN_ABS_HOME` — where should the downloaded sync packages be stored?
 
-- `OWL_CHANGELOG_DB` — path to the database of changelog URLs.
+- `OWLMAN_CHANGELOG_DB` — path to the database of changelog URLs.
 
-- `OWL_ABS_ROOT` — the value of the *ABSROOT* variable in `/etc/abs.conf`.
+- `OWLMAN_ABS_ROOT` — the value of the *ABSROOT* variable in `/etc/abs.conf`.
 
-- `OWL_PACMAN_CACHE` — the value of the *CacheDir* variable in `/etc/pacman.conf`.
+- `OWLMAN_PACMAN_CACHE` — the value of the *CacheDir* variable in `/etc/pacman.conf`.
 
-- `OWL_PACMAN_LOG` — the value of the *LogFile* variable in `/etc/pacman.conf`.
+- `OWLMAN_PACMAN_LOG` — the value of the *LogFile* variable in `/etc/pacman.conf`.
 
-- `OWL_BROWSER` — the browser used for opening the package's home pages.
+- `OWLMAN_BROWSER` — the browser used for opening the package's home pages.
 
-- `OWL_EDITOR` — the editor used for opening the package's PKGBUILDs.
+- `OWLMAN_EDITOR` — the editor used for opening the package's PKGBUILDs.
 
-- `OWL_SUDO_WARN` — print a warning each time sudo is run (default: *true*).
+- `OWLMAN_SUDO_WARN` — print a warning each time sudo is run (default: *true*).
 
-- `OWL_COLORIZE_RESULTS` — colorize search results (default: *true*).
+- `OWLMAN_COLORIZE_RESULTS` — colorize search results (default: *true*).
 
-- `OWL_IGNORE_OUTDATED` — whether to ignore outdated AUR results (default: *false*).
+- `OWLMAN_IGNORE_OUTDATED` — whether to ignore outdated AUR results (default: *false*).
 
-- `OWL_CLEAN_UP` — whether to pass the `-c` flag to `makepkg` (default: *false*).
+- `OWLMAN_CLEAN_UP` — whether to pass the `-c` flag to `makepkg` (default: *false*).
 
-- `OWL_MAX_URL` — the maximum number of URL to send at once via `--crawl-homes`.
+- `OWLMAN_MAX_URL` — the maximum number of URL to send at once via `--crawl-homes`.
 
 ### Color Variables
 
-- `OWL_LOCAL_COLOR`
+- `OWLMAN_LOCAL_COLOR`
 
-- `OWL_CORE_COLOR`
+- `OWLMAN_CORE_COLOR`
 
-- `OWL_EXTRA_COLOR`
+- `OWLMAN_EXTRA_COLOR`
 
-- `OWL_COMMUNITY_COLOR`
+- `OWLMAN_COMMUNITY_COLOR`
 
-- `OWL_TESTING_COLOR`
+- `OWLMAN_TESTING_COLOR`
 
-- `OWL_AUR_COLOR`
+- `OWLMAN_AUR_COLOR`
 
-- `OWL_OTHER_COLOR`
+- `OWLMAN_OTHER_COLOR`
 
-- `OWL_SEP_COLOR`
+- `OWLMAN_SEP_COLOR`
 
-- `OWL_NAME_COLOR`
+- `OWLMAN_NAME_COLOR`
 
-- `OWL_VERSION_COLOR`
+- `OWLMAN_VERSION_COLOR`
 
-- `OWL_OBSOLETE_COLOR`
+- `OWLMAN_OBSOLETE_COLOR`
 
-- `OWL_INSTALLED_COLOR`
+- `OWLMAN_INSTALLED_COLOR`
 
 The valid values for the aforementioned variables are : *default*, *black*, *red*, *green*, *yellow*, *blue*, *magenta*, *cyan*, *white*, *bold*.
 

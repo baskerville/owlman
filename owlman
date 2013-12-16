@@ -1,17 +1,17 @@
 #! /bin/dash
 
-OWL_AUR_HOME=${OWL_AUR_HOME:-/tmp/owl-aur}
-OWL_ABS_HOME=${OWL_ABS_HOME:-/tmp/owl-abs}
-OWL_CHANGELOG_DB=${OWL_CHANGELOG_DB:-"$XDG_DATA_HOME/changelog_db"}
-OWL_ABS_ROOT=${OWL_ABS_ROOT:-/var/abs}
-OWL_PACMAN_CACHE=${OWL_PACMAN_CACHE:-/var/cache/pacman/pkg}
-OWL_PACMAN_LOG=${OWL_PACMAN_LOG:-/var/log/pacman.log}
-OWL_BROWSER=${OWL_BROWSER:-${BROWSER:-curl}}
-OWL_EDITOR=${OWL_EDITOR:-${EDITOR:-vim}}
-OWL_SUDO_WARN=${OWL_SUDO_WARN:-true}
-OWL_IGNORE_OUTDATED=${OWL_IGNORE_OUTDATED:-false}
-OWL_CLEAN_UP=${OWL_CLEAN_UP:-false}
-OWL_MAX_URL=${OWL_MAX_URL:-16}
+OWLMAN_AUR_HOME=${OWLMAN_AUR_HOME:-/tmp/owlman-aur}
+OWLMAN_ABS_HOME=${OWLMAN_ABS_HOME:-/tmp/owlman-abs}
+OWLMAN_CHANGELOG_DB=${OWLMAN_CHANGELOG_DB:-"$XDG_DATA_HOME/changelog_db"}
+OWLMAN_ABS_ROOT=${OWLMAN_ABS_ROOT:-/var/abs}
+OWLMAN_PACMAN_CACHE=${OWLMAN_PACMAN_CACHE:-/var/cache/pacman/pkg}
+OWLMAN_PACMAN_LOG=${OWLMAN_PACMAN_LOG:-/var/log/pacman.log}
+OWLMAN_BROWSER=${OWLMAN_BROWSER:-${BROWSER:-curl}}
+OWLMAN_EDITOR=${OWLMAN_EDITOR:-${EDITOR:-vim}}
+OWLMAN_SUDO_WARN=${OWLMAN_SUDO_WARN:-true}
+OWLMAN_IGNORE_OUTDATED=${OWLMAN_IGNORE_OUTDATED:-false}
+OWLMAN_CLEAN_UP=${OWLMAN_CLEAN_UP:-false}
+OWLMAN_MAX_URL=${OWLMAN_MAX_URL:-16}
 
 usage() {
     printf "Usage: %s <action> [...]\n" "${0##*/}"
@@ -55,7 +55,7 @@ info() {
 }
 
 sudorun() {
-    if [ "$OWL_SUDO_WARN" = "true" ] ; then
+    if [ "$OWLMAN_SUDO_WARN" = "true" ] ; then
         warning "Running sudo."
         printf "\n"
     fi
@@ -68,10 +68,10 @@ fi
 
 action=$1
 shift
-tmp_out=/tmp/owl.$$
+tmp_out=/tmp/owlman.$$
 
-[ ! -d "$OWL_AUR_HOME" ] && mkdir -p "$OWL_AUR_HOME"
-[ ! -d "$OWL_ABS_HOME" ] && mkdir -p "$OWL_ABS_HOME"
+[ ! -d "$OWLMAN_AUR_HOME" ] && mkdir -p "$OWLMAN_AUR_HOME"
+[ ! -d "$OWLMAN_ABS_HOME" ] && mkdir -p "$OWLMAN_ABS_HOME"
 
 getinfos() {
     extended_infos=0
@@ -213,7 +213,7 @@ case $action in
                     [ -z "$answer" ] && answer='yes'
                     case $answer in 
                         y|Y|yes|Yes)
-                            owl install $(cat "$tmp_out" | sed 's/^:: *\([^ ]\+\) .*$/\1/' | xargs)
+                            owlman install $(cat "$tmp_out" | sed 's/^:: *\([^ ]\+\) .*$/\1/' | xargs)
                             ;;
                     esac
             else
@@ -222,10 +222,10 @@ case $action in
         fi
         ;;
     pull)
-        repos=$(find "$OWL_AUR_HOME" -mindepth 3 -maxdepth 3 -type d -regex ".*/src/[^/]+" | grep -v '\-build$')
+        repos=$(find "$OWLMAN_AUR_HOME" -mindepth 3 -maxdepth 3 -type d -regex ".*/src/[^/]+" | grep -v '\-build$')
         for repo in $repos ; do
             [ ! -e "$repo" ] && continue
-            from_home=${repo#"$OWL_AUR_HOME/"}
+            from_home=${repo#"$OWLMAN_AUR_HOME/"}
             pkgname=${from_home%%/*}
             pacman -Q "$pkgname" > /dev/null 2>&1
             if [ $? -eq 1 ] ; then
@@ -236,20 +236,20 @@ case $action in
                 read answer
                 case "$answer" in
                     y|Y|yes|Yes)
-                        rm -vrf "$OWL_AUR_HOME/$pkgname"
+                        rm -vrf "$OWLMAN_AUR_HOME/$pkgname"
                         ;;
                 esac
                 continue
             fi
             green "$pkgname"
             printf "\n"
-            if owl_update_repository "$repo" ; then
+            if owlman_update_repository "$repo" ; then
                 printf "Reinstall package '%s' [Y/n]? " "$pkgname"
                 read answer
                 [ -z "$answer" ] && answer="yes"
                 case "$answer" in
                     y|yes|Y|Yes)
-                        cd "$OWL_AUR_HOME/$pkgname"
+                        cd "$OWLMAN_AUR_HOME/$pkgname"
                         makepkg -ifs
                         ;;
                 esac
@@ -280,28 +280,28 @@ case $action in
             if [ $quiet_results -eq 1 ] ; then
                 pacman -Qsq "$@"
             else
-                pacman -Qs "$@" | owl_color_filter
+                pacman -Qs "$@" | owlman_color_filter
             fi
         elif [ "$action" = "search" ] ; then
             if [ $aur_only -eq 0 ] ; then
                 if [ $quiet_results -eq 1 ] ; then
                     pacman -Ssq "$@"
                 else
-                    pacman -Ss "$@" | owl_color_filter
+                    pacman -Ss "$@" | owlman_color_filter
                 fi
             fi
             if [ $repo_only -eq 0 ] ; then
                 if [ $quiet_results -eq 1 ] ; then
-                    if [ $ignore_outdated -eq 1 -o "$OWL_IGNORE_OUTDATED" = "true" ] ; then
+                    if [ $ignore_outdated -eq 1 -o "$OWLMAN_IGNORE_OUTDATED" = "true" ] ; then
                         cower -osq "$@"
                     else
                         cower -sq "$@"
                     fi
                 else
-                    if [ $ignore_outdated -eq 1 -o "$OWL_IGNORE_OUTDATED" = "true" ] ; then
-                        cower -os "$@" | owl_color_filter
+                    if [ $ignore_outdated -eq 1 -o "$OWLMAN_IGNORE_OUTDATED" = "true" ] ; then
+                        cower -os "$@" | owlman_color_filter
                     else
-                        cower -s "$@" | owl_color_filter
+                        cower -s "$@" | owlman_color_filter
                     fi
                 fi
             fi
@@ -326,7 +326,7 @@ case $action in
         fi
         ;;
     downgrade)
-        if [ ! -d "$OWL_PACMAN_CACHE" ] ; then
+        if [ ! -d "$OWLMAN_PACMAN_CACHE" ] ; then
             printf "%s\n" "Pacman's cache directory doesn't exist." >&2
             exit 1
         fi
@@ -337,7 +337,7 @@ case $action in
                 missing_pkg "$pkgname"
                 exit 1
             fi
-            previous_pkg=$(ls -1tc "$OWL_PACMAN_CACHE/$pkgname"-[0-9]* 2> /dev/null | head -n 2 | tail -n 1)
+            previous_pkg=$(ls -1tc "$OWLMAN_PACMAN_CACHE/$pkgname"-[0-9]* 2> /dev/null | head -n 2 | tail -n 1)
             if [ -e "$previous_pkg" ] ; then
                 printf "%s\n" "$previous_pkg" >> "$tmp_out"
             fi
@@ -359,22 +359,22 @@ case $action in
         ;;
     download)
         if [ $fetch_deps -eq 1 ] ; then
-            cower -ddf -t "$OWL_AUR_HOME" "$@"
+            cower -ddf -t "$OWLMAN_AUR_HOME" "$@"
         else
-            cower -df -t "$OWL_AUR_HOME" "$@"
+            cower -df -t "$OWLMAN_AUR_HOME" "$@"
         fi
         ;;
     abs)
         while [ $# -gt 0 ] ; do
             repo=$(pacman -Si "$1" | grep -i "^repository" | sed 's/[^:]\+: \(.*\)/\1/')
-            [ -n "$repo" ] && sudo abs "$repo/$1" && cp -rv "$OWL_ABS_ROOT/$repo/$1" "$OWL_ABS_HOME"
+            [ -n "$repo" ] && sudo abs "$repo/$1" && cp -rv "$OWLMAN_ABS_ROOT/$repo/$1" "$OWLMAN_ABS_HOME"
             shift
         done
         ;;
     edit)
-        pkgbuild="$OWL_AUR_HOME/$@/PKGBUILD"
-        [ -e "$pkgbuild" ] || cower -df -t "$OWL_AUR_HOME" "$@"
-        [ $? -eq 0 ] && $OWL_EDITOR "$pkgbuild"
+        pkgbuild="$OWLMAN_AUR_HOME/$@/PKGBUILD"
+        [ -e "$pkgbuild" ] || cower -df -t "$OWLMAN_AUR_HOME" "$@"
+        [ $? -eq 0 ] && $OWLMAN_EDITOR "$pkgbuild"
         ;;
     install)
         while [ $# -gt 0 ] ; do
@@ -383,12 +383,12 @@ case $action in
                 sudorun pacman -S "$1"
                 [ $? -ne 0 ] && exit 1
             else
-                cower -ddf -t "$OWL_AUR_HOME" "$1" | tee "$tmp_out"
+                cower -ddf -t "$OWLMAN_AUR_HOME" "$1" | tee "$tmp_out"
                 if [ -s "$tmp_out" ] ; then
                     list_of_programs=$(cat "$tmp_out" | tac | sed 's/.* \([^ ]\+\) downloaded.*/\1/') 
                     for pkgname in $list_of_programs; do
-                        cd "$OWL_AUR_HOME/$pkgname"
-                        if [ "$OWL_CLEAN_UP" = "true" ] ; then
+                        cd "$OWLMAN_AUR_HOME/$pkgname"
+                        if [ "$OWLMAN_CLEAN_UP" = "true" ] ; then
                             makepkg -ifsc
                         else
                             makepkg -ifs
@@ -413,10 +413,10 @@ case $action in
                 shift
                 continue
             fi
-            pkgdir="$OWL_AUR_HOME/$1"
-            [ -d "$pkgdir" ] || cower -df -t "$OWL_AUR_HOME" "$1"
+            pkgdir="$OWLMAN_AUR_HOME/$1"
+            [ -d "$pkgdir" ] || cower -df -t "$OWLMAN_AUR_HOME" "$1"
             cd "$pkgdir" 2> /dev/null || exit 1
-            if [ "$OWL_CLEAN_UP" = "true" ] ; then
+            if [ "$OWLMAN_CLEAN_UP" = "true" ] ; then
                 makepkg -ifsc
             else
                 makepkg -ifs
@@ -426,7 +426,7 @@ case $action in
         done
         ;;
     leftovers)
-        log_lo=$(grep -Eo '/[[:graph:]]+\.pac(new|orig|save)' "$OWL_PACMAN_LOG" | sort -u)
+        log_lo=$(grep -Eo '/[[:graph:]]+\.pac(new|orig|save)' "$OWLMAN_PACMAN_LOG" | sort -u)
         for i in $log_lo
         do
             if [ -e "$i" ] ; then
@@ -454,7 +454,7 @@ case $action in
         while [ $# -gt 0 ] ; do
             uri=$(getinfos "$1" | grep -m 1 -o 'https://aur.*') > /dev/null 2>&1
             if [ -n "$uri" ] ; then
-                $OWL_BROWSER $uri > /dev/null 2>&1
+                $OWLMAN_BROWSER $uri > /dev/null 2>&1
             else
                 printf "Package '%s' is not in AUR.\n" "$1" >&2
             fi
@@ -473,11 +473,11 @@ case $action in
             uri=$(getinfos "$1" | grep -m 1 -o 'https\?://.*')
             if [ -n "$uri" ] ; then
                 printf "%s: %s\n" "$1" "$uri"
-                $OWL_BROWSER $uri > /dev/null 2>&1
+                $OWLMAN_BROWSER $uri > /dev/null 2>&1
                 counter=$((counter+1))
             fi
             shift
-            if [ $((counter % OWL_MAX_URL)) -eq 0 -a $counter -gt 0 -a $# -gt 0 ] ; then
+            if [ $((counter % OWLMAN_MAX_URL)) -eq 0 -a $counter -gt 0 -a $# -gt 0 ] ; then
                 printf "Continue [Y/n] (%i remaining)? " "$#"
                 read answer
                 [ -z "$answer" ] && answer='y'
@@ -494,12 +494,12 @@ case $action in
         done
         ;;
     changelog)
-        if [ ! -e "$OWL_CHANGELOG_DB" ] ; then
+        if [ ! -e "$OWLMAN_CHANGELOG_DB" ] ; then
             printf "The changelog database doesn't exist.\n" >&2
             exit 1
         fi
         while [ $# -gt 0 ] ; do
-            url=$(grep "^$1[[:space:]]" "$OWL_CHANGELOG_DB" | cut -f 2)
+            url=$(grep "^$1[[:space:]]" "$OWLMAN_CHANGELOG_DB" | cut -f 2)
             if [ -z "$url" ] ; then
                 printf "Not in the changelog database: '%s'.\n" "$1" >&2
             else
@@ -516,7 +516,7 @@ case $action in
         ;;
     last)
         num=${@:-7}
-        awk '/\] (installed|upgraded) / { match($0, /\] (installed|upgraded) ([^ ]+)/, groups); print groups[2]; }' "$OWL_PACMAN_LOG" | tail -n "$num"
+        awk '/\] (installed|upgraded) / { match($0, /\] (installed|upgraded) ([^ ]+)/, groups); print groups[2]; }' "$OWLMAN_PACMAN_LOG" | tail -n "$num"
         ;;
     deps)
         cmd="getinfos --extended"
@@ -555,11 +555,11 @@ case $action in
         sudorun pacman -Syy
         ;;
     prune)
-        if [ ! -d "$OWL_AUR_HOME" ] ; then
+        if [ ! -d "$OWLMAN_AUR_HOME" ] ; then
             printf "%s\n" "The cache directory is invalid." >&2
             exit 1
         fi
-        cd "$OWL_AUR_HOME"
+        cd "$OWLMAN_AUR_HOME"
         for pkgname in * ; do
             if [ -d "$pkgname" ] ; then
                 pacman -Q "$pkgname" > /dev/null 2>&1

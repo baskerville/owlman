@@ -1,12 +1,12 @@
-.TH owl 8 owl\-git
+.TH owlman 8 owlman\-git
 .SH NAME
-owl \- Pacman and cower wrapper focused on simplicity
+owlman \- Pacman and cower wrapper focused on simplicity
 .SH SYNOPSIS
-.BI owl\ ACTION
+.BI owlman\ ACTION
 .RI [ OPTIONS ]
 .RI [ ARGUMENTS ]
 .SH DESCRIPTION
-owl is a simple wrapper for pacman and cower, providing seamless access to all the available Arch Linux packages.
+owlman is a simple wrapper for pacman and cower, providing seamless access to all the available Arch Linux packages.
 .SH ACTIONS
 .TP
 .B refresh
@@ -181,74 +181,74 @@ Open every pages of all the packages matching the argument.
 .SH CONFIGURATION
 The following environment variables are used:
 .IP \[bu] 2
-.I OWL_AUR_HOME
+.I OWLMAN_AUR_HOME
 -- where should the downloaded AUR packages be stored?
 .IP \[bu]
-.I OWL_ABS_HOME
+.I OWLMAN_ABS_HOME
 -- where should the downloaded sync packages be stored?
 .IP \[bu]
-.I OWL_CHANGELOG_DB
+.I OWLMAN_CHANGELOG_DB
 -- path to the database of changelog URLs.
 .IP \[bu]
-.I OWL_ABS_ROOT
+.I OWLMAN_ABS_ROOT
 -- the value of the ABSROOT variable in /etc/abs.conf.
 .IP \[bu]
-.I OWL_PACMAN_CACHE
+.I OWLMAN_PACMAN_CACHE
 -- the value of the CacheDir variable in /etc/pacman.conf.
 .IP \[bu]
-.I OWL_PACMAN_LOG
+.I OWLMAN_PACMAN_LOG
 -- the value of the LogFile variable in /etc/pacman.conf.
 .IP \[bu]
-.I OWL_BROWSER
+.I OWLMAN_BROWSER
 -- the browser used for opening the packages home pages.
 .IP \[bu]
-.I OWL_EDITOR
+.I OWLMAN_EDITOR
 -- the editor used for opening the package's PKGBUILDs.
 .IP \[bu]
-.I OWL_SUDO_WARN
+.I OWLMAN_SUDO_WARN
 -- print a warning each time sudo is run (default: true).
 .IP \[bu]
-.I OWL_COLORIZE_RESULTS
+.I OWLMAN_COLORIZE_RESULTS
 -- colorize search results (default: true).
 .IP \[bu]
-.I OWL_IGNORE_OUTDATED
+.I OWLMAN_IGNORE_OUTDATED
 -- whether to ignore outdated AUR results (default: false).
 .IP \[bu]
-.I OWL_CLEAN_UP
+.I OWLMAN_CLEAN_UP
 -- whether to pass the
 .B -c
 flag to
 .BR makepkg (8).
 .IP \[bu]
-.I OWL_MAX_URL
+.I OWLMAN_MAX_URL
 -- the maximum number of URL to send at once via
 .BR --crawl-homes .
 .P
 .SS Color Variables
 .IP \[bu] 2
-.I OWL_LOCAL_COLOR
+.I OWLMAN_LOCAL_COLOR
 .IP \[bu]
-.I OWL_CORE_COLOR
+.I OWLMAN_CORE_COLOR
 .IP \[bu]
-.I OWL_EXTRA_COLOR
+.I OWLMAN_EXTRA_COLOR
 .IP \[bu]
-.I OWL_COMMUNITY_COLOR
+.I OWLMAN_COMMUNITY_COLOR
 .IP \[bu]
-.I OWL_TESTING_COLOR
+.I OWLMAN_TESTING_COLOR
 .IP \[bu]
-.I OWL_AUR_COLOR
+.I OWLMAN_AUR_COLOR
 .IP \[bu]
-.I OWL_OTHER_COLOR
+.I OWLMAN_OTHER_COLOR
 .IP \[bu]
-.I OWL_SEP_COLOR
+.I OWLMAN_SEP_COLOR
 .IP \[bu]
-.I OWL_NAME_COLOR
+.I OWLMAN_NAME_COLOR
 .IP \[bu]
-.I OWL_VERSION_COLOR
+.I OWLMAN_VERSION_COLOR
 .IP \[bu]
-.I OWL_OBSOLETE_COLOR
+.I OWLMAN_OBSOLETE_COLOR
 .IP \[bu]
-.I OWL_INSTALLED_COLOR
+.I OWLMAN_INSTALLED_COLOR
 .P
 The valid values for the aforementioned variables are:
 
@@ -258,7 +258,7 @@ The valid values for the aforementioned variables are:
 Bastien Dejean
 .ME
 .SH LINKS
-.UR https://github.com/baskerville/owl
+.UR https://github.com/baskerville/owlman
 Homepage
 .UE
 .SH SEE ALSO
