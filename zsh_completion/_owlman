@@ -1,0 +1,195 @@
+#compdef owlman
+# ------------------------------------------------------------------------------
+# Authors
+# -------
+#
+#  * unc0 (https://github.com/unc0)
+#
+# ------------------------------------------------------------------------------
+
+_local_packages() {
+  local_packages=(${(f)"$(_call_program pacmanpackage pacman -Qq 2>/dev/null)"})
+}
+_sync_packages() {
+  sync_packages=(${(f)"$(_call_program pacmanpackage pacman -Ssq $words[CURRENT] 2>/dev/null)"})
+}
+_aur_packages() {
+  aur_packages=(${(f)"$(_call_program pacmanpackage cower -sq $words[CURRENT] 2>/dev/null)"})
+}
+_changelogdb() {
+  changelogdb=(${(f)"$(_call_program owlchangelogdb cat $OWLMAN_CHANGELOG_DB)"})
+}
+
+local -a _1st_arguments
+_1st_arguments=(
+  'refresh:Update package list'
+  'update:Update package list and upgrade all packages afterwards'
+  'pull:Grab changes for all the cached AUR packages'
+  'install:Install the given packages'
+  'upgrade:Upgrade the given packages'
+  'downgrade:Downgrade the given packages'
+  'remove:Remove the given packages'
+  'uninstall:Remove the given packages'
+  'download:Download the given packages from the AUR'
+  'abs:Download the given sync packages via abs'
+  'edit:Edit the PKGBUILD for the given AUR package'
+  'search:Search for packages matching STRING in all databases'
+  'query:Search locally for packages matching STRING'
+  'info:Retrieve informations on the given packages'
+  'deps:Show dependencies for the given packages'
+  'mdeps:Show make dependencies for the given packages'
+  'uses:Show packages that specify the given packages as dependency'
+  'owns:Return the name of the package owning the given file'
+  'version:Return the version of the given packages'
+  'repository:Return the repository of the given packages'
+  'description:Return the description of the given packages'
+  'category:Return the category of the given AUR packages'
+  'license:Return the license of the given packages'
+  'page:Opens the given packages AUR pages'
+  'home:Opens the given packages home pages'
+  'changelog:Opens the given packages changelog pages'
+  'list:List all the files owned by the given packages'
+  'lsgrep:Restrict the output of list to packages matching STRING'
+  'binlist:Restrict the output of list to executable files'
+  'liblist:Restrict the output of list to library files'
+  'etclist:Restrict the output of list to configuration files'
+  'manlist:Restrict the output of list to manual files'
+  'doclist:Restrict the output of list to documentation files'
+  'grep:Grep for STRING in all the files of all the given packages'
+  'check:Check that all files owned by the given packages exist'
+  'prune:Remove unused repositories in the cache directory'
+  'last:Show the last NUM (7 if omitted) installed packages'
+  'leftovers:Find, merge and remove pac{new,orig,save} files'
+  'foreigns:Show installed packages not found in the sync databases'
+  'orphans:Show packages not listed as a dependency by any package'
+)
+
+local -A _2nd_arguments
+_2nd_arguments=(
+  quiet
+  '(-q)--quiet[-q quiet search results]'
+  extend
+  '(-e)--extended[-e extended informations]'
+  aur
+  '(-a)--aur[-a restrain the action to the AUR packages]'
+  repo
+  '(-o)--repo[-o restrain the action to the sync packages]'
+  lcal
+  '(-l)--local[-l restrain the action to the local packages]'
+  ignore
+  '(-i)--ignore-outdated[-i exclude outdated AUR packages from search results]'
+  recursive
+  '(-r)--recursive[-r action on each target specified including all of their dependencies]'
+  sort
+  '(-s)--sort-by-votes[-s sort the results in order]'
+  cascade
+  '(-c)--cascade[-c remove all target packages, as well as all packages that depend on one or more target packages]'
+  deps
+  '(-d)--dependencies[-d fetch dependencies]'
+  crawl
+  '(-w)--crawl-homes[-w open every pages of all the packages matching the arguments]'
+)
+
+local expl
+local -a local_packages sync_packages aur_packages changelogdb
+
+if (( CURRENT == 2 )); then
+  _describe -t commands "owlman subcommand" _1st_arguments
+  return
+fi
+
+case "$words[2]" in
+  list|binlist|liblist|etclist|manlist|doclist|upgrade|downgrade|check)
+    _local_packages
+    _wanted local_packages expl 'local packages' compadd -a local_packages
+    ;;
+  deps|mdeps|uses|version|repository|category|description|license)
+    _arguments $_2nd_arguments[lcal] \
+      '1: :->forms' && return 0
+    if [[ "$state" == forms ]]; then
+      _local_packages
+      _wanted pacmanpackage expl 'local packages' compadd -a local_packages
+    else
+      _sync_packages
+      _aur_packages
+      _wanted pacmanpackage expl 'remote packages' compadd -a sync_packages aur_packages
+    fi ;;
+  info)
+    _arguments \
+      $_2nd_arguments[lcal] \
+      $_2nd_arguments[extended] \
+      '1: :->forms' && return 0
+    if [[ "$words[3]" == "--local" ]]; then
+      _local_packages
+      _wanted pacmanpackage expl 'local packages' compadd -a local_packages
+    else
+      _sync_packages
+      _aur_packages
+      _wanted pacmanpackage expl 'remote packages' compadd -a sync_packages aur_packages
+    fi ;;
+  home)
+    _arguments $_2nd_arguments[crawl] \
+      '1: :->forms' && return 0
+    _sync_packages
+    _aur_packages
+    _wanted pacmanpackage expl 'remote packages' compadd -a sync_packages aur_packages
+    ;;
+  edit|page|category)
+    _aur_packages
+    _wanted pacmanpackage expl 'AUR packages' compadd -a aur_packages
+    ;;
+  download)
+    _arguments $_2nd_arguments[deps] \
+      '1: :->forms' && return 0
+    _aur_packages
+    _wanted pacmanpackage expl 'AUR packages' compadd -a aur_packages
+    ;;
+  repository|abs)
+    _sync_packages
+    _wanted pacmanpackage expl 'pacman packages' compadd -a sync_packages
+    ;;
+  remove|uninstall)
+    _arguments \
+      $_2nd_arguments[recursive] \
+      $_2nd_arguments[cascade] \
+      '1: :->forms' && return 0
+    if [[ "$state" == forms ]]; then
+      _local_packages
+      _wanted pacmanpackage expl 'local packages' compadd -a local_packages
+    fi ;;
+  foreigns|orphans)
+    _arguments $_2nd_arguments[quiet] \
+      '1: :->forms' && return 0
+    ;;
+  owns)
+    _arguments \
+      $_2nd_arguments[quiet] \
+      '*:file:_files' && return 0
+    ;;
+  query)
+    _arguments $_2nd_arguments[quiet] \
+      '1: :->forms' && return 0
+    _local_packages
+    _wanted pacmanpackage expl 'local packages' compadd -a local_packages
+    ;;
+  changelog)
+    _arguments $_2nd_arguments[quiet] \
+      '1: :->forms' && return 0
+    if [[ -n "$OWLMAN_CHANGELOG_DB" ]]; then
+      _changelogdb
+      _wanted owlchangelogdb expl 'Owlman changelog database' compadd -a changelogdb
+    fi
+    _sync_packages
+    _aur_packages 
+    _wanted pacmanpackage expl 'remote packages' compadd -a sync_packages aur_packages
+    ;;
+  search)
+    _arguments \
+      $_2nd_arguments[quiet] \
+      $_2nd_arguments[aur] \
+      $_2nd_arguments[repo] \
+      $_2nd_arguments[ignore] \
+      $_2nd_arguments[sort] \
+      '1: :->forms' && return 0
+    ;;
+esac
