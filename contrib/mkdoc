@@ -1,0 +1,3 @@
+#! /bin/sh
+
+a2x -v -d manpage -f manpage -a revnumber=$(git describe) doc/owlman.8.txt

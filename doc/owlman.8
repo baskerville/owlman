@@ -1,0 +1,566 @@
+'\" t
+.\"     Title: owlman
+.\"    Author: [see the "Author" section]
+.\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
+.\"      Date: 12/21/2013
+.\"    Manual: Owlman Manual
+.\"    Source: Owlman 0.5-3-g0e653b0
+.\"  Language: English
+.\"
+.TH "OWLMAN" "8" "12/21/2013" "Owlman 0\&.5\-3\-g0e653b0" "Owlman Manual"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+owlman \- Pacman and cower wrapper
+.SH "SYNOPSIS"
+.sp
+\fBowlman\fR \fIACTION\fR [\fIOPTIONS\fR] [\fIARGUMENTS\fR]
+.SH "DESCRIPTION"
+.sp
+\fBowlman\fR is a simple wrapper for \fBpacman\fR and \fBcower\fR, providing seamless access to all the available Arch Linux packages\&.
+.SH "ACTIONS AND ARGUMENTS"
+.PP
+\fBrefresh\fR
+.RS 4
+Update package list\&.
+.RE
+.PP
+\fBupdate\fR
+.RS 4
+Update package list and upgrade all packages afterwards\&.
+.RE
+.PP
+\fBpull\fR
+.RS 4
+Grab changes for all the cached
+\fIAUR\fR
+packages\&.
+.RE
+.PP
+\fBinstall\fR \fIPKG\fR \&...
+.RS 4
+Install the given packages\&.
+.RE
+.PP
+\fBupgrade\fR \fIPKG\fR \&...
+.RS 4
+Upgrade the given packages\&.
+.RE
+.PP
+\fBdowngrade\fR \fIPKG\fR \&...
+.RS 4
+Downgrade the given packages\&.
+.RE
+.PP
+\fBremove\fR|\fBuninstall\fR \fIPKG\fR \&...
+.RS 4
+Remove the given packages\&.
+.RE
+.PP
+\fBdownload\fR \fIPKG\fR \&...
+.RS 4
+Download the given packages source from the
+\fIAUR\fR\&.
+.RE
+.PP
+\fBabs\fR \fIPKG\fR \&...
+.RS 4
+Download the given sync packages source via
+\fBabs\fR\&.
+.RE
+.PP
+\fBedit\fR \fIPKG\fR
+.RS 4
+Edit the
+\fIPKGBUILD\fR
+for the given AUR package\&.
+.RE
+.PP
+\fBsearch\fR \fISTRING\fR
+.RS 4
+Search for packages matching
+\fISTRING\fR
+in all databases\&.
+.RE
+.PP
+\fBquery\fR \fISTRING\fR
+.RS 4
+Search locally for packages matching
+\fISTRING\fR\&.
+.RE
+.PP
+\fBinfo\fR \fIPKG\fR \&...
+.RS 4
+Retrieve informations on the given packages\&.
+.RE
+.PP
+\fBdeps\fR \fIPKG\fR \&...
+.RS 4
+Show dependencies for the given packages\&.
+.RE
+.PP
+\fBmdeps\fR \fIPKG\fR \&...
+.RS 4
+Show make dependencies for the given packages\&.
+.RE
+.PP
+\fBuses\fR \fIPKG\fR \&...
+.RS 4
+Show packages that specify the given packages as dependency\&.
+.RE
+.PP
+\fBowns\fR \fIFILE\fR
+.RS 4
+Return the name of the package owning the given file\&.
+.RE
+.PP
+\fBversion\fR \fIPKG\fR \&...
+.RS 4
+Return the version of the given packages\&.
+.RE
+.PP
+\fBrepository\fR \fIPKG\fR \&...
+.RS 4
+Return the repository of the given packages\&.
+.RE
+.PP
+\fBdescription\fR \fIPKG\fR \&...
+.RS 4
+Return the description of the given packages\&.
+.RE
+.PP
+\fBcategory\fR \fIPKG\fR \&...
+.RS 4
+Return the category of the given
+\fIAUR\fR
+packages\&.
+.RE
+.PP
+\fBlicense\fR \fIPKG\fR \&...
+.RS 4
+Return the license of the given packages\&.
+.RE
+.PP
+\fBpage\fR \fIPKG\fR \&...
+.RS 4
+Opens the given packages
+\fIAUR\fR
+pages\&.
+.RE
+.PP
+\fBhome\fR \fIPKG\fR \&...
+.RS 4
+Opens the given packages home pages\&.
+.RE
+.PP
+\fBchangelog\fR \fIPKG\fR \&...
+.RS 4
+Opens the given packages
+\fBchangelog\fR
+pages\&.
+.RE
+.PP
+\fBlist\fR \fIPKG\fR \&...
+.RS 4
+List all the files owned by the given packages\&.
+.RE
+.PP
+\fBlsgrep\fR \fISTRING\fR \fIPKG\fR \&...
+.RS 4
+Restrict the output of
+\fBlist\fR
+to packages matching
+\fISTRING\fR\&.
+.RE
+.PP
+\fBbinlist\fR \fIPKG\fR \&...
+.RS 4
+Restrict the output of
+\fBlist\fR
+to executable files\&.
+.RE
+.PP
+\fBliblist\fR \fIPKG\fR \&...
+.RS 4
+Restrict the output of
+\fBlist\fR
+to library files\&.
+.RE
+.PP
+\fBetclist\fR \fIPKG\fR \&...
+.RS 4
+Restrict the output of
+\fBlist\fR
+to configuration files\&.
+.RE
+.PP
+\fBmanlist\fR \fIPKG\fR \&...
+.RS 4
+Restrict the output of
+\fBlist\fR
+to manual files\&.
+.RE
+.PP
+\fBdoclist\fR \fIPKG\fR \&...
+.RS 4
+Restrict the output of
+\fBlist\fR
+to documentation files\&.
+.RE
+.PP
+\fBgrep\fR \fISTRING\fR \fIPKG\fR \&...
+.RS 4
+Grep
+\fISTRING\fR
+in all the files of all the given packages\&.
+.RE
+.PP
+\fBcheck\fR \fIPKG\fR \&...
+.RS 4
+Check that all files owned by the given packages exist\&.
+.RE
+.PP
+\fBprune\fR
+.RS 4
+Remove unused repositories in the cache directory\&.
+.RE
+.PP
+\fBlast\fR [\fINUM\fR]
+.RS 4
+Show the last
+\fINUM\fR
+(7 if omitted) installed packages\&.
+.RE
+.PP
+\fBleftovers\fR
+.RS 4
+Find, merge and remove
+\fBpac{new,orig,save}\fR
+files\&.
+.RE
+.PP
+\fBforeigns\fR
+.RS 4
+Show installed packages not found in the sync databases\&.
+.RE
+.PP
+\fBorphans\fR
+.RS 4
+Show packages not listed as a dependency by any package\&.
+.RE
+.SH "OPTIONS"
+.sp
+The actions on which each option applies are given between parenthesis\&.
+.PP
+\fB\-q\fR, \fB\-\-quiet\fR
+.RS 4
+provide quiet search results (\fIsearch\fR,
+\fIquery\fR,
+\fIforeigns\fR,
+\fIorphans\fR,
+\fIowns\fR,
+\fIchangelog\fR)\&.
+.RE
+.PP
+\fB\-e\fR, \fB\-\-extended\fR
+.RS 4
+provide extended informations (\fIinfo\fR)\&.
+.RE
+.PP
+\fB\-a\fR, \fB\-\-aur\fR
+.RS 4
+restrain the action to the AUR packages (\fIupdate\fR,
+\fIsearch\fR)\&.
+.RE
+.PP
+\fB\-o\fR, \fB\-\-repo\fR
+.RS 4
+restrain the action to the sync packages (\fIupdate\fR,
+\fIsearch\fR)\&.
+.RE
+.PP
+\fB\-l\fR, \fB\-\-local\fR
+.RS 4
+restrain the action to the local packages (\fIinfo\fR,
+\fIdeps\fR,
+\fIuses\fR,
+\fIversion\fR,
+\fIrepository\fR,
+\fIcategory\fR,
+\fIdescription\fR)\&.
+.RE
+.PP
+\fB\-i\fR, \fB\-\-ignore\-outdated\fR
+.RS 4
+exclude outdated AUR packages from search results (\fIsearch\fR)\&.
+.RE
+.PP
+\fB\-r\fR, \fB\-\-recursive\fR
+.RS 4
+see pacman\(cqs remove options (\fIremove\fR,
+\fIuninstall\fR)\&.
+.RE
+.PP
+\fB\-s\fR, \fB\-\-sort\-by\-votes\fR
+.RS 4
+see cower\(cqs sorting options (\fIsearch\fR)\&.
+.RE
+.PP
+\fB\-c\fR, \fB\-\-cascade\fR
+.RS 4
+see pacman\(cqs remove options (\fIremove\fR)\&.
+.RE
+.PP
+\fB\-d\fR, \fB\-\-dependencies\fR
+.RS 4
+fetch dependencies (\fIdownload\fR)\&.
+.RE
+.PP
+\fB\-w\fR, \fB\-\-crawl\-homes\fR
+.RS 4
+open every pages of all the packages matching the argument (\fIhome\fR)\&.
+.RE
+.SH "CONFIGURATION"
+.sp
+The following environment variables are handled:
+.PP
+\fIOWLMAN_AUR_HOME\fR
+.RS 4
+Where should the downloaded AUR packages be stored?
+.RE
+.PP
+\fIOWLMAN_ABS_HOME\fR
+.RS 4
+Where should the downloaded sync packages be stored?
+.RE
+.PP
+\fIOWLMAN_CHANGELOG_DB\fR
+.RS 4
+Path to the database of changelog URLs\&.
+.RE
+.PP
+\fIOWLMAN_ABS_ROOT\fR
+.RS 4
+The value of the
+\fBABSROOT\fR
+variable in
+\fI/etc/abs\&.conf\fR\&.
+.RE
+.PP
+\fIOWLMAN_PACMAN_CACHE\fR
+.RS 4
+The value of the
+\fBCacheDir\fR
+variable in
+\fI/etc/pacman\&.conf\fR\&.
+.RE
+.PP
+\fIOWLMAN_PACMAN_LOG\fR
+.RS 4
+The value of the
+\fBLogFile\fR
+variable in
+\fI/etc/pacman\&.conf\fR\&.
+.RE
+.PP
+\fIOWLMAN_BROWSER\fR
+.RS 4
+The browser used for opening the package\(cqs home pages\&.
+.RE
+.PP
+\fIOWLMAN_EDITOR\fR
+.RS 4
+The editor used for opening the package\(cqs PKGBUILDs\&.
+.RE
+.PP
+\fIOWLMAN_SUDO_WARN\fR
+.RS 4
+Print a warning each time sudo is run (default:
+\fItrue\fR)\&.
+.RE
+.PP
+\fIOWLMAN_COLORIZE_RESULTS\fR
+.RS 4
+Colorize search results (default:
+\fItrue\fR)\&.
+.RE
+.PP
+\fIOWLMAN_IGNORE_OUTDATED\fR
+.RS 4
+Whether to ignore outdated AUR results (default:
+\fIfalse\fR)\&.
+.RE
+.PP
+\fIOWLMAN_CLEAN_UP\fR
+.RS 4
+Whether to pass the
+\fB\-c\fR
+flag to
+\fBmakepkg\fR
+(default:
+\fIfalse\fR)\&.
+.RE
+.PP
+\fIOWLMAN_MAX_URL\fR
+.RS 4
+The maximum number of URL to send at once via
+\fB\-\-crawl\-homes\fR\&.
+.RE
+.SS "Color Variables"
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fIOWLMAN_LOCAL_COLOR\fR
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fIOWLMAN_CORE_COLOR\fR
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fIOWLMAN_EXTRA_COLOR\fR
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fIOWLMAN_COMMUNITY_COLOR\fR
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fIOWLMAN_TESTING_COLOR\fR
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fIOWLMAN_AUR_COLOR\fR
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fIOWLMAN_OTHER_COLOR\fR
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fIOWLMAN_SEP_COLOR\fR
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fIOWLMAN_NAME_COLOR\fR
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fIOWLMAN_VERSION_COLOR\fR
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fIOWLMAN_OBSOLETE_COLOR\fR
+.RE
+.sp
+.RS 4
+.ie n \{\
+\h'-04'\(bu\h'+03'\c
+.\}
+.el \{\
+.sp -1
+.IP \(bu 2.3
+.\}
+\fIOWLMAN_INSTALLED_COLOR\fR
+.RE
+.sp
+The valid values for the aforementioned variables are : \fBdefault\fR, \fBblack\fR, \fBred\fR, \fBgreen\fR, \fByellow\fR, \fBblue\fR, \fBmagenta\fR, \fBcyan\fR, \fBwhite\fR, \fBbold\fR\&.
+.SH "AUTHOR"
+.sp
+Bastien Dejean <nihilhill at gmail\&.com>
+.SH "SEE ALSO"
+.sp
+\fBpacman\fR(8), \fBcower\fR(1), \fBmakepkg\fR(8)\&.
