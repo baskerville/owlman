@@ -192,4 +192,10 @@ case "$words[2]" in
       $_2nd_arguments[sort] \
       '1: :->forms' && return 0
     ;;
+  update)
+    _arguments \
+      $_2nd_arguments[aur] \
+      $_2nd_arguments[repo] \
+      '1: :->forms' && return 0
+    ;;
 esac
