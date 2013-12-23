@@ -8,16 +8,32 @@
 # ------------------------------------------------------------------------------
 
 _local_packages() {
-  local_packages=(${(f)"$(_call_program pacmanpackage pacman -Qq 2>/dev/null)"})
+  local_packages=(${(f)"$(_call_program owl_local_package pacman -Qq 2>/dev/null)"})
 }
 _sync_packages() {
-  sync_packages=(${(f)"$(_call_program pacmanpackage pacman -Ssq $words[CURRENT] 2>/dev/null)"})
+  sync_packages=(${(f)"$(_call_program owl_sync_package pacman -Ssq $words[CURRENT] 2>/dev/null)"})
 }
 _aur_packages() {
-  aur_packages=(${(f)"$(_call_program pacmanpackage cower -sq $words[CURRENT] 2>/dev/null)"})
+  aur_packages=(${(f)"$(_call_program owl_aur_package cower -sq $words[CURRENT] 2>/dev/null)"})
 }
 _changelogdb() {
-  changelogdb=(${(f)"$(_call_program owlchangelogdb cat $OWLMAN_CHANGELOG_DB)"})
+  changelogdb=(${(f)"$(_call_program owl_changelogdb cat $OWLMAN_CHANGELOG_DB)"})
+}
+_wanted_local() {
+  _local_packages
+  _wanted owl_local_package expl 'Local Packages' compadd -a local_packages
+}
+_wanted_sync() {
+  _sync_packages
+  _wanted owl_sync_package expl 'Pacman Packages' compadd -a sync_packages
+}
+_wanted_aur() {
+  _aur_packages
+  _wanted owl_aur_package expl 'AUR Packages' compadd -a aur_packages
+}
+_wanted_remote() {
+  _wanted_sync
+  _wanted_aur
 }
 
 local -a _1st_arguments
@@ -100,19 +116,15 @@ fi
 
 case "$words[2]" in
   list|binlist|liblist|etclist|manlist|doclist|upgrade|downgrade|check)
-    _local_packages
-    _wanted local_packages expl 'local packages' compadd -a local_packages
+    _wanted_local
     ;;
   deps|mdeps|uses|version|repository|category|description|license)
     _arguments $_2nd_arguments[lcal] \
       '1: :->forms' && return 0
     if [[ "$state" == forms ]]; then
-      _local_packages
-      _wanted pacmanpackage expl 'local packages' compadd -a local_packages
+      _wanted_local
     else
-      _sync_packages
-      _aur_packages
-      _wanted pacmanpackage expl 'remote packages' compadd -a sync_packages aur_packages
+      _wanted_remote
     fi ;;
   info)
     _arguments \
@@ -120,33 +132,28 @@ case "$words[2]" in
       $_2nd_arguments[extended] \
       '1: :->forms' && return 0
     if [[ "$words[3]" == "--local" ]]; then
-      _local_packages
-      _wanted pacmanpackage expl 'local packages' compadd -a local_packages
+      _wanted_local
     else
-      _sync_packages
-      _aur_packages
-      _wanted pacmanpackage expl 'remote packages' compadd -a sync_packages aur_packages
+      _wanted_remote
     fi ;;
   home)
     _arguments $_2nd_arguments[crawl] \
       '1: :->forms' && return 0
-    _sync_packages
-    _aur_packages
-    _wanted pacmanpackage expl 'remote packages' compadd -a sync_packages aur_packages
+    _wanted_remote
     ;;
   edit|page|category)
-    _aur_packages
-    _wanted pacmanpackage expl 'AUR packages' compadd -a aur_packages
+    _wanted_aur
     ;;
   download)
     _arguments $_2nd_arguments[deps] \
       '1: :->forms' && return 0
-    _aur_packages
-    _wanted pacmanpackage expl 'AUR packages' compadd -a aur_packages
+    _wanted_aur
     ;;
   repository|abs)
-    _sync_packages
-    _wanted pacmanpackage expl 'pacman packages' compadd -a sync_packages
+    _wanted_sync
+    ;;
+  install)
+    _wanted_remote
     ;;
   remove|uninstall)
     _arguments \
@@ -154,8 +161,7 @@ case "$words[2]" in
       $_2nd_arguments[cascade] \
       '1: :->forms' && return 0
     if [[ "$state" == forms ]]; then
-      _local_packages
-      _wanted pacmanpackage expl 'local packages' compadd -a local_packages
+      _wanted_local
     fi ;;
   foreigns|orphans)
     _arguments $_2nd_arguments[quiet] \
@@ -169,8 +175,7 @@ case "$words[2]" in
   query)
     _arguments $_2nd_arguments[quiet] \
       '1: :->forms' && return 0
-    _local_packages
-    _wanted pacmanpackage expl 'local packages' compadd -a local_packages
+    _wanted_local
     ;;
   changelog)
     _arguments $_2nd_arguments[quiet] \
@@ -179,9 +184,7 @@ case "$words[2]" in
       _changelogdb
       _wanted owlchangelogdb expl 'Owlman changelog database' compadd -a changelogdb
     fi
-    _sync_packages
-    _aur_packages 
-    _wanted pacmanpackage expl 'remote packages' compadd -a sync_packages aur_packages
+    _wanted_remote
     ;;
   search)
     _arguments \
