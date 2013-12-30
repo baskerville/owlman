@@ -209,14 +209,17 @@ The following environment variables are handled:
 'OWLMAN_SUDO_WARN'::
     Print a warning each time sudo is run (default: 'true').
 
+'OWLMAN_ASK_EDIT'::
+    Ask to edit the PKGBUILD of AUR packages during installation (default: 'true').
+
 'OWLMAN_COLORIZE_RESULTS'::
     Colorize search results (default: 'true').
 
 'OWLMAN_IGNORE_OUTDATED'::
-    Whether to ignore outdated AUR results (default: 'false').
+    Ignore outdated AUR results (default: 'false').
 
 'OWLMAN_CLEAN_UP'::
-    Whether to pass the *-c* flag to *makepkg* (default: 'false').
+    Pass the *-c* flag to *makepkg* (default: 'false').
 
 'OWLMAN_MAX_URL'::
     The maximum number of URL to send at once via *--crawl-homes*.

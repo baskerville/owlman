@@ -2,12 +2,12 @@
 .\"     Title: owlman
 .\"    Author: [see the "Author" section]
 .\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
-.\"      Date: 12/21/2013
+.\"      Date: 12/30/2013
 .\"    Manual: Owlman Manual
-.\"    Source: Owlman 0.5-3-g0e653b0
+.\"    Source: Owlman 0.5-11-gc74d114
 .\"  Language: English
 .\"
-.TH "OWLMAN" "8" "12/21/2013" "Owlman 0\&.5\-3\-g0e653b0" "Owlman Manual"
+.TH "OWLMAN" "8" "12/30/2013" "Owlman 0\&.5\-11\-gc74d114" "Owlman Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -396,6 +396,12 @@ Print a warning each time sudo is run (default:
 \fItrue\fR)\&.
 .RE
 .PP
+\fIOWLMAN_ASK_EDIT\fR
+.RS 4
+Ask to edit the PKGBUILD of AUR packages during installation (default:
+\fItrue\fR)\&.
+.RE
+.PP
 \fIOWLMAN_COLORIZE_RESULTS\fR
 .RS 4
 Colorize search results (default:
@@ -404,13 +410,13 @@ Colorize search results (default:
 .PP
 \fIOWLMAN_IGNORE_OUTDATED\fR
 .RS 4
-Whether to ignore outdated AUR results (default:
+Ignore outdated AUR results (default:
 \fIfalse\fR)\&.
 .RE
 .PP
 \fIOWLMAN_CLEAN_UP\fR
 .RS 4
-Whether to pass the
+Pass the
 \fB\-c\fR
 flag to
 \fBmakepkg\fR
