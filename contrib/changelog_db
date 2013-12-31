@@ -1,2 +1,6 @@
-potrace	http://potrace.sourceforge.net/ChangeLog
 linux	http://www.kernel.org/pub/linux/kernel/v${version%%.*}.0/ChangeLog-$version
+gimp	https://git.gnome.org/browse/gimp/plain/NEWS?h=gimp-$(printf "%s" "$version" | cut -c 1-3 | tr '.' '-')
+aria2	http://sourceforge.net/projects/aria2/files/stable/aria2-${version}
+potrace	http://potrace.sourceforge.net/ChangeLog
+
+# vim: ft=conf
