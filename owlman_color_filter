@@ -1,4 +1,4 @@
-#! /bin/dash
+#! /bin/sh
 
 COLOR_NAMES="black red green yellow blue magenta cyan white NA bold"
 OWLMAN_COLORIZE_RESULTS=${OWLMAN_COLORIZE_RESULTS:-true}

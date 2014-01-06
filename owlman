@@ -1,4 +1,4 @@
-#! /bin/dash
+#! /bin/sh
 
 OWLMAN_AUR_HOME=${OWLMAN_AUR_HOME:-/tmp/owlman-aur}
 OWLMAN_ABS_HOME=${OWLMAN_ABS_HOME:-/tmp/owlman-abs}

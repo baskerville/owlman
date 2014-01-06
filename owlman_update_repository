@@ -1,4 +1,4 @@
-#! /bin/dash
+#! /bin/sh
 
 if [ $# -eq 0 ] ; then
     printf "'%s' %s\n" "$0" "requires a path as argument" >&2
