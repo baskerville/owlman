@@ -455,15 +455,25 @@ case $action in
                         y|yes|Y|Yes)
                             vimdiff "${i%.*}" "$i"
                             ;;
+                        *)
+                            printf "Overwrite '%s' with '%s' [y/N]? " "${i%.*}" "$i"
+                            read answer
+                            case "$answer" in
+                                y|yes|Y|Yes)
+                                    sudorun mv "$i" "${i%.*}"
+                                    ;;
+                            esac
                     esac
                 fi
-                printf "Remove '%s' [y/N]? " "$i"
-                read answer
-                case "$answer" in
-                    y|yes|Y|Yes)
-                        sudorun rm "$i"
-                        ;;
-                esac
+                if [ -e "$i" ] ; then
+                    printf "Remove '%s' [y/N]? " "$i"
+                    read answer
+                    case "$answer" in
+                        y|yes|Y|Yes)
+                            sudorun rm "$i"
+                            ;;
+                    esac
+                fi
             fi
         done
         ;;
