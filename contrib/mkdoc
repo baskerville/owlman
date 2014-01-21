@@ -1,3 +1,5 @@
 #! /bin/sh
 
-a2x -v -d manpage -f manpage -a revnumber=$(git describe) doc/owlman.8.txt
+version=${1:-"$(git describe)"}
+
+a2x -v -d manpage -f manpage -a revnumber=$version doc/owlman.8.txt
