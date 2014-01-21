@@ -15,68 +15,68 @@ OWLMAN_CLEAN_UP=${OWLMAN_CLEAN_UP:-false}
 OWLMAN_MAX_URL=${OWLMAN_MAX_URL:-16}
 
 usage() {
-    printf "Usage: %s <action> [...]\n" "${0##*/}"
-    exit 1
+	printf "Usage: %s <action> [...]\n" "${0##*/}"
+	exit 1
 }
 
 printc() {
-    color=$1
-    shift
-    if [ -t 1 ] ; then
-        printf "\033[%sm%s\033[0m" "$color" "$@"
-    else
-        printf "%s" "$@"
-    fi
+	color=$1
+	shift
+	if [ -t 1 ] ; then
+		printf "\033[%sm%s\033[0m" "$color" "$@"
+	else
+		printf "%s" "$@"
+	fi
 }
 
 white() {
-    printc "1;37" "$@"
+	printc "1;37" "$@"
 }
 
 green() {
-    printc "1;32" "$@"
+	printc "1;32" "$@"
 }
 
 magenta() {
-    printc "1;35" "$@"
+	printc "1;35" "$@"
 }
 
 missing_pkg() {
-    printf "Package '%s' was not found.\n" "$@" >&2
+	printf "Package '%s' was not found.\n" "$@" >&2
 }
 
 warning() {
-    magenta "==>"
-    white " $@"
+	magenta "==>"
+	white " $@"
 }
 
 info() {
-    green "==>"
-    white " $@"
+	green "==>"
+	white " $@"
 }
 
 sudorun() {
-    if [ "$OWLMAN_SUDO_WARN" = "true" ] ; then
-        warning "Running sudo."
-        printf "\n"
-    fi
-    sudo $@
+	if [ "$OWLMAN_SUDO_WARN" = "true" ] ; then
+		warning "Running sudo."
+		printf "\n"
+	fi
+	sudo $@
 }
 
 edit_pkgbuild() {
-    printf "%s" "Edit PKGBUILD? [Y/n] "
-    read answer
-    [ -z "$answer" ] && answer='yes'
-    case $answer in
-        y|Y|yes|Yes)
-            $OWLMAN_EDITOR "$1"
-            ;;
-    esac
+	printf "%s" "Edit PKGBUILD? [Y/n] "
+	read answer
+	[ -z "$answer" ] && answer='yes'
+	case $answer in
+		y|Y|yes|Yes)
+			$OWLMAN_EDITOR "$1"
+			;;
+	esac
 }
 
 
 if [ $# -lt 1 ] ; then
-    usage
+	usage
 fi
 
 action=$1
@@ -87,44 +87,44 @@ tmp_out=/tmp/owlman.$$
 [ ! -d "$OWLMAN_ABS_HOME" ] && mkdir -p "$OWLMAN_ABS_HOME"
 
 getinfos() {
-    extended_infos=0
-    pacopt=-Si
-    cowopt=-i
-    while getopts "e-:" opt ; do
-        case $opt in
-            e)
-                extended_infos=1
-                ;;
-            -)
-                case $OPTARG in
-                    extended)
-                        extended_infos=1
-                        ;;
-                esac
-                ;;
-        esac
-    done
+	extended_infos=0
+	pacopt=-Si
+	cowopt=-i
+	while getopts "e-:" opt ; do
+		case $opt in
+			e)
+				extended_infos=1
+				;;
+			-)
+				case $OPTARG in
+					extended)
+						extended_infos=1
+						;;
+				esac
+				;;
+		esac
+	done
 
-    shift $((OPTIND - 1))
+	shift $((OPTIND - 1))
 
-    if [ $extended_infos -eq 1 ] ; then
-        pacopt=-Sii
-        cowopt=-ii
-    fi
+	if [ $extended_infos -eq 1 ] ; then
+		pacopt=-Sii
+		cowopt=-ii
+	fi
 
-    while [ $# -gt 0 ] ; do
-        pacman $pacopt "$1" > "$tmp_out" 2>&1
-        if [ $? -ne 0 ] ; then
-            cower $cowopt "$1" > "$tmp_out" 2>&1
-            if [ $? -ne 0 ] ; then
-                missing_pkg "$1"
-                exit 1
-            fi
-        fi
-        cat "$tmp_out"
-        : > "$tmp_out"
-        shift
-    done
+	while [ $# -gt 0 ] ; do
+		pacman $pacopt "$1" > "$tmp_out" 2>&1
+		if [ $? -ne 0 ] ; then
+			cower $cowopt "$1" > "$tmp_out" 2>&1
+			if [ $? -ne 0 ] ; then
+				missing_pkg "$1"
+				exit 1
+			fi
+		fi
+		cat "$tmp_out"
+		: > "$tmp_out"
+		shift
+	done
 }
 
 quiet_results=0
@@ -140,480 +140,480 @@ crawl_homes=0
 sort_by_votes=0
 
 while getopts "qeaolidcrsw-:" opt ; do
-    case $opt in
-        q)
-            quiet_results=1
-            ;;
-        e)
-            extended_infos=1
-            ;;
-        a)
-            aur_only=1
-            ;;
-        o)
-            repo_only=1
-            ;;
-        l)
-            local_only=1
-            ;;
-        i)
-            ignore_outdated=1
-            ;;
-        d)
-            fetch_deps=1
-            ;;
-        c)
-            rm_cascade=1
-            ;;
-        r)
-            rm_recur=1
-            ;;
-        s)
-            sort_by_votes=1
-            ;;
-        w)
-            crawl_homes=1
-            ;;
-        -)
-            case $OPTARG in
-                quiet)
-                    quiet_results=1
-                    ;;
-                extended)
-                    extended_infos=1
-                    ;;
-                aur)
-                    aur_only=1
-                    ;;
-                repo)
-                    repo_only=1
-                    ;;
-                local)
-                    local_only=1
-                    ;;
-                ignore-outdated)
-                    ignore_outdated=1
-                    ;;
-                dependencies)
-                    fetch_deps=1
-                    ;;
-                cascade)
-                    rm_cascade=1
-                    ;;
-                recursive)
-                    rm_recur=1
-                    ;;
-                sort-by-votes)
-                    sort_by_votes=1
-                    ;;
-                crawl-homes)
-                    crawl_homes=1
-                    ;;
-            esac
-            ;;
-    esac
+	case $opt in
+		q)
+			quiet_results=1
+			;;
+		e)
+			extended_infos=1
+			;;
+		a)
+			aur_only=1
+			;;
+		o)
+			repo_only=1
+			;;
+		l)
+			local_only=1
+			;;
+		i)
+			ignore_outdated=1
+			;;
+		d)
+			fetch_deps=1
+			;;
+		c)
+			rm_cascade=1
+			;;
+		r)
+			rm_recur=1
+			;;
+		s)
+			sort_by_votes=1
+			;;
+		w)
+			crawl_homes=1
+			;;
+		-)
+			case $OPTARG in
+				quiet)
+					quiet_results=1
+					;;
+				extended)
+					extended_infos=1
+					;;
+				aur)
+					aur_only=1
+					;;
+				repo)
+					repo_only=1
+					;;
+				local)
+					local_only=1
+					;;
+				ignore-outdated)
+					ignore_outdated=1
+					;;
+				dependencies)
+					fetch_deps=1
+					;;
+				cascade)
+					rm_cascade=1
+					;;
+				recursive)
+					rm_recur=1
+					;;
+				sort-by-votes)
+					sort_by_votes=1
+					;;
+				crawl-homes)
+					crawl_homes=1
+					;;
+			esac
+			;;
+	esac
 done
 
 shift $(($OPTIND - 1))
 
 case $action in
-    update)
-        if [ $aur_only -ne 1 ]; then
-            info "Checking sync repos for updates."
-            printf "\n"
-            sudorun pacman -Syu
-        fi
-        if [ $repo_only -ne 1 ] ; then
-            info "Checking AUR for updates."
-            printf "\n"
-            cower -u | tee "$tmp_out"
-            if [ -s "$tmp_out" ] ; then
-                    printf "Reinstall packages? [Y/n] "
-                    read answer
-                    [ -z "$answer" ] && answer='yes'
-                    case $answer in
-                        y|Y|yes|Yes)
-                            owlman install $(cat "$tmp_out" | sed 's/^:: *\([^ ]\+\) .*$/\1/' | xargs)
-                            ;;
-                    esac
-            else
-                printf "%s\n" "No AUR updates found."
-            fi
-        fi
-        ;;
-    pull)
-        repos=$(find "$OWLMAN_AUR_HOME" -mindepth 3 -maxdepth 3 -type d -regex ".*/src/[^/]+" | grep -v '\-build$')
-        for repo in $repos ; do
-            [ ! -e "$repo" ] && continue
-            from_home=${repo#"$OWLMAN_AUR_HOME/"}
-            pkgname=${from_home%%/*}
-            pacman -Q "$pkgname" > /dev/null 2>&1
-            if [ $? -eq 1 ] ; then
-                magenta "==> "
-                white "$pkgname "
-                printf "%s\n" "is not installed."
-                printf "%s" "Remove it from the cache [y/N]? "
-                read answer
-                case "$answer" in
-                    y|Y|yes|Yes)
-                        rm -vrf "$OWLMAN_AUR_HOME/$pkgname"
-                        ;;
-                esac
-                continue
-            fi
-            green "$pkgname"
-            printf "\n"
-            if owlman_update_repository "$repo" ; then
-                printf "Reinstall package '%s' [Y/n]? " "$pkgname"
-                read answer
-                [ -z "$answer" ] && answer="yes"
-                case "$answer" in
-                    y|yes|Y|Yes)
-                        cd "$OWLMAN_AUR_HOME/$pkgname"
-                        makepkg -ifs
-                        ;;
-                esac
-            fi
-        done
-        ;;
-    info)
-        if [ $local_only -eq 1 ] ; then
-            pacman -Qi "$@"
-        else
-            if [ $extended_infos -eq 1 ] ; then
-                getinfos --extended "$@"
-            else
-                getinfos "$@"
-            fi
-        fi
-        ;;
-    list | lsgrep)
-        pattern='.'
-        if [ "$action" = "lsgrep" ] ; then
-            pattern=$1
-            shift
-        fi
-        pacman -Qlq "$@" | grep -i "$pattern"
-        ;;
-    query | search)
-        if [ "$action" = "query" ] ; then
-            if [ $quiet_results -eq 1 ] ; then
-                pacman -Qsq "$@"
-            else
-                pacman -Qs "$@" | owlman_color_filter
-            fi
-        elif [ "$action" = "search" ] ; then
-            if [ $aur_only -eq 0 ] ; then
-                if [ $quiet_results -eq 1 ] ; then
-                    pacman -Ssq "$@"
-                else
-                    pacman -Ss "$@" | owlman_color_filter
-                fi
-            fi
-            if [ $repo_only -eq 0 ] ; then
-                opts="-s"
-                filter=owlman_color_filter
-                if [ $quiet_results -eq 1 ] ; then
-                    opts="$opts -q"
-                    filter=cat
-                fi
-                [ $ignore_outdated -eq 1 -o "$OWLMAN_IGNORE_OUTDATED" = "true" ] && opts="$opts -o"
-                [ $sort_by_votes -eq 1 ] && opts="$opts --sort=votes"
-                cower $opts "$@" | $filter
-            fi
-        fi
-        ;;
-    owns)
-        pacopt="-Qo"
-        [ $quiet_results -eq 1 ] && pacopt="-Qoq"
-        pacman $pacopt "$@"
-        ;;
-    version | repository | category | description | license)
-        cmd=getinfos
-        [ $local_only -eq 1 ] && cmd="pacman -Qi"
-        $cmd "$@" | grep -i "^$action" | sed 's/[^:]\+: \(.*\)/\1/'
-        ;;
-    grep)
-        pattern=$1
-        shift
-        pkg_files=$(pacman -Qlq "$@")
-        if [ $? -eq 0 ] ; then
-            [ ! "$pattern" = "\n" ] && grep --color=auto -Ii "$pattern" $pkg_files 2> /dev/null
-        fi
-        ;;
-    downgrade)
-        if [ ! -d "$OWLMAN_PACMAN_CACHE" ] ; then
-            printf "%s\n" "Pacman's cache directory doesn't exist." >&2
-            exit 1
-        fi
-        while [ $# -gt 0 ] ; do
-            pkgname=$1
-            pacman -Q "$pkgname" > /dev/null 2>&1
-            if [ $? -ne 0 ] ; then
-                missing_pkg "$pkgname"
-                exit 1
-            fi
-            previous_pkg=$(ls -1tc "$OWLMAN_PACMAN_CACHE/$pkgname"-[0-9]* 2> /dev/null | head -n 2 | tail -n 1)
-            if [ -e "$previous_pkg" ] ; then
-                printf "%s\n" "$previous_pkg" >> "$tmp_out"
-            fi
-            shift
-        done
-        if [ -s "$tmp_out" ] ; then
-            sudorun pacman -U $(cat "$tmp_out")
-            : > "$tmp_out"
-        fi
-        ;;
-    remove | uninstall)
-        if [ $rm_cascade -eq 1 ] ; then
-            sudorun pacman -Rc "$@"
-        elif [ $rm_recur -eq 1 ] ; then
-            sudorun pacman -Rs "$@"
-        else
-            sudorun pacman -R "$@"
-        fi
-        ;;
-    download)
-        if [ $fetch_deps -eq 1 ] ; then
-            cower -ddf -t "$OWLMAN_AUR_HOME" "$@"
-        else
-            cower -df -t "$OWLMAN_AUR_HOME" "$@"
-        fi
-        ;;
-    abs)
-        while [ $# -gt 0 ] ; do
-            repo=$(pacman -Si "$1" | grep -i "^repository" | sed 's/[^:]\+: \(.*\)/\1/')
-            [ -n "$repo" ] && sudo abs "$repo/$1" && cp -rv "$OWLMAN_ABS_ROOT/$repo/$1" "$OWLMAN_ABS_HOME"
-            shift
-        done
-        ;;
-    edit)
-        pkgbuild="$OWLMAN_AUR_HOME/$@/PKGBUILD"
-        [ -e "$pkgbuild" ] || cower -df -t "$OWLMAN_AUR_HOME" "$@"
-        [ $? -eq 0 ] && $OWLMAN_EDITOR "$pkgbuild"
-        ;;
-    install)
-        while [ $# -gt 0 ] ; do
-            { pacman -Si "$1" || pacman -Sg "$1"; } > "$tmp_out" 2> /dev/null
-            if [ -s "$tmp_out" ] ; then
-                if [ $local_only -eq 1 ] ; then
-                    cd "$OWLMAN_ABS_HOME/$1" && makepkg -ifs
-                else
-                    sudorun pacman -S "$1"
-                fi
-                [ $? -ne 0 ] && exit 1
-            else
-                cower -ddf -t "$OWLMAN_AUR_HOME" "$1" | tee "$tmp_out"
-                if [ -s "$tmp_out" ] ; then
-                    list_of_programs=$(cat "$tmp_out" | tac | sed 's/.* \([^ ]\+\) downloaded.*/\1/')
-                    for pkgname in $list_of_programs; do
-                        cd "$OWLMAN_AUR_HOME/$pkgname"
-                        [ "$OWLMAN_ASK_EDIT" = "true" ] && edit_pkgbuild ./PKGBUILD
-                        if [ "$OWLMAN_CLEAN_UP" = "true" ] ; then
-                            makepkg -ifsc
-                        else
-                            makepkg -ifs
-                        fi
-                        [ $? -ne 0 ] && exit 1
-                    done
-                    : > "$tmp_out"
-                else
-                    missing_pkg "$1"
-                fi
-            fi
-            shift
-        done
-        ;;
-    upgrade)
-        while [ $# -gt 0 ] ; do
-            pacman -Q "$1" > /dev/null 2>&1
-            if [ $? -ne 0 ] ; then
-                magenta "==> "
-                white "$1 "
-                printf "%s\n" "is not installed."
-                shift
-                continue
-            fi
-            pkgdir="$OWLMAN_AUR_HOME/$1"
-            [ -d "$pkgdir" ] || cower -df -t "$OWLMAN_AUR_HOME" "$1"
-            cd "$pkgdir" 2> /dev/null || exit 1
-            if [ "$OWLMAN_CLEAN_UP" = "true" ] ; then
-                makepkg -ifsc
-            else
-                makepkg -ifs
-            fi
-            [ $? -ne 0 ] && exit 1
-            shift
-        done
-        ;;
-    leftovers)
-        log_lo=$(grep -Eo '/[[:graph:]]+\.pac(new|orig|save)' "$OWLMAN_PACMAN_LOG" | sort -u)
-        for i in $log_lo
-        do
-            if [ -e "$i" ] ; then
-                ext=${i##*.}
-                if [ "$ext" != "pacsave" ] ; then
-                    printf "Merge '%s' [y/N]? " "$i"
-                    read answer
-                    case "$answer" in
-                        y|yes|Y|Yes)
-                            vimdiff "${i%.*}" "$i"
-                            ;;
-                        *)
-                            printf "Overwrite '%s' with '%s' [y/N]? " "${i%.*}" "$i"
-                            read answer
-                            case "$answer" in
-                                y|yes|Y|Yes)
-                                    sudorun mv "$i" "${i%.*}"
-                                    ;;
-                            esac
-                    esac
-                fi
-                if [ -e "$i" ] ; then
-                    printf "Remove '%s' [y/N]? " "$i"
-                    read answer
-                    case "$answer" in
-                        y|yes|Y|Yes)
-                            sudorun rm "$i"
-                            ;;
-                    esac
-                fi
-            fi
-        done
-        ;;
-    page)
-        while [ $# -gt 0 ] ; do
-            uri=$(getinfos "$1" | grep -m 1 -o 'https://aur.*') > /dev/null 2>&1
-            if [ -n "$uri" ] ; then
-                $OWLMAN_BROWSER $uri > /dev/null 2>&1
-            else
-                printf "Package '%s' is not in AUR.\n" "$1" >&2
-            fi
-            shift
-        done
-        ;;
-    home)
-        if [ $crawl_homes -eq 1 ] ; then
-            pkg_list=$(pacman -Ssq "$@"; cower -sq "$@")
-            if [ -n "$pkg_list" ] ; then
-                set $pkg_list
-            fi
-        fi
-        counter=0
-        while [ $# -gt 0 ] ; do
-            uri=$(getinfos "$1" | grep -m 1 -o 'https\?://.*')
-            if [ -n "$uri" ] ; then
-                printf "%s: %s\n" "$1" "$uri"
-                $OWLMAN_BROWSER $uri > /dev/null 2>&1
-                counter=$((counter+1))
-            fi
-            shift
-            if [ $((counter % OWLMAN_MAX_URL)) -eq 0 -a $counter -gt 0 -a $# -gt 0 ] ; then
-                printf "Continue [Y/n] (%i remaining)? " "$#"
-                read answer
-                [ -z "$answer" ] && answer='y'
+	update)
+		if [ $aur_only -ne 1 ]; then
+			info "Checking sync repos for updates."
+			printf "\n"
+			sudorun pacman -Syu
+		fi
+		if [ $repo_only -ne 1 ] ; then
+			info "Checking AUR for updates."
+			printf "\n"
+			cower -u | tee "$tmp_out"
+			if [ -s "$tmp_out" ] ; then
+					printf "Reinstall packages? [Y/n] "
+					read answer
+					[ -z "$answer" ] && answer='yes'
+					case $answer in
+						y|Y|yes|Yes)
+							owlman install $(cat "$tmp_out" | sed 's/^:: *\([^ ]\+\) .*$/\1/' | xargs)
+							;;
+					esac
+			else
+				printf "%s\n" "No AUR updates found."
+			fi
+		fi
+		;;
+	pull)
+		repos=$(find "$OWLMAN_AUR_HOME" -mindepth 3 -maxdepth 3 -type d -regex ".*/src/[^/]+" | grep -v '\-build$')
+		for repo in $repos ; do
+			[ ! -e "$repo" ] && continue
+			from_home=${repo#"$OWLMAN_AUR_HOME/"}
+			pkgname=${from_home%%/*}
+			pacman -Q "$pkgname" > /dev/null 2>&1
+			if [ $? -eq 1 ] ; then
+				magenta "==> "
+				white "$pkgname "
+				printf "%s\n" "is not installed."
+				printf "%s" "Remove it from the cache [y/N]? "
+				read answer
+				case "$answer" in
+					y|Y|yes|Yes)
+						rm -vrf "$OWLMAN_AUR_HOME/$pkgname"
+						;;
+				esac
+				continue
+			fi
+			green "$pkgname"
+			printf "\n"
+			if owlman_update_repository "$repo" ; then
+				printf "Reinstall package '%s' [Y/n]? " "$pkgname"
+				read answer
+				[ -z "$answer" ] && answer="yes"
+				case "$answer" in
+					y|yes|Y|Yes)
+						cd "$OWLMAN_AUR_HOME/$pkgname"
+						makepkg -ifs
+						;;
+				esac
+			fi
+		done
+		;;
+	info)
+		if [ $local_only -eq 1 ] ; then
+			pacman -Qi "$@"
+		else
+			if [ $extended_infos -eq 1 ] ; then
+				getinfos --extended "$@"
+			else
+				getinfos "$@"
+			fi
+		fi
+		;;
+	list | lsgrep)
+		pattern='.'
+		if [ "$action" = "lsgrep" ] ; then
+			pattern=$1
+			shift
+		fi
+		pacman -Qlq "$@" | grep -i "$pattern"
+		;;
+	query | search)
+		if [ "$action" = "query" ] ; then
+			if [ $quiet_results -eq 1 ] ; then
+				pacman -Qsq "$@"
+			else
+				pacman -Qs "$@" | owlman_color_filter
+			fi
+		elif [ "$action" = "search" ] ; then
+			if [ $aur_only -eq 0 ] ; then
+				if [ $quiet_results -eq 1 ] ; then
+					pacman -Ssq "$@"
+				else
+					pacman -Ss "$@" | owlman_color_filter
+				fi
+			fi
+			if [ $repo_only -eq 0 ] ; then
+				opts="-s"
+				filter=owlman_color_filter
+				if [ $quiet_results -eq 1 ] ; then
+					opts="$opts -q"
+					filter=cat
+				fi
+				[ $ignore_outdated -eq 1 -o "$OWLMAN_IGNORE_OUTDATED" = "true" ] && opts="$opts -o"
+				[ $sort_by_votes -eq 1 ] && opts="$opts --sort=votes"
+				cower $opts "$@" | $filter
+			fi
+		fi
+		;;
+	owns)
+		pacopt="-Qo"
+		[ $quiet_results -eq 1 ] && pacopt="-Qoq"
+		pacman $pacopt "$@"
+		;;
+	version | repository | category | description | license)
+		cmd=getinfos
+		[ $local_only -eq 1 ] && cmd="pacman -Qi"
+		$cmd "$@" | grep -i "^$action" | sed 's/[^:]\+: \(.*\)/\1/'
+		;;
+	grep)
+		pattern=$1
+		shift
+		pkg_files=$(pacman -Qlq "$@")
+		if [ $? -eq 0 ] ; then
+			[ ! "$pattern" = "\n" ] && grep --color=auto -Ii "$pattern" $pkg_files 2> /dev/null
+		fi
+		;;
+	downgrade)
+		if [ ! -d "$OWLMAN_PACMAN_CACHE" ] ; then
+			printf "%s\n" "Pacman's cache directory doesn't exist." >&2
+			exit 1
+		fi
+		while [ $# -gt 0 ] ; do
+			pkgname=$1
+			pacman -Q "$pkgname" > /dev/null 2>&1
+			if [ $? -ne 0 ] ; then
+				missing_pkg "$pkgname"
+				exit 1
+			fi
+			previous_pkg=$(ls -1tc "$OWLMAN_PACMAN_CACHE/$pkgname"-[0-9]* 2> /dev/null | head -n 2 | tail -n 1)
+			if [ -e "$previous_pkg" ] ; then
+				printf "%s\n" "$previous_pkg" >> "$tmp_out"
+			fi
+			shift
+		done
+		if [ -s "$tmp_out" ] ; then
+			sudorun pacman -U $(cat "$tmp_out")
+			: > "$tmp_out"
+		fi
+		;;
+	remove | uninstall)
+		if [ $rm_cascade -eq 1 ] ; then
+			sudorun pacman -Rc "$@"
+		elif [ $rm_recur -eq 1 ] ; then
+			sudorun pacman -Rs "$@"
+		else
+			sudorun pacman -R "$@"
+		fi
+		;;
+	download)
+		if [ $fetch_deps -eq 1 ] ; then
+			cower -ddf -t "$OWLMAN_AUR_HOME" "$@"
+		else
+			cower -df -t "$OWLMAN_AUR_HOME" "$@"
+		fi
+		;;
+	abs)
+		while [ $# -gt 0 ] ; do
+			repo=$(pacman -Si "$1" | grep -i "^repository" | sed 's/[^:]\+: \(.*\)/\1/')
+			[ -n "$repo" ] && sudo abs "$repo/$1" && cp -rv "$OWLMAN_ABS_ROOT/$repo/$1" "$OWLMAN_ABS_HOME"
+			shift
+		done
+		;;
+	edit)
+		pkgbuild="$OWLMAN_AUR_HOME/$@/PKGBUILD"
+		[ -e "$pkgbuild" ] || cower -df -t "$OWLMAN_AUR_HOME" "$@"
+		[ $? -eq 0 ] && $OWLMAN_EDITOR "$pkgbuild"
+		;;
+	install)
+		while [ $# -gt 0 ] ; do
+			{ pacman -Si "$1" || pacman -Sg "$1"; } > "$tmp_out" 2> /dev/null
+			if [ -s "$tmp_out" ] ; then
+				if [ $local_only -eq 1 ] ; then
+					cd "$OWLMAN_ABS_HOME/$1" && makepkg -ifs
+				else
+					sudorun pacman -S "$1"
+				fi
+				[ $? -ne 0 ] && exit 1
+			else
+				cower -ddf -t "$OWLMAN_AUR_HOME" "$1" | tee "$tmp_out"
+				if [ -s "$tmp_out" ] ; then
+					list_of_programs=$(cat "$tmp_out" | tac | sed 's/.* \([^ ]\+\) downloaded.*/\1/')
+					for pkgname in $list_of_programs; do
+						cd "$OWLMAN_AUR_HOME/$pkgname"
+						[ "$OWLMAN_ASK_EDIT" = "true" ] && edit_pkgbuild ./PKGBUILD
+						if [ "$OWLMAN_CLEAN_UP" = "true" ] ; then
+							makepkg -ifsc
+						else
+							makepkg -ifs
+						fi
+						[ $? -ne 0 ] && exit 1
+					done
+					: > "$tmp_out"
+				else
+					missing_pkg "$1"
+				fi
+			fi
+			shift
+		done
+		;;
+	upgrade)
+		while [ $# -gt 0 ] ; do
+			pacman -Q "$1" > /dev/null 2>&1
+			if [ $? -ne 0 ] ; then
+				magenta "==> "
+				white "$1 "
+				printf "%s\n" "is not installed."
+				shift
+				continue
+			fi
+			pkgdir="$OWLMAN_AUR_HOME/$1"
+			[ -d "$pkgdir" ] || cower -df -t "$OWLMAN_AUR_HOME" "$1"
+			cd "$pkgdir" 2> /dev/null || exit 1
+			if [ "$OWLMAN_CLEAN_UP" = "true" ] ; then
+				makepkg -ifsc
+			else
+				makepkg -ifs
+			fi
+			[ $? -ne 0 ] && exit 1
+			shift
+		done
+		;;
+	leftovers)
+		log_lo=$(grep -Eo '/[[:graph:]]+\.pac(new|orig|save)' "$OWLMAN_PACMAN_LOG" | sort -u)
+		for i in $log_lo
+		do
+			if [ -e "$i" ] ; then
+				ext=${i##*.}
+				if [ "$ext" != "pacsave" ] ; then
+					printf "Merge '%s' [y/N]? " "$i"
+					read answer
+					case "$answer" in
+						y|yes|Y|Yes)
+							vimdiff "${i%.*}" "$i"
+							;;
+						*)
+							printf "Overwrite '%s' with '%s' [y/N]? " "${i%.*}" "$i"
+							read answer
+							case "$answer" in
+								y|yes|Y|Yes)
+									sudorun mv "$i" "${i%.*}"
+									;;
+							esac
+					esac
+				fi
+				if [ -e "$i" ] ; then
+					printf "Remove '%s' [y/N]? " "$i"
+					read answer
+					case "$answer" in
+						y|yes|Y|Yes)
+							sudorun rm "$i"
+							;;
+					esac
+				fi
+			fi
+		done
+		;;
+	page)
+		while [ $# -gt 0 ] ; do
+			uri=$(getinfos "$1" | grep -m 1 -o 'https://aur.*') > /dev/null 2>&1
+			if [ -n "$uri" ] ; then
+				$OWLMAN_BROWSER $uri > /dev/null 2>&1
+			else
+				printf "Package '%s' is not in AUR.\n" "$1" >&2
+			fi
+			shift
+		done
+		;;
+	home)
+		if [ $crawl_homes -eq 1 ] ; then
+			pkg_list=$(pacman -Ssq "$@"; cower -sq "$@")
+			if [ -n "$pkg_list" ] ; then
+				set $pkg_list
+			fi
+		fi
+		counter=0
+		while [ $# -gt 0 ] ; do
+			uri=$(getinfos "$1" | grep -m 1 -o 'https\?://.*')
+			if [ -n "$uri" ] ; then
+				printf "%s: %s\n" "$1" "$uri"
+				$OWLMAN_BROWSER $uri > /dev/null 2>&1
+				counter=$((counter+1))
+			fi
+			shift
+			if [ $((counter % OWLMAN_MAX_URL)) -eq 0 -a $counter -gt 0 -a $# -gt 0 ] ; then
+				printf "Continue [Y/n] (%i remaining)? " "$#"
+				read answer
+				[ -z "$answer" ] && answer='y'
 
-                case "$answer" in
-                    y|Y|yes|Yes)
-                        :
-                        ;;
-                    *)
-                        exit 0
-                        ;;
-                esac
-            fi
-        done
-        ;;
-    changelog)
-        if [ ! -e "$OWLMAN_CHANGELOG_DB" ] ; then
-            printf "The changelog database doesn't exist.\n" >&2
-            exit 1
-        fi
-        while [ $# -gt 0 ] ; do
-            url=$(grep "^$1[[:space:]]" "$OWLMAN_CHANGELOG_DB" | cut -f 2)
-            if [ -z "$url" ] ; then
-                printf "Not in the changelog database: '%s'.\n" "$1" >&2
-            else
-                version=$(getinfos "$1" | grep -i "^version" | sed 's/[^:]\+ *: *\([^-]\+\)-[0-9]\+/\1/')
-                url=$(eval printf "%s" $url)
-                if [ $quiet_results -eq 1 ] ; then
-                    printf "%s\n" "$url"
-                else
-                    $BROWSER "$url"
-                fi
-            fi
-            shift
-        done
-        ;;
-    last)
-        num=${@:-7}
-        awk '/\] (installed|upgraded) / { match($0, /\] (installed|upgraded) ([^ ]+)/, groups); print groups[2]; }' "$OWLMAN_PACMAN_LOG" | tail -n "$num"
-        ;;
-    deps)
-        cmd="getinfos --extended"
-        [ $local_only -eq 1 ] && cmd="pacman -Qi"
-        $cmd "$@" | grep -i '^depends on' | sed 's/[^:]\+: \(.*\)/\1/'
-        ;;
-    mdeps)
-        cmd="getinfos --extended"
-        [ $local_only -eq 1 ] && cmd="pacman -Qi"
-        $cmd "$@" | grep -i '^makedepends' | sed 's/[^:]\+: \(.*\)/\1/'
-        ;;
-    uses)
-        cmd="getinfos --extended"
-        [ $local_only -eq 1 ] && cmd="pacman -Qii"
-        $cmd "$@" | grep -i '^required by' | sed 's/[^:]\+: \(.*\)/\1/'
-        ;;
-    check)
-        pacman -Qk "$@"
-        ;;
-    binlist)
-        pacman -Qlq "$@" | grep '/s\?bin/.*[^/]$'
-        ;;
-    liblist)
-        pacman -Qlq "$@" | grep '/lib/.*[^/]$'
-        ;;
-    etclist)
-        pacman -Qlq "$@" | grep '/etc/.*[^/]$'
-        ;;
-    manlist)
-        pacman -Qlq "$@" | grep '/man./.*[^/]$'
-        ;;
-    doclist)
-        pacman -Qlq "$@" | grep '/share/doc/[^/]\+/.*[^/]$'
-        ;;
-    refresh)
-        sudorun pacman -Syy
-        ;;
-    prune)
-        if [ ! -d "$OWLMAN_AUR_HOME" ] ; then
-            printf "%s\n" "The cache directory is invalid." >&2
-            exit 1
-        fi
-        cd "$OWLMAN_AUR_HOME"
-        for pkgname in * ; do
-            if [ -d "$pkgname" ] ; then
-                pacman -Q "$pkgname" > /dev/null 2>&1
-                [ $? -eq 1 ] && rm -vrf -- "$pkgname"
-            fi
-        done
-        ;;
-    foreigns)
-        if [ $quiet_results -eq 1 ] ; then
-            pacman -Qmq
-        else
-            pacman -Qm
-        fi
-        ;;
-    orphans)
-        if [ $quiet_results -eq 1 ] ; then
-            pacman -Qdtq
-        else
-            pacman -Qdt
-        fi
-        ;;
-    *)
-        printf "Unknown action: '%s'.\n" "$action" >&2
-        exit 1
-        ;;
+				case "$answer" in
+					y|Y|yes|Yes)
+						:
+						;;
+					*)
+						exit 0
+						;;
+				esac
+			fi
+		done
+		;;
+	changelog)
+		if [ ! -e "$OWLMAN_CHANGELOG_DB" ] ; then
+			printf "The changelog database doesn't exist.\n" >&2
+			exit 1
+		fi
+		while [ $# -gt 0 ] ; do
+			url=$(grep "^$1[[:space:]]" "$OWLMAN_CHANGELOG_DB" | cut -f 2)
+			if [ -z "$url" ] ; then
+				printf "Not in the changelog database: '%s'.\n" "$1" >&2
+			else
+				version=$(getinfos "$1" | grep -i "^version" | sed 's/[^:]\+ *: *\([^-]\+\)-[0-9]\+/\1/')
+				url=$(eval printf "%s" $url)
+				if [ $quiet_results -eq 1 ] ; then
+					printf "%s\n" "$url"
+				else
+					$BROWSER "$url"
+				fi
+			fi
+			shift
+		done
+		;;
+	last)
+		num=${@:-7}
+		awk '/\] (installed|upgraded) / { match($0, /\] (installed|upgraded) ([^ ]+)/, groups); print groups[2]; }' "$OWLMAN_PACMAN_LOG" | tail -n "$num"
+		;;
+	deps)
+		cmd="getinfos --extended"
+		[ $local_only -eq 1 ] && cmd="pacman -Qi"
+		$cmd "$@" | grep -i '^depends on' | sed 's/[^:]\+: \(.*\)/\1/'
+		;;
+	mdeps)
+		cmd="getinfos --extended"
+		[ $local_only -eq 1 ] && cmd="pacman -Qi"
+		$cmd "$@" | grep -i '^makedepends' | sed 's/[^:]\+: \(.*\)/\1/'
+		;;
+	uses)
+		cmd="getinfos --extended"
+		[ $local_only -eq 1 ] && cmd="pacman -Qii"
+		$cmd "$@" | grep -i '^required by' | sed 's/[^:]\+: \(.*\)/\1/'
+		;;
+	check)
+		pacman -Qk "$@"
+		;;
+	binlist)
+		pacman -Qlq "$@" | grep '/s\?bin/.*[^/]$'
+		;;
+	liblist)
+		pacman -Qlq "$@" | grep '/lib/.*[^/]$'
+		;;
+	etclist)
+		pacman -Qlq "$@" | grep '/etc/.*[^/]$'
+		;;
+	manlist)
+		pacman -Qlq "$@" | grep '/man./.*[^/]$'
+		;;
+	doclist)
+		pacman -Qlq "$@" | grep '/share/doc/[^/]\+/.*[^/]$'
+		;;
+	refresh)
+		sudorun pacman -Syy
+		;;
+	prune)
+		if [ ! -d "$OWLMAN_AUR_HOME" ] ; then
+			printf "%s\n" "The cache directory is invalid." >&2
+			exit 1
+		fi
+		cd "$OWLMAN_AUR_HOME"
+		for pkgname in * ; do
+			if [ -d "$pkgname" ] ; then
+				pacman -Q "$pkgname" > /dev/null 2>&1
+				[ $? -eq 1 ] && rm -vrf -- "$pkgname"
+			fi
+		done
+		;;
+	foreigns)
+		if [ $quiet_results -eq 1 ] ; then
+			pacman -Qmq
+		else
+			pacman -Qm
+		fi
+		;;
+	orphans)
+		if [ $quiet_results -eq 1 ] ; then
+			pacman -Qdtq
+		else
+			pacman -Qdt
+		fi
+		;;
+	*)
+		printf "Unknown action: '%s'.\n" "$action" >&2
+		exit 1
+		;;
 esac

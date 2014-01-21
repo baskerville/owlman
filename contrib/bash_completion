@@ -2,79 +2,79 @@
 
 _local_packages()
 {
-    pacman -Qq
+	pacman -Qq
 }
 
 _sync_packages()
 {
-    pacman -Ssq "$@"
+	pacman -Ssq "$@"
 }
 
 _aur_packages()
 {
-    cower -sq "$@" 2> /dev/null
+	cower -sq "$@" 2> /dev/null
 }
 
 _owlman()
 {
-    COMPREPLY=()
+	COMPREPLY=()
 
-    if [[ $COMP_CWORD -ge 1 ]] ; then
-        local current_word="${COMP_WORDS[COMP_CWORD]}"
-        case $current_word in
-            --*)
-                local long_opts='--aur --repo --local --ignore-outdated --recursive --cascade --dependencies --quiet --crawl-homes'
-                COMPREPLY=( $(compgen -W "$long_opts" -- "$current_word") )
-                return 0
-                ;;
-            -*)
-                local short_opts='-a -o -l -i -s -c -d -q -w'
-                COMPREPLY=( $(compgen -W "$short_opts" -- "$current_word") )
-                return 0
-                ;;
-        esac
-        if [[ $COMP_CWORD -eq 1 ]] ; then
-            local actions='refresh update pull install upgrade downgrade check remove uninstall download abs edit info deps mdeps uses page home changelog search query list lsgrep binlist liblist etclist manlist doclist grep version repository description category license owns prune last leftovers foreigns orphans'
-            COMPREPLY=( $(compgen -W "$actions" -- "$current_word") )
-            return 0
-        else
-            local second_word=${COMP_WORDS[1]}
-            local packages=""
-            case $second_word in
-                list | lsgrep | binlist | liblist | etclist | manlist | doclist | grep | upgrade | downgrade | check | remove | uninstall | deps | mdeps | uses)
-                    [[ $second_word == grep && $COMP_CWORD -eq 2 ]] && return 0
-                    [[ $second_word == lsgrep && $COMP_CWORD -eq 2 ]] && return 0
-                    packages="$(_local_packages)"
-                    ;;
-                install | info | home | version | description | license)
-                    packages="$(_sync_packages "$current_word"; _aur_packages "$current_word")"
-                    ;; 
-                download | edit | page | category)
-                    packages="$(_aur_packages "$current_word")"
-                    ;; 
-                repository|abs)
-                    packages="$(_sync_packages "$current_word")"
-                    ;; 
-                changelog)
-                    if [ -n "$OWLMAN_CHANGELOG_DB" ] ; then
-                        packages=$(grep -o "^$current_word[^[:space:]]*" "$OWLMAN_CHANGELOG_DB")
-                    else
-                        packages="$(_sync_packages "$current_word"; _aur_packages "$current_word")"
-                    fi
-                    ;;
-                owns)
-                    compopt -o filenames
-                    COMPREPLY=( $(compgen -f "$current_word") )
-                    return 0
-                    ;;
+	if [[ $COMP_CWORD -ge 1 ]] ; then
+		local current_word="${COMP_WORDS[COMP_CWORD]}"
+		case $current_word in
+			--*)
+				local long_opts='--aur --repo --local --ignore-outdated --recursive --cascade --dependencies --quiet --crawl-homes'
+				COMPREPLY=( $(compgen -W "$long_opts" -- "$current_word") )
+				return 0
+				;;
+			-*)
+				local short_opts='-a -o -l -i -s -c -d -q -w'
+				COMPREPLY=( $(compgen -W "$short_opts" -- "$current_word") )
+				return 0
+				;;
+		esac
+		if [[ $COMP_CWORD -eq 1 ]] ; then
+			local actions='refresh update pull install upgrade downgrade check remove uninstall download abs edit info deps mdeps uses page home changelog search query list lsgrep binlist liblist etclist manlist doclist grep version repository description category license owns prune last leftovers foreigns orphans'
+			COMPREPLY=( $(compgen -W "$actions" -- "$current_word") )
+			return 0
+		else
+			local second_word=${COMP_WORDS[1]}
+			local packages=""
+			case $second_word in
+				list | lsgrep | binlist | liblist | etclist | manlist | doclist | grep | upgrade | downgrade | check | remove | uninstall | deps | mdeps | uses)
+					[[ $second_word == grep && $COMP_CWORD -eq 2 ]] && return 0
+					[[ $second_word == lsgrep && $COMP_CWORD -eq 2 ]] && return 0
+					packages="$(_local_packages)"
+					;;
+				install | info | home | version | description | license)
+					packages="$(_sync_packages "$current_word"; _aur_packages "$current_word")"
+					;; 
+				download | edit | page | category)
+					packages="$(_aur_packages "$current_word")"
+					;; 
+				repository|abs)
+					packages="$(_sync_packages "$current_word")"
+					;; 
+				changelog)
+					if [ -n "$OWLMAN_CHANGELOG_DB" ] ; then
+						packages=$(grep -o "^$current_word[^[:space:]]*" "$OWLMAN_CHANGELOG_DB")
+					else
+						packages="$(_sync_packages "$current_word"; _aur_packages "$current_word")"
+					fi
+					;;
+				owns)
+					compopt -o filenames
+					COMPREPLY=( $(compgen -f "$current_word") )
+					return 0
+					;;
 
-            esac
-            if [[ -n "$packages" ]] ; then
-                COMPREPLY=( $(compgen -W "$packages" -- "$current_word") )
-                return 0
-            fi
-        fi
-    fi
+			esac
+			if [[ -n "$packages" ]] ; then
+				COMPREPLY=( $(compgen -W "$packages" -- "$current_word") )
+				return 0
+			fi
+		fi
+	fi
 }
 
 complete -F _owlman owlman

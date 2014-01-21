@@ -17,79 +17,79 @@ OWLMAN_OBSOLETE_COLOR=${OWLMAN_OBSOLETE_COLOR:-red}
 OWLMAN_INSTALLED_COLOR=${OWLMAN_INSTALLED_COLOR:-cyan}
 
 cprint() {
-    color=$1
-    shift
-    if [ "$color" = "default" ] ; then
-        printf "%s" "$@"
-        return
-    fi
-    ci=0
-    for c in $COLOR_NAMES; do
-        [ "$color" = "$c" ] && break
-        ci=$((ci + 1))
-    done
-    printf "\033[1;$((30 + ci))m%s\033[0m" "$@"
+	color=$1
+	shift
+	if [ "$color" = "default" ] ; then
+		printf "%s" "$@"
+		return
+	fi
+	ci=0
+	for c in $COLOR_NAMES; do
+		[ "$color" = "$c" ] && break
+		ci=$((ci + 1))
+	done
+	printf "\033[1;$((30 + ci))m%s\033[0m" "$@"
 }
 
 OBSOLETE_TAG="<$(cprint "$OWLMAN_OBSOLETE_COLOR" "!")>"
 INSTALLED_TAG=$(cprint "$OWLMAN_INSTALLED_COLOR" "installed")
 
 rprint() {
-    repo=$1
-    sep=$2
-    pkgname=$3
-    ver=$4
-    shift 4
-    end=$@
-    case $repo in
-        local)
-            cprint "$OWLMAN_LOCAL_COLOR" "$repo"
-            ;;
-        core)
-            cprint "$OWLMAN_CORE_COLOR" "$repo"
-            ;;
-        extra)
-            cprint "$OWLMAN_EXTRA_COLOR" "$repo"
-            ;;
-        community)
-            cprint "$OWLMAN_COMMUNITY_COLOR" "$repo"
-            ;;
-        testing)
-            cprint "$OWLMAN_TESTING_COLOR" "$repo"
-            ;;
-        aur)
-            cprint "$OWLMAN_AUR_COLOR" "$repo"
-            ;;
-        *)
-            cprint "$OWLMAN_OTHER_COLOR" "$repo"
-            ;;
-    esac
-    cprint "$OWLMAN_SEP_COLOR" "$sep"
-    cprint "$OWLMAN_NAME_COLOR" "$pkgname "
-    cprint "$OWLMAN_VERSION_COLOR" "$ver "
-    end=$(printf "%s" "$end" | sed "s/<!>/$OBSOLETE_TAG/;s/\[installed\([^]]*\)\]/[$INSTALLED_TAG\1]/")
-    printf "%s" "$end"
+	repo=$1
+	sep=$2
+	pkgname=$3
+	ver=$4
+	shift 4
+	end=$@
+	case $repo in
+		local)
+			cprint "$OWLMAN_LOCAL_COLOR" "$repo"
+			;;
+		core)
+			cprint "$OWLMAN_CORE_COLOR" "$repo"
+			;;
+		extra)
+			cprint "$OWLMAN_EXTRA_COLOR" "$repo"
+			;;
+		community)
+			cprint "$OWLMAN_COMMUNITY_COLOR" "$repo"
+			;;
+		testing)
+			cprint "$OWLMAN_TESTING_COLOR" "$repo"
+			;;
+		aur)
+			cprint "$OWLMAN_AUR_COLOR" "$repo"
+			;;
+		*)
+			cprint "$OWLMAN_OTHER_COLOR" "$repo"
+			;;
+	esac
+	cprint "$OWLMAN_SEP_COLOR" "$sep"
+	cprint "$OWLMAN_NAME_COLOR" "$pkgname "
+	cprint "$OWLMAN_VERSION_COLOR" "$ver "
+	end=$(printf "%s" "$end" | sed "s/<!>/$OBSOLETE_TAG/;s/\[installed\([^]]*\)\]/[$INSTALLED_TAG\1]/")
+	printf "%s" "$end"
 }
 
 if [ -t 1 -a "$OWLMAN_COLORIZE_RESULTS" = "true" ] ; then
-    # the following line allows to read a line as if
-    OLD_IFS="$IFS"
-    IFS=""
-    while read line ; do
-        case "$line" in
-            [a-z]*)
-                # we need to re-enable space as argument separator
-                IFS=" "
-                rprint $(printf "%s" "$line" | sed 's/^\([-a-z]\+\)\(.\)\([^ ]\+\)\( \+[^ ]\+\)\(.*\)/\1 \2 \3 \4 \5/')
-                ;;
-            *)
-                printf "%s\n" "$line"
-                ;;
-        esac
-        printf "\n"
-        IFS=""
-    done
-    IFS="$OLD_IFS"
+	# the following line allows to read a line as if
+	OLD_IFS="$IFS"
+	IFS=""
+	while read line ; do
+		case "$line" in
+			[a-z]*)
+				# we need to re-enable space as argument separator
+				IFS=" "
+				rprint $(printf "%s" "$line" | sed 's/^\([-a-z]\+\)\(.\)\([^ ]\+\)\( \+[^ ]\+\)\(.*\)/\1 \2 \3 \4 \5/')
+				;;
+			*)
+				printf "%s\n" "$line"
+				;;
+		esac
+		printf "\n"
+		IFS=""
+	done
+	IFS="$OLD_IFS"
 else
-    cat
+	cat
 fi
