@@ -396,7 +396,11 @@ case $action in
         while [ $# -gt 0 ] ; do
             { pacman -Si "$1" || pacman -Sg "$1"; } > "$tmp_out" 2> /dev/null
             if [ -s "$tmp_out" ] ; then
-                sudorun pacman -S "$1"
+                if [ $local_only -eq 1 ] ; then
+                    cd "$OWLMAN_ABS_HOME/$1" && makepkg -ifs
+                else
+                    sudorun pacman -S "$1"
+                fi
                 [ $? -ne 0 ] && exit 1
             else
                 cower -ddf -t "$OWLMAN_AUR_HOME" "$1" | tee "$tmp_out"
