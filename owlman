@@ -396,6 +396,8 @@ case $action in
 		while [ $# -gt 0 ] ; do
 			{ pacman -Si "$1" || pacman -Sg "$1"; } > "$tmp_out" 2> /dev/null
 			if [ -s "$tmp_out" ] ; then
+				info "Installing $1."
+				printf "\n"
 				if [ $local_only -eq 1 ] ; then
 					cd "$OWLMAN_ABS_HOME/$1" && makepkg -ifs
 				else
@@ -405,16 +407,21 @@ case $action in
 			else
 				cower -ddf -t "$OWLMAN_AUR_HOME" "$1" | tee "$tmp_out"
 				if [ -s "$tmp_out" ] ; then
-					deps=$(sed '1d;s/^[^ ]\+ \([^ ]\+\) .*$/\1/' "$tmp_out" | tac)
+					deps=$(sed 's/^[^ ]\+ \([^ ]\+\) .*$/\1/' "$tmp_out" | tac)
 					opts="-ifs"
 					[ "$OWLMAN_CLEAN_UP" = "true" ] && opts="$opts -c"
 					for pkgname in $deps; do
+						info "Installing $pkgname."
+						printf "\n"
 						cd "$OWLMAN_AUR_HOME/$pkgname"
-						makepkg --asdeps $opts
+						[ "$OWLMAN_ASK_EDIT" = "true" ] && edit_pkgbuild ./PKGBUILD
+						if [ ! "$pkgname" = "$1" ] ; then
+							makepkg --asdeps $opts
+						else
+							makepkg $opts
+						fi
 						[ $? -ne 0 ] && exit 1
 					done
-					cd "$OWLMAN_AUR_HOME/$1"
-					makepkg $opts "$1"
 					: > "$tmp_out"
 				else
 					missing_pkg "$1"
