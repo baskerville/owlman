@@ -405,17 +405,16 @@ case $action in
 			else
 				cower -ddf -t "$OWLMAN_AUR_HOME" "$1" | tee "$tmp_out"
 				if [ -s "$tmp_out" ] ; then
-					list_of_programs=$(cat "$tmp_out" | tac | sed 's/.* \([^ ]\+\) downloaded.*/\1/')
-					for pkgname in $list_of_programs; do
+					deps=$(sed '1d;s/^[^ ]\+ \([^ ]\+\) .*$/\1/' "$tmp_out" | tac)
+					opts="-ifs"
+					[ "$OWLMAN_CLEAN_UP" = "true" ] && opts="$opts -c"
+					for pkgname in $deps; do
 						cd "$OWLMAN_AUR_HOME/$pkgname"
-						[ "$OWLMAN_ASK_EDIT" = "true" ] && edit_pkgbuild ./PKGBUILD
-						if [ "$OWLMAN_CLEAN_UP" = "true" ] ; then
-							makepkg -ifsc
-						else
-							makepkg -ifs
-						fi
+						makepkg --asdeps $opts
 						[ $? -ne 0 ] && exit 1
 					done
+					cd "$OWLMAN_AUR_HOME/$1"
+					makepkg $opts "$1"
 					: > "$tmp_out"
 				else
 					missing_pkg "$1"
