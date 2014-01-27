@@ -63,15 +63,42 @@ sudorun() {
 	sudo $@
 }
 
-edit_pkgbuild() {
-	printf "%s" "Edit PKGBUILD? [Y/n] "
+cleanup() {
+	[ -e "$tmp_out" ] && rm "$tmp_out"
+}
+
+confirm() {
+	message=$1
+	default=${2:-y}
+	[ "$default" = "y" ] && hint="Y/n" || hint="y/N"
+	printf "%s [%s] " "$message" "$hint"
 	read answer
-	[ -z "$answer" ] && answer='yes'
+	[ -z "$answer" ] && answer=$default
 	case $answer in
 		y|Y|yes|Yes)
-			$OWLMAN_EDITOR "$1"
+			return 0
+			;;
+		n|N|no|No)
+			return 1
+			;;
+		*)
+			printf "%s\n" "Please answer with 'y' or 'n'."
+			confirm "$message" "$default"
 			;;
 	esac
+}
+
+pkgedit() {
+	pkgbuild="$OWLMAN_AUR_HOME/$1/PKGBUILD"
+	[ -e "$pkgbuild" ] || cower -df -t "$OWLMAN_AUR_HOME" "$1"
+	if [ $? -eq 0 ] ; then
+		pkginst="$(find "$OWLMAN_AUR_HOME/$1" -maxdepth 1 -type f -name '*.install' | head -n 1)"
+		if [ -n "$pkginst" ] ; then
+			$OWLMAN_EDITOR "$pkgbuild" "$pkginst"
+		else
+			$OWLMAN_EDITOR "$pkgbuild"
+		fi
+	fi
 }
 
 
@@ -82,6 +109,7 @@ fi
 action=$1
 shift
 tmp_out=/tmp/owlman.$$
+trap cleanup EXIT
 
 [ ! -d "$OWLMAN_AUR_HOME" ] && mkdir -p "$OWLMAN_AUR_HOME"
 [ ! -d "$OWLMAN_ABS_HOME" ] && mkdir -p "$OWLMAN_ABS_HOME"
@@ -228,14 +256,9 @@ case $action in
 			printf "\n"
 			cower -u | tee "$tmp_out"
 			if [ -s "$tmp_out" ] ; then
-					printf "Reinstall packages? [Y/n] "
-					read answer
-					[ -z "$answer" ] && answer='yes'
-					case $answer in
-						y|Y|yes|Yes)
-							owlman install $(cat "$tmp_out" | sed 's/^:: *\([^ ]\+\) .*$/\1/' | xargs)
-							;;
-					esac
+				for pkgname in $(sed 's/^:: *\([^ ]\+\) .*$/\1/' "$tmp_out") ; do
+					confirm "Reinstall '${pkgname}'?" && owlman install "$pkgname"
+				done
 			else
 				printf "%s\n" "No AUR updates found."
 			fi
@@ -252,27 +275,13 @@ case $action in
 				magenta "==> "
 				white "$pkgname "
 				printf "%s\n" "is not installed."
-				printf "%s" "Remove it from the cache [y/N]? "
-				read answer
-				case "$answer" in
-					y|Y|yes|Yes)
-						rm -vrf "$OWLMAN_AUR_HOME/$pkgname"
-						;;
-				esac
+				confirm "Remove it from the cache?" && rm -vrf "$OWLMAN_AUR_HOME/$pkgname"
 				continue
 			fi
 			green "$pkgname"
 			printf "\n"
 			if owlman_update_repository "$repo" ; then
-				printf "Reinstall package '%s' [Y/n]? " "$pkgname"
-				read answer
-				[ -z "$answer" ] && answer="yes"
-				case "$answer" in
-					y|yes|Y|Yes)
-						cd "$OWLMAN_AUR_HOME/$pkgname"
-						makepkg -ifs
-						;;
-				esac
+				confirm "Reinstall package '${pkgname}'?" && cd "$OWLMAN_AUR_HOME/$pkgname" && makepkg -ifs
 			fi
 		done
 		;;
@@ -388,9 +397,10 @@ case $action in
 		done
 		;;
 	edit)
-		pkgbuild="$OWLMAN_AUR_HOME/$@/PKGBUILD"
-		[ -e "$pkgbuild" ] || cower -df -t "$OWLMAN_AUR_HOME" "$@"
-		[ $? -eq 0 ] && $OWLMAN_EDITOR "$pkgbuild"
+		while [ $# -gt 0 ] ; do
+			pkgedit "$1"
+			shift
+		done
 		;;
 	install)
 		while [ $# -gt 0 ] ; do
@@ -414,7 +424,7 @@ case $action in
 						info "Installing $pkgname."
 						printf "\n"
 						cd "$OWLMAN_AUR_HOME/$pkgname"
-						[ "$OWLMAN_ASK_EDIT" = "true" ] && edit_pkgbuild ./PKGBUILD
+						[ "$OWLMAN_ASK_EDIT" = "true" ] && confirm "Edit PKGBUILD?" && pkgedit "$pkgname"
 						if [ ! "$pkgname" = "$1" ] ; then
 							makepkg --asdeps $opts
 						else
@@ -459,30 +469,14 @@ case $action in
 			if [ -e "$i" ] ; then
 				ext=${i##*.}
 				if [ "$ext" != "pacsave" ] ; then
-					printf "Merge '%s' [y/N]? " "$i"
-					read answer
-					case "$answer" in
-						y|yes|Y|Yes)
-							vimdiff "${i%.*}" "$i"
-							;;
-						*)
-							printf "Overwrite '%s' with '%s' [y/N]? " "${i%.*}" "$i"
-							read answer
-							case "$answer" in
-								y|yes|Y|Yes)
-									sudorun mv "$i" "${i%.*}"
-									;;
-							esac
-					esac
+					if confirm "Merge '${i}'?" n ; then
+						vimdiff "${i%.*}" "$i"
+					else
+						confirm "Overwrite '${i%.*}' with '${i}'?" n && sudorun mv "$i" "${i%.*}"
+					fi
 				fi
 				if [ -e "$i" ] ; then
-					printf "Remove '%s' [y/N]? " "$i"
-					read answer
-					case "$answer" in
-						y|yes|Y|Yes)
-							sudorun rm "$i"
-							;;
-					esac
+					confirm "Remove '${i}'" n && sudorun rm "$i"
 				fi
 			fi
 		done
@@ -502,7 +496,7 @@ case $action in
 		if [ $crawl_homes -eq 1 ] ; then
 			pkg_list=$(pacman -Ssq "$@"; cower -sq "$@")
 			if [ -n "$pkg_list" ] ; then
-				set $pkg_list
+				set -- $pkg_list
 			fi
 		fi
 		counter=0
@@ -515,18 +509,7 @@ case $action in
 			fi
 			shift
 			if [ $((counter % OWLMAN_MAX_URL)) -eq 0 -a $counter -gt 0 -a $# -gt 0 ] ; then
-				printf "Continue [Y/n] (%i remaining)? " "$#"
-				read answer
-				[ -z "$answer" ] && answer='y'
-
-				case "$answer" in
-					y|Y|yes|Yes)
-						:
-						;;
-					*)
-						exit 0
-						;;
-				esac
+				confirm "Continue ($# remaining)?" && continue || exit 0
 			fi
 		done
 		;;
