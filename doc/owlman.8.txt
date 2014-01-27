@@ -50,8 +50,8 @@ Actions and Arguments
 *abs* 'PKG' ...::
 	Download the given sync packages source via *abs*.
 
-*edit* 'PKG'::
-	Edit the 'PKGBUILD' for the given AUR package.
+*edit* 'PKG' ...::
+	Edit the install scripts of the given AUR packages.
 
 *search* 'STRING'::
 	Search for packages matching 'STRING' in all databases.
