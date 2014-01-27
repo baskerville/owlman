@@ -71,8 +71,8 @@ Actions and Arguments
 *uses* 'PKG' ...::
 	Show packages that specify the given packages as dependency.
 
-*owns* 'FILE'::
-	Return the name of the package owning the given file.
+*owns* 'FILE'...::
+	Return the name of the package owning the given files.
 
 *version* 'PKG' ...::
 	Return the version of the given packages.
