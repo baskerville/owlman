@@ -19,42 +19,6 @@ usage() {
 	exit 1
 }
 
-printc() {
-	color=$1
-	shift
-	if [ -t 1 ] ; then
-		printf "\033[%sm%s\033[0m" "$color" "$@"
-	else
-		printf "%s" "$@"
-	fi
-}
-
-white() {
-	printc "1;37" "$@"
-}
-
-green() {
-	printc "1;32" "$@"
-}
-
-magenta() {
-	printc "1;35" "$@"
-}
-
-missing_pkg() {
-	printf "Package '%s' was not found.\n" "$@" >&2
-}
-
-warning() {
-	magenta "==>"
-	white " $@"
-}
-
-info() {
-	green "==>"
-	white " $@"
-}
-
 sudorun() {
 	if [ "$OWLMAN_SUDO_WARN" = "true" ] ; then
 		warning "Running sudo."
@@ -101,6 +65,80 @@ pkgedit() {
 	fi
 }
 
+aur_fmt() {
+	case "$1" in
+		category|description|url|page|version|license)
+			f="%$(printf "%.1s" "$1")" ;;
+		depends)
+			f=%D ;;
+		makedepends)
+			f=%M ;;
+	esac
+	printf "%s" "$f"
+}
+
+sync_fmt() {
+	case "$1" in
+		repository|description|url|version)
+			f="%$(printf "%.1s" "$1")" ;;
+		license)
+			f=%L ;;
+		depends)
+			f=%D ;;
+		requiredby)
+			f=%N ;;
+	esac
+	printf "%s" "$f"
+}
+
+putinfo() {
+	key=$1
+	shift
+	if [ $local_only -eq 1 ] ; then
+		expac -Q "$(sync_fmt $key)" "$@"
+	else
+		while [ $# -gt 0 ] ; do
+			expac -S "$(sync_fmt $key)" "$1" 2> /dev/null || cower -ii --format "$(aur_fmt $key)\n" "$1" 2> /dev/null || missing_pkg "$1"
+			shift
+		done
+	fi
+}
+
+printc() {
+	color=$1
+	shift
+	if [ -t 1 ] ; then
+		printf "\033[%sm%s\033[0m" "$color" "$@"
+	else
+		printf "%s" "$@"
+	fi
+}
+
+white() {
+	printc "1;37" "$@"
+}
+
+green() {
+	printc "1;32" "$@"
+}
+
+magenta() {
+	printc "1;35" "$@"
+}
+
+missing_pkg() {
+	printf "Package '%s' was not found.\n" "$@" >&2
+}
+
+warning() {
+	magenta "==>"
+	white " $@"
+}
+
+info() {
+	green "==>"
+	white " $@"
+}
 
 if [ $# -lt 1 ] ; then
 	usage
@@ -113,47 +151,6 @@ trap cleanup EXIT
 
 [ ! -d "$OWLMAN_AUR_HOME" ] && mkdir -p "$OWLMAN_AUR_HOME"
 [ ! -d "$OWLMAN_ABS_HOME" ] && mkdir -p "$OWLMAN_ABS_HOME"
-
-getinfos() {
-	extended_infos=0
-	pacopt=-Si
-	cowopt=-i
-	while getopts "e-:" opt ; do
-		case $opt in
-			e)
-				extended_infos=1
-				;;
-			-)
-				case $OPTARG in
-					extended)
-						extended_infos=1
-						;;
-				esac
-				;;
-		esac
-	done
-
-	shift $((OPTIND - 1))
-
-	if [ $extended_infos -eq 1 ] ; then
-		pacopt=-Sii
-		cowopt=-ii
-	fi
-
-	while [ $# -gt 0 ] ; do
-		pacman $pacopt "$1" > "$tmp_out" 2>&1
-		if [ $? -ne 0 ] ; then
-			cower $cowopt "$1" > "$tmp_out" 2>&1
-			if [ $? -ne 0 ] ; then
-				missing_pkg "$1"
-				exit 1
-			fi
-		fi
-		cat "$tmp_out"
-		: > "$tmp_out"
-		shift
-	done
-}
 
 quiet_results=0
 extended_infos=0
@@ -286,14 +283,15 @@ case $action in
 		done
 		;;
 	info)
+		opts='-i'
+		[ $extended_infos -eq 1 ] && opts="$opts -i"
 		if [ $local_only -eq 1 ] ; then
-			pacman -Qi "$@"
+			pacman -Q $opts "$@"
 		else
-			if [ $extended_infos -eq 1 ] ; then
-				getinfos --extended "$@"
-			else
-				getinfos "$@"
-			fi
+			while [ $# -gt 0 ] ; do
+				pacman -S $opts "$1" 2> /dev/null || cower $opts "$1" 2> /dev/null || missing_pkg "$1"
+				shift
+			done
 		fi
 		;;
 	list | lsgrep)
@@ -305,27 +303,19 @@ case $action in
 		pacman -Qlq "$@" | grep -i "$pattern"
 		;;
 	query | search)
+		opts='-s'
+		filter=owlman_color_filter
+		if [ $quiet_results -eq 1 ] ; then
+			opts="$opts -q"
+			filter=cat
+		fi
 		if [ "$action" = "query" ] ; then
-			if [ $quiet_results -eq 1 ] ; then
-				pacman -Qsq "$@"
-			else
-				pacman -Qs "$@" | owlman_color_filter
-			fi
+			pacman -Q $opts "$@" | $filter
 		elif [ "$action" = "search" ] ; then
 			if [ $aur_only -eq 0 ] ; then
-				if [ $quiet_results -eq 1 ] ; then
-					pacman -Ssq "$@"
-				else
-					pacman -Ss "$@" | owlman_color_filter
-				fi
+				pacman -S $opts "$@" | $filter
 			fi
 			if [ $repo_only -eq 0 ] ; then
-				opts="-s"
-				filter=owlman_color_filter
-				if [ $quiet_results -eq 1 ] ; then
-					opts="$opts -q"
-					filter=cat
-				fi
 				[ $ignore_outdated -eq 1 -o "$OWLMAN_IGNORE_OUTDATED" = "true" ] && opts="$opts -o"
 				[ $sort_by_votes -eq 1 ] && opts="$opts --sort=votes"
 				cower $opts "$@" | $filter
@@ -333,14 +323,12 @@ case $action in
 		fi
 		;;
 	owns)
-		pacopt="-Qo"
-		[ $quiet_results -eq 1 ] && pacopt="-Qoq"
-		pacman $pacopt "$@"
+		opts='-o'
+		[ $quiet_results -eq 1 ] && pacopt="$opts -q"
+		pacman -Q $opts "$@"
 		;;
 	version | repository | category | description | license)
-		cmd=getinfos
-		[ $local_only -eq 1 ] && cmd="pacman -Qi"
-		$cmd "$@" | grep -i "^$action" | sed 's/[^:]\+: \(.*\)/\1/'
+		putinfo "$action" "$@"
 		;;
 	grep)
 		pattern=$1
@@ -374,20 +362,15 @@ case $action in
 		fi
 		;;
 	remove | uninstall)
-		if [ $rm_cascade -eq 1 ] ; then
-			sudorun pacman -Rc "$@"
-		elif [ $rm_recur -eq 1 ] ; then
-			sudorun pacman -Rs "$@"
-		else
-			sudorun pacman -R "$@"
-		fi
+		opts=''
+		[ $rm_cascade -eq 1 ] && opts="${opts}c"
+		[ $rm_recur -eq 1 ] && opts="${opts}s"
+		sudorun pacman -R${opts} "$@"
 		;;
 	download)
-		if [ $fetch_deps -eq 1 ] ; then
-			cower -ddf -t "$OWLMAN_AUR_HOME" "$@"
-		else
-			cower -df -t "$OWLMAN_AUR_HOME" "$@"
-		fi
+		opts='-df'
+		[ $fetch_deps -eq 1 ] && opts="$opts -d"
+		cower $opts -t "$OWLMAN_AUR_HOME" "$@"
 		;;
 	abs)
 		while [ $# -gt 0 ] ; do
@@ -453,11 +436,9 @@ case $action in
 			pkgdir="$OWLMAN_AUR_HOME/$1"
 			[ -d "$pkgdir" ] || cower -df -t "$OWLMAN_AUR_HOME" "$1"
 			cd "$pkgdir" 2> /dev/null || exit 1
-			if [ "$OWLMAN_CLEAN_UP" = "true" ] ; then
-				makepkg -ifsc
-			else
-				makepkg -ifs
-			fi
+			opts='-ifs'
+			[ "$OWLMAN_CLEAN_UP" = "true" ] && opts="$opts -c"
+			makepkg $opts
 			[ $? -ne 0 ] && exit 1
 			shift
 		done
@@ -483,12 +464,8 @@ case $action in
 		;;
 	page)
 		while [ $# -gt 0 ] ; do
-			uri=$(getinfos "$1" | grep -m 1 -o 'https://aur.*') > /dev/null 2>&1
-			if [ -n "$uri" ] ; then
-				$OWLMAN_BROWSER $uri > /dev/null 2>&1
-			else
-				printf "Package '%s' is not in AUR.\n" "$1" >&2
-			fi
+			url=$(putinfo page "$1")
+			[ -n "$url" ] && $OWLMAN_BROWSER $url > /dev/null 2>&1
 			shift
 		done
 		;;
@@ -499,16 +476,16 @@ case $action in
 				set -- $pkg_list
 			fi
 		fi
-		counter=0
+		cnt=0
 		while [ $# -gt 0 ] ; do
-			uri=$(getinfos "$1" | grep -m 1 -o 'https\?://.*')
-			if [ -n "$uri" ] ; then
-				printf "%s: %s\n" "$1" "$uri"
-				$OWLMAN_BROWSER $uri > /dev/null 2>&1
-				counter=$((counter+1))
+			url=$(putinfo url "$1")
+			if [ -n "$url" ] ; then
+				printf "%s: %s\n" "$1" "$url"
+				$OWLMAN_BROWSER $url > /dev/null 2>&1
+				cnt=$((cnt+1))
 			fi
 			shift
-			if [ $((counter % OWLMAN_MAX_URL)) -eq 0 -a $counter -gt 0 -a $# -gt 0 ] ; then
+			if [ $((cnt % OWLMAN_MAX_URL)) -eq 0 -a $cnt -gt 0 -a $# -gt 0 ] ; then
 				confirm "Continue ($# remaining)?" && continue || exit 0
 			fi
 		done
@@ -523,7 +500,7 @@ case $action in
 			if [ -z "$url" ] ; then
 				printf "Not in the changelog database: '%s'.\n" "$1" >&2
 			else
-				version=$(getinfos "$1" | grep -i "^version" | sed 's/[^:]\+ *: *\([^-]\+\)-[0-9]\+/\1/')
+				version=$(putinfo version "$1" | sed 's/-[0-9]\+$//')
 				url=$(eval printf "%s" $url)
 				if [ $quiet_results -eq 1 ] ; then
 					printf "%s\n" "$url"
@@ -536,22 +513,16 @@ case $action in
 		;;
 	last)
 		num=${@:-7}
-		awk '/\] (installed|upgraded) / { match($0, /\] (installed|upgraded) ([^ ]+)/, groups); print groups[2]; }' "$OWLMAN_PACMAN_LOG" | tail -n "$num"
+		sed -n 's/.*\[PACMAN\] \(installed\|upgraded\) \([^ ]\+\).*/\2/p' "$OWLMAN_PACMAN_LOG" | tail -n "$num"
 		;;
 	deps)
-		cmd="getinfos --extended"
-		[ $local_only -eq 1 ] && cmd="pacman -Qi"
-		$cmd "$@" | grep -i '^depends on' | sed 's/[^:]\+: \(.*\)/\1/'
+		putinfo depends "$@"
 		;;
 	mdeps)
-		cmd="getinfos --extended"
-		[ $local_only -eq 1 ] && cmd="pacman -Qi"
-		$cmd "$@" | grep -i '^makedepends' | sed 's/[^:]\+: \(.*\)/\1/'
+		putinfo makedepends "$@"
 		;;
 	uses)
-		cmd="getinfos --extended"
-		[ $local_only -eq 1 ] && cmd="pacman -Qii"
-		$cmd "$@" | grep -i '^required by' | sed 's/[^:]\+: \(.*\)/\1/'
+		putinfo requiredby "$@"
 		;;
 	check)
 		pacman -Qk "$@"
@@ -588,18 +559,14 @@ case $action in
 		done
 		;;
 	foreigns)
-		if [ $quiet_results -eq 1 ] ; then
-			pacman -Qmq
-		else
-			pacman -Qm
-		fi
+		opts='-m'
+		[ $quiet_results -eq 1 ] && opts="$opts -q"
+		pacman -Q $opts
 		;;
 	orphans)
-		if [ $quiet_results -eq 1 ] ; then
-			pacman -Qdtq
-		else
-			pacman -Qdt
-		fi
+		opts='-dt'
+		[ $quiet_results -eq 1 ] && opts="$opts -q"
+		pacman -Q $opts
 		;;
 	*)
 		printf "Unknown action: '%s'.\n" "$action" >&2
