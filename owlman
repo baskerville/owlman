@@ -94,11 +94,13 @@ sync_fmt() {
 putinfo() {
 	key=$1
 	shift
+	sf=$(sync_fmt $key)
+	af=$(aur_fmt $key)
 	if [ $local_only -eq 1 ] ; then
-		expac -Q "$(sync_fmt $key)" "$@"
+		expac -Q "$sf" "$@"
 	else
 		while [ $# -gt 0 ] ; do
-			expac -S "$(sync_fmt $key)" "$1" 2> /dev/null || cower -ii --format "$(aur_fmt $key)\n" "$1" 2> /dev/null || missing_pkg "$1"
+			expac -S "$sf" "$1" 2> /dev/null || cower -ii --format "$af\n" "$1" 2> /dev/null || missing_pkg "$1"
 			shift
 		done
 	fi
