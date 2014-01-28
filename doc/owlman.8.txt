@@ -89,6 +89,9 @@ Actions and Arguments
 *license* 'PKG' ...::
 	Return the license of the given packages.
 
+*url* 'PKG' ...::
+	Return the URL of the given packages.
+
 *page* 'PKG' ...::
 	Opens the given packages 'AUR' pages.
 

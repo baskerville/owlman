@@ -61,6 +61,7 @@ _1st_arguments=(
 	'description:Return the description of the given packages'
 	'category:Return the category of the given AUR packages'
 	'license:Return the license of the given packages'
+	'url:Return the URL of the given packages'
 	'page:Opens the given packages AUR pages'
 	'home:Opens the given packages home pages'
 	'changelog:Opens the given packages changelog pages'
@@ -118,7 +119,7 @@ case "$words[2]" in
 	list|binlist|liblist|etclist|manlist|doclist|upgrade|downgrade|check)
 		_wanted_local
 		;;
-	deps|mdeps|uses|version|repository|category|description|license)
+	deps|mdeps|uses|version|repository|category|description|license|url)
 		_arguments $_2nd_arguments[lcal] \
 			'1: :->forms' && return 0
 		if [[ "$state" == forms ]]; then

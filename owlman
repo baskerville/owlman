@@ -329,7 +329,7 @@ case $action in
 		[ $quiet_results -eq 1 ] && pacopt="$opts -q"
 		pacman -Q $opts "$@"
 		;;
-	version | repository | category | description | license)
+	version | repository | category | description | license | url)
 		putinfo "$action" "$@"
 		;;
 	grep)
