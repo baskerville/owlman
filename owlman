@@ -13,6 +13,9 @@ OWLMAN_SUDO_WARN=${OWLMAN_SUDO_WARN:-true}
 OWLMAN_IGNORE_OUTDATED=${OWLMAN_IGNORE_OUTDATED:-false}
 OWLMAN_CLEAN_UP=${OWLMAN_CLEAN_UP:-false}
 OWLMAN_MAX_URL=${OWLMAN_MAX_URL:-16}
+OWLMAN_NOCONFIRM=${OWLMAN_NOCONFIRM:-false}
+
+"$OWLMAN_NOCONFIRM" && pacman_args=--noconfirm
 
 usage() {
 	printf "Usage: %s <action> [...]\n" "${0##*/}"
@@ -248,7 +251,7 @@ case $action in
 		if [ $aur_only -ne 1 ]; then
 			info "Checking sync repos for updates."
 			printf "\n"
-			sudorun pacman -Syu
+			sudorun pacman "$pacman_args" -Syu
 		fi
 		if [ $repo_only -ne 1 ] ; then
 			info "Checking AUR for updates."
@@ -359,7 +362,7 @@ case $action in
 			shift
 		done
 		if [ -s "$tmp_out" ] ; then
-			sudorun pacman -U $(cat "$tmp_out")
+			sudorun pacman "$pacman_args" -U $(cat "$tmp_out")
 			: > "$tmp_out"
 		fi
 		;;
@@ -367,7 +370,7 @@ case $action in
 		opts=''
 		[ $rm_cascade -eq 1 ] && opts="${opts}c"
 		[ $rm_recur -eq 1 ] && opts="${opts}s"
-		sudorun pacman -R${opts} "$@"
+		sudorun pacman "$pacman_args" -R${opts} "$@"
 		;;
 	download)
 		opts='-df'
@@ -396,7 +399,7 @@ case $action in
 				if [ $local_only -eq 1 ] ; then
 					cd "$OWLMAN_ABS_HOME/$1" && makepkg -ifs
 				else
-					sudorun pacman -S "$1"
+					sudorun pacman "$pacman_args" -S "$1"
 				fi
 				[ $? -ne 0 ] && exit 1
 			else
