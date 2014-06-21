@@ -283,7 +283,7 @@ case $action in
 			green "$pkgname"
 			printf "\n"
 			if owlman_update_repository "$repo" ; then
-				confirm "Reinstall package '${pkgname}'?" && cd "$OWLMAN_AUR_HOME/$pkgname" && makepkg -ifs
+				confirm "Reinstall package '${pkgname}'?" && cd "$OWLMAN_AUR_HOME/$pkgname" && makepkg "$pacman_args" -ifs
 			fi
 		done
 		;;
@@ -397,7 +397,7 @@ case $action in
 				info "Installing $1."
 				printf "\n"
 				if [ $local_only -eq 1 ] ; then
-					cd "$OWLMAN_ABS_HOME/$1" && makepkg -ifs
+					cd "$OWLMAN_ABS_HOME/$1" && makepkg "$pacman_args" -ifs
 				else
 					sudorun pacman "$pacman_args" -S "$1"
 				fi
@@ -406,7 +406,7 @@ case $action in
 				cower -ddf -t "$OWLMAN_AUR_HOME" "$1" | tee "$tmp_out"
 				if [ -s "$tmp_out" ] ; then
 					deps=$(sed 's/^[^ ]\+ \([^ ]\+\) .*$/\1/' "$tmp_out" | tac)
-					opts="-ifs"
+					opts="-ifs $pacman_args"
 					[ "$OWLMAN_CLEAN_UP" = "true" ] && opts="$opts -c"
 					for pkgname in $deps; do
 						info "Installing $pkgname."
@@ -441,7 +441,7 @@ case $action in
 			pkgdir="$OWLMAN_AUR_HOME/$1"
 			[ -d "$pkgdir" ] || cower -df -t "$OWLMAN_AUR_HOME" "$1"
 			cd "$pkgdir" 2> /dev/null || exit 1
-			opts='-ifs'
+			opts="-ifs $pacman_args"
 			[ "$OWLMAN_CLEAN_UP" = "true" ] && opts="$opts -c"
 			makepkg $opts
 			[ $? -ne 0 ] && exit 1
