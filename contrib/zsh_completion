@@ -75,6 +75,7 @@ _1st_arguments=(
 	'grep:Grep for STRING in all the files of all the given packages'
 	'check:Check that all files owned by the given packages exist'
 	'prune:Remove unused repositories in the cache directory'
+	'cleanup:Remove unused packages and sync databases from pacmans cache'
 	'last:Show the last NUM (7 if omitted) installed packages'
 	'leftovers:Find, merge and remove pac{new,orig,save} files'
 	'foreigns:Show installed packages not found in the sync databases'

@@ -550,6 +550,9 @@ case $action in
 	refresh)
 		sudorun pacman -Syy
 		;;
+	cleanup)
+		sudorun pacman -Sc
+		;;
 	prune)
 		if [ ! -d "$OWLMAN_AUR_HOME" ] ; then
 			printf "%s\n" "The cache directory is invalid." >&2

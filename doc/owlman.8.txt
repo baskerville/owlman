@@ -131,6 +131,9 @@ Actions and Arguments
 *prune*::
 	Remove unused repositories in the cache directory.
 
+*cleanup*::
+	Remove unused packages and sync databases from pacman's cache.
+
 *last* ['NUM']::
 	Show the last 'NUM' (7 if omitted) installed packages.
 
