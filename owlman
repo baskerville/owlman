@@ -1,5 +1,10 @@
 #! /bin/sh
 
+if [ "$(id -u)" -eq 0 ] ; then
+	printf "%s can't be run as root.\n" "${0##*/}" >&2
+	exit 1
+fi
+
 OWLMAN_AUR_HOME=${OWLMAN_AUR_HOME:-/tmp/owlman-aur}
 OWLMAN_ABS_HOME=${OWLMAN_ABS_HOME:-/tmp/owlman-abs}
 OWLMAN_CHANGELOG_DB=${OWLMAN_CHANGELOG_DB:-"$XDG_DATA_HOME/changelog_db"}
