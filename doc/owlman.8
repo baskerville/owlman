@@ -2,12 +2,12 @@
 .\"     Title: owlman
 .\"    Author: [see the "Author" section]
 .\" Generator: DocBook XSL Stylesheets v1.79.1 <http://docbook.sf.net/>
-.\"      Date: 01/10/2017
+.\"      Date: 03/19/2017
 .\"    Manual: Owlman Manual
 .\"    Source: Owlman 0.8
 .\"  Language: English
 .\"
-.TH "OWLMAN" "8" "01/10/2017" "Owlman 0\&.8" "Owlman Manual"
+.TH "OWLMAN" "8" "03/19/2017" "Owlman 0\&.8" "Owlman Manual"
 .\" -----------------------------------------------------------------
 .\" * Define some portability stuff
 .\" -----------------------------------------------------------------
@@ -72,6 +72,11 @@ Downgrade the given packages\&.
 \fBremove\fR|\fBuninstall\fR \fIPKG\fR \&...
 .RS 4
 Remove the given packages\&.
+.RE
+.PP
+\fBautoremove\fR|\fBautouninstall\fR \&...
+.RS 4
+Remove all unused dependencies (orphans)\&.
 .RE
 .PP
 \fBdownload\fR \fIPKG\fR \&...

@@ -34,7 +34,7 @@ _owlman()
 				;;
 		esac
 		if [[ $COMP_CWORD -eq 1 ]] ; then
-			local actions='refresh update pull install upgrade downgrade check remove uninstall download abs edit info deps mdeps uses page home changelog search query list lsgrep binlist liblist etclist manlist doclist grep version repository description category license url owns prune cleanup last leftovers foreigns orphans'
+			local actions='refresh update pull install upgrade downgrade check remove uninstall autoremove autouninstall download abs edit info deps mdeps uses page home changelog search query list lsgrep binlist liblist etclist manlist doclist grep version repository description category license url owns prune cleanup last leftovers foreigns orphans'
 			COMPREPLY=( $(compgen -W "$actions" -- "$current_word") )
 			return 0
 		else

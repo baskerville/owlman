@@ -46,6 +46,8 @@ _1st_arguments=(
 	'downgrade:Downgrade the given packages'
 	'remove:Remove the given packages'
 	'uninstall:Remove the given packages'
+	'autoremove:Remove all unused dependencies (orphans)'
+	'autouninstall:Remove all unused dependencies (orphans)'
 	'download:Download the given packages from the AUR'
 	'abs:Download the given sync packages via abs'
 	'edit:Edit the PKGBUILD for the given AUR package'

@@ -581,6 +581,9 @@ case $action in
 		[ $quiet_results -eq 1 ] && opts="$opts -q"
 		pacman -Q $opts
 		;;
+	autoremove | autouninstall)
+		sudorun pacman "$pacman_args" -Rs $(pacman -Qdtq)
+		;;
 	*)
 		printf "Unknown action: '%s'.\n" "$action" >&2
 		exit 1
