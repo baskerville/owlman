@@ -44,7 +44,7 @@ Actions and Arguments
 *remove*|*uninstall* 'PKG' ...::
 	Remove the given packages.
 
-*autoremove*|*autouninstall* ...::
+*autoremove*|*autouninstall*::
 	Remove all unused dependencies (orphans).
 
 *download* 'PKG' ...::
